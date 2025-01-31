@@ -1,9 +1,9 @@
 # CS 3733 Term Project
 ### AWS Deployment URL: 
 ### Project Title: 
-### Team Name :  <enter your team name here> 
+### Team Name :  URLMappers
 ### Team Members 
-* member 1
-* member 2
-* member 3
-* member 4
+* member 1 - Connor Daniel
+* member 2 - Sarah Meyer
+* member 3 - April Zingher
+* member 4 - Ian Wood
