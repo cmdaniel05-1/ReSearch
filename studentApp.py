@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 from flask_login import current_user
-#from app import create_app, db
+from app import create_app, db
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from config import Config
 
-#app = create_app(Config)
+app = create_app(Config)
 
 @app.shell_context_processor
 def make_shell_context():
