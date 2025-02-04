@@ -2,7 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px; /* Adjust as needed */
-    padding: 8px 16px; /* Adjust for desired spacing */
-    margin-left: 10px
+    height: 40px;
+    padding: 4px;
+    font-size: 15px;
+}
+
+.nav-item {
+    margin: 5px;
 }
