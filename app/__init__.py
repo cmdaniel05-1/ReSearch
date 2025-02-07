@@ -3,9 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from config import Config
 from flask_moment import Moment
+from flask_login import LoginManager
 
 db = SQLAlchemy()
+moment = Moment()
 migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
 
 #factory method
 def create_app(config_class = Config):
@@ -16,7 +20,11 @@ def create_app(config_class = Config):
 
     db.init_app(app)
     migrate.init_app(app, db)
+    login.init_app(app)
+    moment.init_app(app)
+    
     #register_blueprints
+
     from app.main import main_blueprint as main
     main.template_folder = Config.TEMPLATE_FOLDER_MAIN
     app.register_blueprint(main)

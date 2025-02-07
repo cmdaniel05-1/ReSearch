@@ -1,12 +1,11 @@
 from datetime import date, timezone
 from typing import Optional
-
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
+from app import db, login
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
+
 
 position_fields = db.Table(
     'position_fields',
@@ -148,11 +147,11 @@ class Faculty(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(unique= True)
     username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), unique = True)
-    password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
     firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), unique = True)
-    phoneNum : sqlo.Mapped[int] = sqlo.mapped_column()
+    phone_num : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer())
+    password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
 
     # Relationships
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(

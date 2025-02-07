@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Register</h1>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.wpi_id.label }}<br>
+        {{ form.wpi_id(class="forminput") }}<br>
+        {% for error in form.wpi_id.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.username.label }}<br>
+        {{ form.username(class="forminput") }}<br>
+        {% for error in form.username.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.firstname.label }}<br>
+        {{ form.firstname(class="forminput") }}<br>
+        {% for error in form.firstname.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.lastname.label }}<br>
+        {{ form.lastname(class="forminput") }}<br>
+        {% for error in form.lastname.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.email.label }}<br>
+        {{ form.email(class="forminput") }}<br>
+        {% for error in form.email.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.phone_num.label }}<br>
+        {{ form.phone_num(class="forminput") }}<br>
+        {% for error in form.phone_num.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.password.label }}<br>
+        {{ form.password(class="forminput")}}<br>
+        {% for error in form.password.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.password2.label }}<br>
+        {{ form.password2(class="forminput")}}<br>
+        {% for error in form.password2.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+        {% endfor %}
+
+        {{ form.submit(class="button") }}
+</form>
+{% endblock %}

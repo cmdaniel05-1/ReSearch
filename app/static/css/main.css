@@ -10,3 +10,25 @@
 .nav-item {
     margin: 5px;
 }
+
+.button {
+    width : fit-content;
+    padding : 3px;    
+    font-size: 16px;
+    margin : 5px;
+    padding : 5px;
+    border: 1px solid lightgray;
+}
+.button:hover {
+    background-color: 157dd3;
+    color: white;
+    cursor:pointer;
+}
+
+.forminput {
+    width: 70%;
+    margin: 10px 0px 10px 0px;
+    padding: 5px;
+    font-family: Tahoma;
+    font-style: normal;
+}
