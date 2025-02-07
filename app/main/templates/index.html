@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, user!</h1>
+    <!-- TODO: Use for loop instead -->
+    <div class="container mt-4">
+        <h2>Research Position</h2>
+        {% include '_position.html' %}
+        {% include '_position.html' %}
+        {% include '_position.html' %}
+        {% include '_position.html' %}
+        {% include '_position.html' %}
+        {% include '_position.html' %}
+    </div> 
+    
 {% endblock %}
 
