@@ -23,17 +23,30 @@ position_languages = db.Table(
     sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
     sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
 )
+
 position_students = db.Table(
     'position_students',
     db.metadata,
     sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
     sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True)
 )
-
 student_languages = db.Table(
     'student_languages',
     db.metadata,
     sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True),
+    sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
+)
+
+position_faculty = db.Table(
+    'position_faculty',
+    db.metadata,
+    sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
+    sqla.Column('faculty_id', sqla.Integer, sqla.ForeignKey('faculty.id'), primary_key = True)
+)
+faculty_languages = db.Table(
+    'faculty_languages',
+    db.metadata,
+    sqla.Column('faculty_id', sqla.Integer, sqla.ForeignKey('faculty.id'), primary_key = True),
     sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
 )
 
@@ -108,7 +121,6 @@ class Language(db.Model):
         primaryjoin = (position_languages.c.language_id == id),
         back_populates = 'languages'
     )
-<<<<<<< HEAD
 
 class Faculty(db.Model):
     faculty_id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -137,11 +149,3 @@ class Faculty(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-=======
-    
-    students : sqlo.WriteOnlyMapped['Student'] = sqlo.relationship(
-        secondary = student_languages,
-        primaryjoin = (student_languages.c.language_id == id),
-        back_populates = 'students'
-    )
->>>>>>> 9e77b48d4e313b576649f5343ee44e2e668f2fd6
