@@ -5,6 +5,8 @@ from app import db
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 position_fields = db.Table(
     'position_fields',
     db.metadata,
@@ -61,3 +63,31 @@ class Language(db.Model):
         primaryjoin = (position_languages.c.language_id == id),
         back_populates = 'languages'
     )
+
+class Faculty(db.Model):
+    faculty_id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
+    username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), unique = True)
+    email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), unique = True)
+    password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+    phoneNum : sqlo.Mapped[int] = sqlo.mapped_column()
+
+    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
+        secondary = position_faculty,
+        primaryjoin = (position_faculty.c.faculty_id == id),
+        back_populates = 'faculty'
+    )
+    languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
+        secondary = faculty_languages,
+        primaryjoin = (faculty_languages.c.faculty_id == id),
+        back_populates = 'faculty'
+    )
+
+    def __repr__(self):
+        return '<WPIID: {} - Username: {} - Name: {}>'.format(self.faculty_id, self.username, self.name)
+    
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
