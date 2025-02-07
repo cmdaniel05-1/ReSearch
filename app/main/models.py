@@ -23,8 +23,8 @@ class Position(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     title : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     description : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(1500))
-    start_date : sqlo.Mapped[Optional[date]] = sqlo.mapped_column(date.now(timezone.utc))
-    end_date : sqlo.Mapped[Optional[date]] = sqlo.mapped_column(date.now(timezone.utc))
+    start_date : sqlo.Mapped[Optional[date]] = sqlo.mapped_column(sqla.Date)
+    end_date : sqlo.Mapped[Optional[date]] = sqlo.mapped_column(sqla.Date)
     req_time : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer)
     student_count : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer)
 
@@ -58,6 +58,6 @@ class Language(db.Model):
     # Relationships
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
         secondary = position_languages,
-        primaryjoin = (position_languages.c.language == id),
+        primaryjoin = (position_languages.c.language_id == id),
         back_populates = 'languages'
     )
