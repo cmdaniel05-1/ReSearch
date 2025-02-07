@@ -1,15 +1,20 @@
 from flask import render_template, redirect, flash, url_for
 import sqlalchemy as sqla
+import sqlalchemy.orm as sqlo
+
 
 from app import db
 from app.main.forms import PostForm, FieldForm, LanguageForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
+from app.main.models import Position
+from app import db
 
 @main.route('/', methods=['GET'])
 @main.route('/index', methods=['GET'])
 def index():
-    return render_template('index.html')
+    positions = db.session.query(Position)
+    return render_template('index.html', positions = positions)
 
 @main.route('/create/position', methods=['GET', 'POST'])
 def create():

@@ -4,13 +4,14 @@ from app import create_app, db
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
+from app.main.models import Language, Position, Student
 from config import Config
 
 app = create_app(Config)
 
 @app.shell_context_processor
 def make_shell_context():
-    return {'sqla': sqla, 'sqlo': sqlo}
+    return {'sqla': sqla, 'sqlo': sqlo, 'Position': Position, 'Language': Language, 'Student': Student}
 
 @app.before_request
 def initDB(*args, **kwargs):
