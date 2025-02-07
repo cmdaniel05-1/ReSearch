@@ -32,10 +32,15 @@ def login():
     lform = LoginForm()
     if lform. validate_on_submit():
         query = sqla.select(Student).where(Student.username == lform.username.data)
-        student = db. session.scalars(query).first()
-        if (student is None) or (student.check_password(lform.password.data) == False):
-            return redirect(url_for ('login'))
-        login_user(student, remember=lform.remember_me.data)
+        user = db.session.scalars(query).first()
+        isStudent = True
+        if(user is None):
+            isStudent = False
+            query = sqla.select(Faculty).where(Faculty.username == lform.username.data)
+            user = db.session.scalars(query).first()
+        if (user is None) or (user.check_password(lform.password.data) == False):
+            return redirect(url_for('login'))
+        login_user(user, isStudent, remember=lform.remember_me.data)
         flash('The user {} has succesfully logged in! {}'.format(current_user.username, current_user.is_authenticated))
         return redirect(url_for('main.index'))
     return render_template('login.html', form = lform)

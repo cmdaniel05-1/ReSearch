@@ -11,6 +11,9 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 
+login = LoginManager()
+login.login_view = 'auth.login'
+
 #factory method
 def create_app(config_class = Config):
     app = Flask(__name__)
