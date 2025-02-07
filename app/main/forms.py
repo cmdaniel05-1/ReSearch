@@ -27,3 +27,10 @@ class PostForm(FlaskForm):
                                          option_widget=CheckboxInput())
     submit = SubmitField('Submit')
 
+class FieldForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class LanguageForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')

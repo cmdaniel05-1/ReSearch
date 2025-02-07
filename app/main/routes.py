@@ -2,8 +2,8 @@ from flask import render_template, redirect, flash, url_for
 import sqlalchemy as sqla
 
 from app import db
-from app.main.forms import PostForm
-from app.main.models import Position
+from app.main.forms import PostForm, FieldForm, LanguageForm
+from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
 
 @main.route('/', methods=['GET'])
@@ -11,7 +11,7 @@ from app.main import main_blueprint as main
 def index():
     return render_template('index.html')
 
-@main.route('/create', methods=['GET', 'POST'])
+@main.route('/create/position', methods=['GET', 'POST'])
 def create():
     form = PostForm()
     if form.validate_on_submit():
@@ -30,3 +30,23 @@ def create():
         flash('"' + new_position.title + '" has been posted.')
         return redirect(url_for('main.index'))
     return render_template('create.html', form = form)
+
+@main.route('/create/field', methods=['GET', 'POST'])
+def field():
+    form = FieldForm()
+    if form.validate_on_submit():
+        new_field = Field(name = form.name.data)
+        db.session.add(new_field)
+        db.session.commit()
+        return redirect(url_for('main.create'))
+    return render_template('field.html', form = form)
+
+@main.route('/create/language', methods=['GET', 'POST'])
+def language():
+    form = LanguageForm()
+    if form.validate_on_submit():
+        new_language = Language(name = form.name.data)
+        db.session.add(new_language)
+        db.session.commit()
+        return redirect(url_for('main.create'))
+    return render_template('language.html', form = form)
