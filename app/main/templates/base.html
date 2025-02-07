@@ -24,9 +24,9 @@
         <div class="container">
             {% include '_wpi_svg.html' %}
             <a class="navbar-brand" href="{{ url_for('main.index') }}" style = "color: white; font-weight: bold; font-size: x-large;">ReSearch</a>
-            <!-- {% if current_user.is_authenticated %} -->
+
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <!-- {% if type(current_user) == Student%} -->
+
                 <li class="nav-item btn btn-light">
                   <a class="nav-link" aria-current="page" href="" >Student Profile</a>
                 </li>
@@ -36,14 +36,13 @@
                 <li class="nav-item btn btn-light">
                   <a class="nav-link" aria-current="page" href="" >Available Positions</a>
                 </li>
-              <!-- {% else %} -->
                 <li class="nav-item btn btn-light">
                   <a class="nav-link" aria-current="page" href="" >Faculty Profile</a>
                 </li>
                 <li class="nav-item btn btn-light">
                   <a class="nav-link" aria-current="page" href="{{url_for('main.create')}}" >Create Position</a> 
                 </li>
-              <!-- {% endif %} -->
+              
                 <li class = "nav-item" >
                   <p> Hi {{current_user.username}}!</p>
                 </li>
@@ -55,13 +54,13 @@
                         <a class="nav-link" href="">Logout</a>
                     </li>
                 </ul>
-            <!-- {% else %} -->
+            
                 <ul class="navbar-nav ms-auto">
                   <li class="nav-item btn btn-light">
                       <a class="nav-link" href="">Login</a>
                   </li>
                 </ul>
-            <!-- {%endif%} -->
+            
         </div>
     </nav>
 
