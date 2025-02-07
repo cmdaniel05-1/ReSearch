@@ -91,7 +91,7 @@ class Student(db.Model):
     )
     languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
         secondary = student_languages,
-        primaryjoin = (student_languages.c.position_id == id),
+        primaryjoin = (student_languages.c.student_id == id),
         back_populates = 'students'
     )
 
@@ -108,6 +108,6 @@ class Language(db.Model):
     
     students : sqlo.WriteOnlyMapped['Student'] = sqlo.relationship(
         secondary = student_languages,
-        primaryjoin = (student_languages.c.position_id == id),
+        primaryjoin = (student_languages.c.language_id == id),
         back_populates = 'students'
     )
