@@ -73,6 +73,7 @@ class Field(db.Model):
     )
 
 class Student(db.Model):
+    id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(unique= True)
     username : sqlo. Mapped[str] = sqlo.mapped_column (sqla.String(64), index = True, unique = True)
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
