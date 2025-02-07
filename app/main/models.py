@@ -28,6 +28,13 @@ position_students = db.Table(
     sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True)
 )
 
+student_languages = db.Table(
+    'student_languages',
+    db.metadata,
+    sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True),
+    sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
+)
+
 class Position(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     title : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
@@ -82,6 +89,11 @@ class Student(db.Model):
         primaryjoin = (position_students.c.student_id == id),
         back_populates = 'students'
     )
+    languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
+        secondary = student_languages,
+        primaryjoin = (student_languages.c.position_id == id),
+        back_populates = 'students'
+    )
 
 class Language(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -92,4 +104,10 @@ class Language(db.Model):
         secondary = position_languages,
         primaryjoin = (position_languages.c.language_id == id),
         back_populates = 'languages'
+    )
+    
+    students : sqlo.WriteOnlyMapped['Student'] = sqlo.relationship(
+        secondary = student_languages,
+        primaryjoin = (student_languages.c.position_id == id),
+        back_populates = 'students'
     )
