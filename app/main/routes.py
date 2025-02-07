@@ -27,9 +27,9 @@ def create():
                                 req_time = form.req_time.data,
                                 student_count = form.student_count.data)
         for f in form.fields.data:
-            new_position.fields.add(f)
+            new_position.fields.append(f)
         for l in form.languages.data:
-            new_position.languages.add(l)
+            new_position.languages.append(l)
         db.session.add(new_position)
         db.session.commit()
         flash('"' + new_position.title + '" has been posted.')
