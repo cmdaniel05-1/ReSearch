@@ -14,6 +14,12 @@ position_fields = db.Table(
     sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
     sqla.Column('field_id', sqla.Integer, sqla.ForeignKey('field.id'), primary_key = True)
 )
+student_fields = db.Table(
+    'student_fields',
+    db.metadata,
+    sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True),
+    sqla.Column('field_id', sqla.Integer, sqla.ForeignKey('field.id'), primary_key = True)
+)
 
 position_languages = db.Table(
     'position_languages',
@@ -83,6 +89,12 @@ class Field(db.Model):
         primaryjoin = (position_fields.c.field_id == id),
         back_populates = 'fields'
     )
+    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
+        secondary = student_fields,
+        primaryjoin = (student_fields.c.field_id == id),
+        back_populates = 'fields'
+    )
+    
 
 class Student(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -92,7 +104,7 @@ class Student(db.Model):
     firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
-
+    
     # Relationships
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
         secondary = position_students,
@@ -102,6 +114,11 @@ class Student(db.Model):
     languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
         secondary = student_languages,
         primaryjoin = (student_languages.c.student_id == id),
+        back_populates = 'students'
+    )
+    fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
+        secondary = student_fields,
+        primaryjoin = (student_fields.c.student_id == id),
         back_populates = 'students'
     )
 
@@ -119,6 +136,11 @@ class Language(db.Model):
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
         secondary = position_languages,
         primaryjoin = (position_languages.c.language_id == id),
+        back_populates = 'languages'
+    )
+    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
+        secondary = student_languages,
+        primaryjoin = (student_languages.c.student_id == id),
         back_populates = 'languages'
     )
 
