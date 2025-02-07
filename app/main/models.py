@@ -79,7 +79,7 @@ class Student(db.Model):
         return check_password_hash(self.password_hash, password)
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
         secondary = position_students,
-        primaryjoin = (position_students.c.student == id),
+        primaryjoin = (position_students.c.student_id == id),
         back_populates = 'students'
     )
 
