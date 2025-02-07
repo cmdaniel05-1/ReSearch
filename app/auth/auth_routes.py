@@ -19,3 +19,9 @@ def login():
         flash('The user {} has succesfully logged in! {}'.format(current_user.username, current_user.is_authenticated))
         return redirect(url_for('index'))
     return render_template('login.html', form = lform)
+
+@auth.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
