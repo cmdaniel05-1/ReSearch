@@ -16,6 +16,12 @@ position_fields = db.Table(
     sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
     sqla.Column('field_id', sqla.Integer, sqla.ForeignKey('field.id'), primary_key = True)
 )
+student_fields = db.Table(
+    'student_fields',
+    db.metadata,
+    sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True),
+    sqla.Column('field_id', sqla.Integer, sqla.ForeignKey('field.id'), primary_key = True)
+)
 
 position_languages = db.Table(
     'position_languages',
@@ -43,12 +49,6 @@ position_faculty = db.Table(
     sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
     sqla.Column('faculty_id', sqla.Integer, sqla.ForeignKey('faculty.id'), primary_key = True)
 )
-faculty_languages = db.Table(
-    'faculty_languages',
-    db.metadata,
-    sqla.Column('faculty_id', sqla.Integer, sqla.ForeignKey('faculty.id'), primary_key = True),
-    sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
-)
 
 class Position(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -75,6 +75,11 @@ class Position(db.Model):
         primaryjoin = (position_students.c.position_id == id),
         back_populates = 'positions'
     )
+    faculty : sqlo.WriteOnlyMapped['Faculty'] = sqlo.relationship(
+        secondary = position_faculty,
+        primaryjoin = (position_faculty.c.position_id == id),
+        back_populates = 'positions'
+    )
 
 class Field(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -86,6 +91,12 @@ class Field(db.Model):
         primaryjoin = (position_fields.c.field_id == id),
         back_populates = 'fields'
     )
+    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
+        secondary = student_fields,
+        primaryjoin = (student_fields.c.field_id == id),
+        back_populates = 'fields'
+    )
+    
 
 class Student(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
@@ -100,6 +111,8 @@ class Student(db.Model):
     
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    # Relationships
     positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
         secondary = position_students,
         primaryjoin = (position_students.c.student_id == id),
@@ -108,6 +121,11 @@ class Student(db.Model):
     languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
         secondary = student_languages,
         primaryjoin = (student_languages.c.student_id == id),
+        back_populates = 'students'
+    )
+    fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
+        secondary = student_fields,
+        primaryjoin = (student_fields.c.student_id == id),
         back_populates = 'students'
     )
 
@@ -121,9 +139,14 @@ class Language(db.Model):
         primaryjoin = (position_languages.c.language_id == id),
         back_populates = 'languages'
     )
+    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
+        secondary = student_languages,
+        primaryjoin = (student_languages.c.student_id == id),
+        back_populates = 'languages'
+    )
 
 class Faculty(db.Model):
-    faculty_id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
+    id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), unique = True)
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), unique = True)
     password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
@@ -135,14 +158,9 @@ class Faculty(db.Model):
         primaryjoin = (position_faculty.c.faculty_id == id),
         back_populates = 'faculty'
     )
-    languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
-        secondary = faculty_languages,
-        primaryjoin = (faculty_languages.c.faculty_id == id),
-        back_populates = 'faculty'
-    )
 
     def __repr__(self):
-        return '<WPIID: {} - Username: {} - Name: {}>'.format(self.faculty_id, self.username, self.name)
+        return '<ID: {} - Username: {} - Name: {}>'.format(self.id, self.username, self.name)
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
