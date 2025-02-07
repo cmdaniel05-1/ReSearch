@@ -1,7 +1,7 @@
 from datetime import date, timezone
 from typing import Optional
 
-from app import db
+from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -169,3 +169,10 @@ class Faculty(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+@login.user_loader
+def load_user(id, isStudent):
+    type = Faculty
+    if isStudent:
+        type = Student
+    return db.session.get(type, int(id))
