@@ -27,6 +27,24 @@ def faculty_register():
         return redirect(url_for('main.index'))
     return render_template('faculty-register.html', form = rform)
 
+@auth.route('/student-register', methods=['GET', 'POST'])
+def faculty_register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    rform = StudentRegistrationForm()
+    if rform.validate_on_submit():
+        student = Student(wpi_id = rform.wpi_id.data,
+                            username = rform.username.data,
+                            firstname = rform.firstname.data,
+                            lastname = rform.lastname.data,
+                            email = rform.email.data)
+        student.set_password(rform.password.data)
+        db.session.add(student)
+        db.session.commit()
+        flash('Congratulations, you are now a registered student user!')
+        return redirect(url_for('main.index'))
+    return render_template('faculty-register.html', form = rform)
+
 @auth.route('/login', methods = ['GET', 'POST'])
 def login():
     lform = LoginForm()
