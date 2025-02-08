@@ -6,6 +6,12 @@ from app import db, login
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
+@login.user_loader
+def load_user(id, isStudent):
+    type = Faculty
+    if isStudent:
+        type = Student
+    return db.session.get(type, int(id))
 
 position_fields = db.Table(
     'position_fields',
@@ -97,7 +103,7 @@ class Field(db.Model):
 
 class Student(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(unique= True)
+    wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
     username : sqlo. Mapped[str] = sqlo.mapped_column (sqla.String(64), index = True, unique = True)
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
@@ -143,13 +149,13 @@ class Language(db.Model):
         back_populates = 'languages'
     )
 
-class Faculty(db.Model):
+class Faculty(UserMixin, db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(unique= True)
-    username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), unique = True)
+    wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
+    username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), index = True, unique = True)
     firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
-    email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), unique = True)
+    email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
     phone_num : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer())
     password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
 
@@ -161,17 +167,14 @@ class Faculty(db.Model):
     )
 
     def __repr__(self):
-        return '<Id: {} - WPIID: {} - Username: {} - Name: {}>'.format(self.id, self.wpi_id, self.username, self.name)
+        return '<Id: {} - WPI ID: {} - Username: {} - First Name: {} - Last Name: {}>'.format(self.id,
+                                                                                              self.wpi_id,
+                                                                                              self.username,
+                                                                                              self.firstname,
+                                                                                              self.lastname)
     
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
-@login.user_loader
-def load_user(id, isStudent):
-    type = Faculty
-    if isStudent:
-        type = Student
-    return db.session.get(type, int(id))
