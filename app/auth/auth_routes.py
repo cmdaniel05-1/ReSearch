@@ -58,7 +58,7 @@ def login():
             user = db.session.scalars(query).first()
         if (user is None) or (user.check_password(lform.password.data) == False):
             return redirect(url_for('auth.login'))
-        login_user(user, isStudent, remember=lform.remember_me.data)
+        login_user(user, remember=lform.remember_me.data)
         flash('The user {} has succesfully logged in! {}'.format(current_user.username, current_user.is_authenticated))
         return redirect(url_for('main.index'))
     return render_template('login.html', form = lform)
