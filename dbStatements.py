@@ -1,6 +1,6 @@
 from app import db, create_app
 from datetime import date, timedelta
-from app.main.models import Position, Field, Language
+from app.main.models import Position, Field, Language, Student, Faculty
 
 def populate_db():
     app = create_app()
@@ -35,6 +35,46 @@ def populate_db():
             student_count=2
         )
 
+        # Create faculty members
+        faculty1 = Faculty(
+            wpi_id=12345,
+            username="jdoe",
+            firstname="John",
+            lastname="Doe",
+            email="jdoe@wpi.edu",
+            phone_num="123-456-7890"
+        )
+
+        faculty2 = Faculty(
+            wpi_id=67890,
+            username="asmith",
+            firstname="Alice",
+            lastname="Smith",
+            email="asmith@wpi.edu",
+            phone_num="987-654-3210"
+        )
+
+        # Create students
+        student1 = Student(
+            wpi_id=11111,
+            username="student1",
+            firstname="Bob",
+            lastname="Brown",
+            email="student1@wpi.edu"
+        )
+
+        student1.set_password("student1")
+
+        student2 = Student(
+            wpi_id=22222,
+            username="student2",
+            firstname="Sara",
+            lastname="Green",
+            email="student2@wpi.edu",
+            password_hash="password_hash_example"
+        )
+        student2.set_password("student2")
+
         # Associate positions with fields and languages
         position1.fields = [field1]
         position1.languages = [language1]
@@ -43,8 +83,9 @@ def populate_db():
         position2.languages = [language1, language2]
 
         # Add to session and commit
-        db.session.add_all([field1, field2, language1, language2, position1, position2])
+        db.session.add_all([field1, field2, language1, language2, position1, position2, faculty1, faculty2, student1, student2])
         db.session.commit()
+
         print("Database populated successfully!")
 
 # Run the function
