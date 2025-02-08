@@ -8,7 +8,7 @@ import sqlalchemy.orm as sqlo
 
 @login.user_loader
 def load_user(id):
-    return db.session.get(Student, int(id)) or db.session.get(Faculty, int(id)) or None
+    return db.session.get(User, int(id)) or None
 
 
 position_fields = db.Table(
@@ -93,7 +93,7 @@ class Field(db.Model):
     )
     
 class User(db.Model, UserMixin):
-    __abstract__ = True
+    __tablename__ = 'user'
 
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
@@ -119,6 +119,7 @@ class User(db.Model, UserMixin):
 
 class Student(User):
     __tablename__ = 'student'
+    id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(
@@ -133,6 +134,11 @@ class Student(User):
         secondary = student_fields,
         back_populates = 'students'
     )
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'student'
+    }
+
 
 
 class Language(db.Model):
@@ -151,6 +157,7 @@ class Language(db.Model):
 
 class Faculty(User):
     __tablename__ = 'faculty'
+    id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
     phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
 
     # Relationships
@@ -158,3 +165,8 @@ class Faculty(User):
         secondary = position_faculty,
         back_populates = 'faculty'
     )
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'faculty'
+    }
+

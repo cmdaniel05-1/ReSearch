@@ -44,6 +44,7 @@ def populate_db():
             email="jdoe@wpi.edu",
             phone_num="123-456-7890"
         )
+        faculty1.set_password('faculty1')
 
         faculty2 = Faculty(
             wpi_id=67890,
@@ -53,6 +54,7 @@ def populate_db():
             email="asmith@wpi.edu",
             phone_num="987-654-3210"
         )
+        faculty2.set_password('faculty2')
 
         # Create students
         student1 = Student(
