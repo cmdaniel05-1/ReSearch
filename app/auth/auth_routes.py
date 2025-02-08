@@ -43,7 +43,7 @@ def student_register():
         db.session.commit()
         flash('Congratulations, you are now a registered student user!')
         return redirect(url_for('main.index'))
-    return render_template('faculty-register.html', form = rform)
+    return render_template('student-register.html', form = rform)
 
 @auth.route('/login', methods = ['GET', 'POST'])
 def login():
