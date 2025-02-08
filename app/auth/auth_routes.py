@@ -28,7 +28,7 @@ def faculty_register():
     return render_template('faculty-register.html', form = rform)
 
 @auth.route('/student-register', methods=['GET', 'POST'])
-def faculty_register():
+def student_register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     rform = StudentRegistrationForm()
