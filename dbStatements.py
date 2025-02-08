@@ -38,7 +38,7 @@ def populate_db():
         # Create faculty members
         faculty1 = Faculty(
             wpi_id=12345,
-            username="jdoe",
+            username="faculty1",
             firstname="John",
             lastname="Doe",
             email="jdoe@wpi.edu",
@@ -48,7 +48,7 @@ def populate_db():
 
         faculty2 = Faculty(
             wpi_id=67890,
-            username="asmith",
+            username="faculty2",
             firstname="Alice",
             lastname="Smith",
             email="asmith@wpi.edu",

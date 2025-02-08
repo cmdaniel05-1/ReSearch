@@ -93,8 +93,6 @@ class Field(db.Model):
     )
     
 class User(db.Model, UserMixin):
-    __tablename__ = 'user'
-
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
     username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), index = True, unique = True)
@@ -118,7 +116,6 @@ class User(db.Model, UserMixin):
 
 
 class Student(User):
-    __tablename__ = 'student'
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
 
     # Relationships
@@ -156,7 +153,6 @@ class Language(db.Model):
     )
 
 class Faculty(User):
-    __tablename__ = 'faculty'
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
     phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
 
