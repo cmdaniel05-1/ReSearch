@@ -7,11 +7,9 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 @login.user_loader
-def load_user(id, isStudent):
-    type = Faculty
-    if isStudent:
-        type = Student
-    return db.session.get(type, int(id))
+def load_user(id):
+    return db.session.get(Student, int(id)) or db.session.get(Faculty, int(id)) or None
+
 
 position_fields = db.Table(
     'position_fields',
@@ -57,30 +55,26 @@ class Position(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     title : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     description : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(1500))
-    start_date: sqlo.Mapped[Optional[date]] = sqlo.mapped_column(default=lambda: date.today())
-    end_date: sqlo.Mapped[Optional[date]] = sqlo.mapped_column(default=lambda: date.today())
+    start_date: sqlo.Mapped[Optional[date]] = sqlo.mapped_column(default=date.today)
+    end_date: sqlo.Mapped[Optional[date]] = sqlo.mapped_column(default=date.today)
     req_time : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer)
     student_count : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer)
 
     # Relationships
     fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
         secondary = position_fields,
-        primaryjoin = (position_fields.c.position_id == id),
         back_populates = 'positions'
     )
     languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
         secondary = position_languages,
-        primaryjoin = (position_languages.c.position_id == id),
         back_populates = 'positions'
     )
-    students : sqlo.WriteOnlyMapped['Student'] = sqlo.relationship(
+    students : sqlo.Mapped['Student'] = sqlo.relationship(
         secondary = position_students,
-        primaryjoin = (position_students.c.position_id == id),
         back_populates = 'positions'
     )
-    faculty : sqlo.WriteOnlyMapped['Faculty'] = sqlo.relationship(
+    faculty : sqlo.Mapped['Faculty'] = sqlo.relationship(
         secondary = position_faculty,
-        primaryjoin = (position_faculty.c.position_id == id),
         back_populates = 'positions'
     )
 
@@ -89,82 +83,25 @@ class Field(db.Model):
     name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
 
     # Relationships
-    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
+    positions : sqlo.Mapped['Position'] = sqlo.relationship(
         secondary = position_fields,
-        primaryjoin = (position_fields.c.field_id == id),
         back_populates = 'fields'
     )
     students : sqlo.Mapped[list['Student']] = sqlo.relationship(
         secondary = student_fields,
-        primaryjoin = (student_fields.c.field_id == id),
         back_populates = 'fields'
     )
     
+class User(db.Model, UserMixin):
+    __abstract__ = True
 
-class Student(db.Model):
-    id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
-    username : sqlo. Mapped[str] = sqlo.mapped_column (sqla.String(64), index = True, unique = True)
-    password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
-    firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
-    lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
-    email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
-    
-    # Relationships
-    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
-        secondary = position_students,
-        primaryjoin = (position_students.c.student_id == id),
-        back_populates = 'students'
-    )
-    languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
-        secondary = student_languages,
-        primaryjoin = (student_languages.c.student_id == id),
-        back_populates = 'students'
-    )
-    fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
-        secondary = student_fields,
-        primaryjoin = (student_fields.c.student_id == id),
-        back_populates = 'students'
-    )
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-    
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-class Language(db.Model):
-    id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
-
-    # Relationships
-    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
-        secondary = position_languages,
-        primaryjoin = (position_languages.c.language_id == id),
-        back_populates = 'languages'
-    )
-    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
-        secondary = student_languages,
-        primaryjoin = (student_languages.c.student_id == id),
-        back_populates = 'languages'
-    )
-
-class Faculty(UserMixin, db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
     wpi_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer(), unique= True)
     username : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(64), index = True, unique = True)
     firstname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
+    password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
-    phone_num : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer())
-    password_hash : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(256))
-
-    # Relationships
-    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(
-        secondary = position_faculty,
-        primaryjoin = (position_faculty.c.faculty_id == id),
-        back_populates = 'faculty'
-    )
 
     def __repr__(self):
         return '<Id: {} - WPI ID: {} - Username: {} - First Name: {} - Last Name: {}>'.format(self.id,
@@ -178,3 +115,46 @@ class Faculty(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Student(User):
+    __tablename__ = 'student'
+
+    # Relationships
+    positions : sqlo.Mapped['Position'] = sqlo.relationship(
+        secondary = position_students,
+        back_populates = 'students'
+    )
+    languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
+        secondary = student_languages,
+        back_populates = 'students'
+    )
+    fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
+        secondary = student_fields,
+        back_populates = 'students'
+    )
+
+
+class Language(db.Model):
+    id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+
+    # Relationships
+    positions : sqlo.Mapped['Position'] = sqlo.relationship(
+        secondary = position_languages,
+        back_populates = 'languages'
+    )
+    students : sqlo.Mapped[list['Student']] = sqlo.relationship(
+        secondary = student_languages,
+        back_populates = 'languages'
+    )
+
+class Faculty(User):
+    __tablename__ = 'faculty'
+    phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
+
+    # Relationships
+    positions : sqlo.Mapped['Position'] = sqlo.relationship(
+        secondary = position_faculty,
+        back_populates = 'faculty'
+    )
