@@ -21,8 +21,8 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     address = TextAreaField('Address', [Length(min=0, max=200)])
     password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Post')
+    password2 = PasswordField('Re-enter Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
     
     def validate_username(self, username):
         query = sqla.select(Student).where(Student.username == username.data)

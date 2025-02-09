@@ -6,6 +6,7 @@ from app import db, login
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
+
 @login.user_loader
 def load_user(id):
     return db.session.get(User, int(id)) or None
