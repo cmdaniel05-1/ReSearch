@@ -138,6 +138,7 @@ env.bak/
 venv.bak/
 myenv/
 migrations/
+research.db
 
 # Spyder project settings
 .spyderproject
