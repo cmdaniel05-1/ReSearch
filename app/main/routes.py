@@ -6,7 +6,7 @@ from app import db
 from app.main.forms import PostForm, FieldForm, LanguageForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
-from app.main.models import Position
+from app.main.models import Position, Faculty
 from flask_login import current_user
 
 
@@ -56,3 +56,9 @@ def language():
         db.session.commit()
         return redirect(url_for('main.create'))
     return render_template('language.html', form = form)
+
+@main.route('/profile/faculty', methods=['GET'])
+def faculty_profile():
+    faculty = db.session.scalars(sqla.select(Faculty).where(Faculty.id == current_user.id)).first()
+    print(faculty)
+    return render_template('display_faculty.html', faculty = faculty)
