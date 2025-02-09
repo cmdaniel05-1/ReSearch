@@ -7,16 +7,18 @@ from app.main.forms import PostForm, FieldForm, LanguageForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
 from app.main.models import Position, Faculty
-from flask_login import current_user
+from flask_login import current_user, login_reuired
 
 
 @main.route('/', methods=['GET'])
 @main.route('/index', methods=['GET'])
+@login_required
 def index():
-    positions = db.session.query(Position)
+    positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     return render_template('index.html', positions = positions)
 
 @main.route('/create/position', methods=['GET', 'POST'])
+@login_required
 def create():
     form = PostForm()
     if form.validate_on_submit():
@@ -38,6 +40,7 @@ def create():
     return render_template('create.html', form = form)
 
 @main.route('/create/field', methods=['GET', 'POST'])
+@login_required
 def field():
     form = FieldForm()
     if form.validate_on_submit():
@@ -48,6 +51,7 @@ def field():
     return render_template('field.html', form = form)
 
 @main.route('/create/language', methods=['GET', 'POST'])
+@login_required
 def language():
     form = LanguageForm()
     if form.validate_on_submit():
