@@ -7,7 +7,7 @@ from app.main.forms import PostForm, FieldForm, LanguageForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
 from app.main.models import Position, Faculty
-from flask_login import current_user, login_reuired
+from flask_login import current_user, login_required
 
 
 @main.route('/', methods=['GET'])
