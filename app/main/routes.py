@@ -8,7 +8,7 @@ from app.main.forms import PostForm, FieldForm, LanguageForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
 from app.main.models import Position
-from app import db
+from flask_login import current_user
 
 @main.route('/', methods=['GET'])
 @main.route('/index', methods=['GET'])
@@ -20,7 +20,8 @@ def index():
 def create():
     form = PostForm()
     if form.validate_on_submit():
-        new_position = Position(title = form.title.data,
+        new_position = Position(faculty_id = current_user.id,
+                                title = form.title.data,
                                 description = form.description.data,
                                 start_date = form.start_date.data,
                                 end_date = form.end_date.data,
