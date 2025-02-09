@@ -16,27 +16,9 @@ def populate_db():
         language1 = Language(name="Python")
         language2 = Language(name="JavaScript")
 
-        # Create positions
-        position1 = Position(
-            title="Software Engineer Intern",
-            description="Develop and maintain software applications.",
-            start_date=date.today(),
-            end_date=date.today() + timedelta(days=90),
-            req_time=20,
-            student_count=3
-        )
-
-        position2 = Position(
-            title="Bioinformatics Research Assistant",
-            description="Assist in analyzing biological data using computational tools.",
-            start_date=date.today(),
-            end_date=date.today() + timedelta(days=180),
-            req_time=15,
-            student_count=2
-        )
-
         # Create faculty members
         faculty1 = Faculty(
+            id = 0,
             wpi_id=12345,
             username="faculty1",
             firstname="John",
@@ -48,6 +30,7 @@ def populate_db():
         faculty1.set_password('faculty1')
 
         faculty2 = Faculty(
+            id = 1,
             wpi_id=67890,
             username="faculty2",
             firstname="Alice",
@@ -57,6 +40,27 @@ def populate_db():
             is_student = False
         )
         faculty2.set_password('faculty2')
+
+        # Create positions
+        position1 = Position(
+            faculty_id=0,
+            title="Software Engineer Intern",
+            description="Develop and maintain software applications.",
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=90),
+            req_time=20,
+            student_count=3
+        )
+
+        position2 = Position(
+            faculty_id=1,
+            title="Bioinformatics Research Assistant",
+            description="Assist in analyzing biological data using computational tools.",
+            start_date=date.today(),
+            end_date=date.today() + timedelta(days=180),
+            req_time=15,
+            student_count=2
+        )
 
         # Create students
         student1 = Student(
