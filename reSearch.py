@@ -15,8 +15,8 @@ def make_shell_context():
 @app.context_processor
 def inject_user_type():
     return {
-        "is_faculty": current_user.is_authenticated and not current_user.is_student,
-        "is_student": current_user.is_authenticated and current_user.is_student
+        "is_faculty": current_user.is_authenticated and current_user.type == 'Faculty',
+        "is_student": current_user.is_authenticated and current_user.type == 'Student'
     }
 
     

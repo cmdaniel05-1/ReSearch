@@ -64,5 +64,5 @@ def language():
 @main.route('/profile/faculty', methods=['GET'])
 def faculty_profile():
     faculty = db.session.scalars(sqla.select(Faculty).where(Faculty.id == current_user.id)).first()
-    print(faculty)
+    print(faculty.phone_num)
     return render_template('display_faculty.html', faculty = faculty)

@@ -53,7 +53,7 @@ class User(db.Model, UserMixin):
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
-    is_student : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean())
+    type: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(50)) # This column will store 'user' or 'faculty'
 
     def __repr__(self):
         return '<Id: {} - WPI ID: {} - Username: {} - First Name: {} - Last Name: {}>'.format(self.id,
@@ -67,6 +67,11 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': type
+    }
 
 
 class Student(User):
@@ -95,7 +100,7 @@ class Faculty(User):
     phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
 
     # Relationships
-    positions : sqlo.WriteOnlyMapped['Position'] = sqlo.relationship(back_populates='faculty')
+    positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')
 
     __mapper_args__ = {
         'polymorphic_identity': 'faculty',
