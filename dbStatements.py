@@ -42,7 +42,8 @@ def populate_db():
             firstname="John",
             lastname="Doe",
             email="jdoe@wpi.edu",
-            phone_num="123-456-7890"
+            phone_num="123-456-7890",
+            is_student = False
         )
         faculty1.set_password('faculty1')
 
@@ -52,7 +53,8 @@ def populate_db():
             firstname="Alice",
             lastname="Smith",
             email="asmith@wpi.edu",
-            phone_num="987-654-3210"
+            phone_num="987-654-3210",
+            is_student = False
         )
         faculty2.set_password('faculty2')
 
@@ -62,7 +64,8 @@ def populate_db():
             username="student1",
             firstname="Bob",
             lastname="Brown",
-            email="student1@wpi.edu"
+            email="student1@wpi.edu",
+            is_student = True
         )
 
         student1.set_password("student1")
@@ -73,7 +76,8 @@ def populate_db():
             firstname="Sara",
             lastname="Green",
             email="student2@wpi.edu",
-            password_hash="password_hash_example"
+            password_hash="password_hash_example",
+            is_student = True
         )
         student2.set_password("student2")
 

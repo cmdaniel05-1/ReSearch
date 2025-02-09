@@ -19,7 +19,8 @@ def faculty_register():
                             firstname = rform.firstname.data,
                             lastname = rform.lastname.data,
                             email = rform.email.data,
-                            phone_num = rform.phone_num.data)
+                            phone_num = rform.phone_num.data,
+                            is_student = False)
         faculty.set_password(rform.password.data)
         db.session.add(faculty)
         db.session.commit()
@@ -38,7 +39,8 @@ def student_register():
                             username = rform.username.data,
                             firstname = rform.firstname.data,
                             lastname = rform.lastname.data,
-                            email = rform.email.data)
+                            email = rform.email.data,
+                            is_student = True)
         student.set_password(rform.password.data)
         db.session.add(student)
         db.session.commit()

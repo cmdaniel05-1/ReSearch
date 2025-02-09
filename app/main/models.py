@@ -100,6 +100,7 @@ class User(db.Model, UserMixin):
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
+    is_student : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean())
 
     def __repr__(self):
         return '<Id: {} - WPI ID: {} - Username: {} - First Name: {} - Last Name: {}>'.format(self.id,
@@ -163,6 +164,6 @@ class Faculty(User):
     )
 
     __mapper_args__ = {
-        'polymorphic_identity': 'faculty'
+        'polymorphic_identity': 'faculty',
     }
 
