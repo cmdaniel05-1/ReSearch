@@ -44,10 +44,10 @@
     <span style="color: red"> [{{error}}]</span><br>
     {% endfor %}
 
-    {{form.fields.label(class="form-label")}} <p>Incomplete? <a href="{{url_for('main.field')}}">Click to add more.</a></p>
+    {{form.fields.label(class="form-label")}} <p style="display: inline;">Incomplete? <a href="{{url_for('main.field')}}">Click to add more.</a></p>
     {{form.fields}}
 
-    {{form.languages.label(class="form-label")}} <p>Incomplete? <a href="{{url_for('main.language')}}">Click to add more.</a></p>
+    {{form.languages.label(class="form-label")}} <p style="display: inline;">Incomplete? <a href="{{url_for('main.language')}}">Click to add more.</a></p>
     {{form.languages}}
 
     {{form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
