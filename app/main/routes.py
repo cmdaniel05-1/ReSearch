@@ -13,7 +13,7 @@ from flask_login import current_user
 @main.route('/', methods=['GET'])
 @main.route('/index', methods=['GET'])
 def index():
-    positions = db.session.query(Position)
+    positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     return render_template('index.html', positions = positions)
 
 @main.route('/create/position', methods=['GET', 'POST'])
