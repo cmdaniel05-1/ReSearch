@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Display Profile</h1>
+    <div class = "border rounded-3 bg-light p-3">
+        <h2> WPI ID: {{user.wpi_id}} </h2>
+        <p> <b>Name:</b> {{user.firstname}} {{user.lastname}} </p>
+        <p> <b>Username:</b> {{user.username}} </p>
+        <p> <b>Email:</b> {{user.email}} </p>
+        {% if user.type == 'faculty' %}
+            <p> <b>Phone Number:</b> {{user.phone_num}} </p>
+        {% endif %}
+    </div>
+    <br>
+    <p>
+        <a href="{{url_for('main.edit_profile')}}" class="button">Edit Profile</a>
+    </p>
+{% endblock %}

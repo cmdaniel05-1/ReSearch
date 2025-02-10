@@ -3,7 +3,7 @@
 {% block content %}
 <h1> Edit Profile </h1>
 
-<form action = "{{url_for('main.faculty_edit')}}" method = "POST">
+<form action = "{{url_for('main.edit_profile')}}" method = "POST">
     {{form.hidden_tag()}}
     <p>
         {{ form.username.label }}<br>
@@ -40,13 +40,15 @@
         <span style = "color: red"> [{{error}}]</span>
         {% endfor %}
     </p>
-    <p>
-        {{ form.phone_num.label }}<br>
-        {{ form.phone_num() }}<br>
-        {% for error in form.phone_num.errors%}
-        <span style = "color: red"> [{{error}}]</span>
-        {% endfor %}
-    </p>
+    {% if current_user.type == 'faculty' %}
+        <p>
+            {{ form.phone_num.label }}<br>
+            {{ form.phone_num() }}<br>
+            {% for error in form.phone_num.errors%}
+            <span style = "color: red"> [{{error}}]</span>
+            {% endfor %}
+        </p>
+    {% endif %}
     <p>
         {{ form.password.label }}<br>
         {{ form.password() }}<br>

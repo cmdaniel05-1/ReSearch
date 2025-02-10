@@ -3,7 +3,7 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm
+from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm, StudentEditForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
 from app.main.models import Position, Faculty
@@ -61,35 +61,38 @@ def language():
         return redirect(url_for('main.create'))
     return render_template('language.html', form = form)
 
-@main.route('/profile/faculty', methods=['GET'])
+@main.route('/profile', methods=['GET'])
 @login_required
-def faculty_profile():
-    faculty = db.session.scalars(sqla.select(Faculty).where(Faculty.id == current_user.id)).first()
-    print(faculty.phone_num)
-    return render_template('display_faculty.html', faculty = faculty)
+def profile():
+    return render_template('display_profile.html', title = 'Profile', user = current_user)
 
 @main.route('/edit/faculty', methods=['GET', 'POST'])
 @login_required
-def faculty_edit():
-    form = FacultyEditForm()
+def edit_profile():
+    if current_user.type == 'faculty':
+        form = FacultyEditForm()
+    else:
+        form = StudentEditForm()
     if request.method == 'POST':
         current_user.wpi_id = form.wpi_id.data
         current_user.username = form.username.data
         current_user.firstname = form.firstname.data
         current_user.lastname = form.lastname.data
         current_user.email = form.email.data
-        current_user.phone_num = form.phone_num.data
+        if current_user.type == 'faculty':
+            current_user.phone_num = form.phone_num.data
         current_user.set_password(form.password.data)
         db.session.add(current_user)
         db.session.commit()
-        return redirect(url_for('main.faculty_profile'))
+        return redirect(url_for('main.profile'))
     elif request.method == 'GET':
         form.wpi_id.data = current_user.wpi_id
         form.username.data = current_user.username
         form.firstname.data = current_user.firstname
         form.lastname.data = current_user.lastname
         form.email.data = current_user.email
-        form.phone_num.data = current_user.phone_num
+        if current_user.type == 'faculty':
+            form.phone_num.data = current_user.phone_num
     else:
         pass
-    return render_template('edit_faculty.html', title = 'Edit Profile', form = form)
+    return render_template('edit_profile.html', title = 'Edit Profile', form = form)

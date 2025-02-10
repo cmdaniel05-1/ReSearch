@@ -58,9 +58,9 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% if current_user.type == 'faculty' %}
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.faculty_profile')}}">Faculty Profile</a></li>
+              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Faculty Profile</a></li>
               {% else %}
-              <li><a class="dropdown-item btn btn-light" href="">Student Profile</a></li>
+              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Student Profile</a></li>
               <li><a class="dropdown-item btn btn-light" href="">My Applications</a></li>
               {% endif %}
             </ul>
