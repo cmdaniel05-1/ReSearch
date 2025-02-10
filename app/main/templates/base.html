@@ -37,7 +37,7 @@
           <li class="nav-item btn btn-light">
             <a class="nav-link" aria-current="page" href="{{ url_for('main.index') }}">Available Positions</a>
           </li>
-          {% if current_user.is_authenticated and is_faculty %}
+          {% if current_user.is_authenticated and current_user.type == 'faculty' %}
           <li class="nav-item btn btn-light">
             <a class="nav-link" aria-current="page" href="{{url_for('main.create')}}">Create Position</a>
           </li>
@@ -57,8 +57,8 @@
               My Info
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              {% if is_faculty %}
-              <li><a class="dropdown-item btn btn-light" href="">Faculty Profile</a></li>
+              {% if current_user.type == 'faculty' %}
+              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.faculty_profile')}}">Faculty Profile</a></li>
               {% else %}
               <li><a class="dropdown-item btn btn-light" href="">Student Profile</a></li>
               <li><a class="dropdown-item btn btn-light" href="">My Applications</a></li>

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> Edit Profile </h1>
+
+<form action = "{{url_for('main.faculty_edit')}}" method = "POST">
+    {{form.hidden_tag()}}
+    <p>
+        {{ form.username.label }}<br>
+        {{ form.username() }}<br>
+        {% for error in form.username.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.firstname.label }}<br>
+        {{ form.firstname() }}<br>
+        {% for error in form.firstname.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.lastname.label }}<br>
+        {{ form.lastname() }}<br>
+        {% for error in form.lastname.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.wpi_id.label }}<br>
+        {{ form.wpi_id() }}<br>
+        {% for error in form.wpi_id.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email() }}<br>
+        {% for error in form.email.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.phone_num.label }}<br>
+        {{ form.phone_num() }}<br>
+        {% for error in form.phone_num.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label }}<br>
+        {{ form.password() }}<br>
+        {% for error in form.password.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password2.label }}<br>
+        {{ form.password2() }}<br>
+        {% for error in form.password2.errors%}
+        <span style = "color: red"> [{{error}}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(class="button") }}</p>
+
+</form>
+
+{% endblock %}
