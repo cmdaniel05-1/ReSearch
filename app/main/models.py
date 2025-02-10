@@ -53,7 +53,7 @@ class User(db.Model, UserMixin):
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
-    type: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(50)) # This column will store 'user' or 'faculty'
+    type: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(50)) #'user' or 'faculty'
 
     def __repr__(self):
         return '<Id: {} - WPI ID: {} - Username: {} - First Name: {} - Last Name: {}>'.format(self.id,
@@ -76,6 +76,12 @@ class User(db.Model, UserMixin):
 
 class Student(User):
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
+
+    #additional information
+    major : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), nullable = True)
+    gpa: sqlo.Mapped[float] = sqlo.mapped_column(sqla.Float, nullable = True)
+    grad_date: sqlo.Mapped[date] = sqlo.mapped_column(sqla.Date, nullable = True)
+
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(

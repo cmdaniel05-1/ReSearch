@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Display Profile</h1>
-    <div class = "border rounded-3 bg-light p-3">
-        <h2> WPI ID: {{user.wpi_id}} </h2>
+    <h1 class = "mt-1">Display Profile</h1>
+    <div class = "border rounded-3 bg-light p-3 mt-3 mb-1">
+        <h4 class = "mb-3"> WPI ID: {{user.wpi_id}} </h4>
         <p> <b>Name:</b> {{user.firstname}} {{user.lastname}} </p>
         <p> <b>Username:</b> {{user.username}} </p>
         <p> <b>Email:</b> {{user.email}} </p>
@@ -13,6 +13,6 @@
     </div>
     <br>
     <p>
-        <a href="{{url_for('main.edit_profile')}}" class="button">Edit Profile</a>
+        <a href="{{url_for('main.edit_profile')}}" class="btn btn-secondary">Edit Profile</a>
     </p>
 {% endblock %}
