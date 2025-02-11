@@ -34,6 +34,16 @@ class RegistrationForm(FlaskForm):
         if faculty is not None:
             raise ValidationError('This username already exists! Please use a diferent username.')
         
+    def validate_wpi_id(self, wpi_id):
+        query = sqla.select(Student).where(Student.wpi_id == wpi_id.data)
+        student = db.session.scalars(query).first()
+        if student is not None:
+            raise ValidationError('This WPI ID already exists! Please use a diferent WPI ID.')
+        query = sqla.select(Faculty).where(Faculty.wpi_id == wpi_id.data)
+        faculty = db.session.scalars(query).first()
+        if faculty is not None:
+            raise ValidationError('This WPI ID already exists! Please use a diferent WPI ID.')
+        
     def validate_email(self, email):
         query = sqla.select(Student).where(Student.email == email.data)
         student = db.session.scalars(query).first()
