@@ -59,7 +59,7 @@ def login():
             return redirect(url_for('auth.login'))
 
         login_user(user, remember=lform.remember_me.data)
-        flash('The user {} has successfully logged in! {}'.format(current_user.username, current_user.is_authenticated))
+        flash('The user {} has successfully logged in!'.format(current_user.username))
         return redirect(url_for('main.index'))
     return render_template('login.html', form = lform)
 
