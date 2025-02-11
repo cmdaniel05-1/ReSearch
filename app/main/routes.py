@@ -87,7 +87,8 @@ def edit_profile():
             current_user.grad_date = form.grad_date.data
             current_user.fields = form.fields.data
             current_user.languages = form.languages.data
-        current_user.set_password(form.password.data)
+        if form.password.data:
+            current_user.set_password(form.password.data)
         db.session.add(current_user)
         db.session.commit()
         return redirect(url_for('main.profile'))

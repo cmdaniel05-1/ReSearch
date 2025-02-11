@@ -73,13 +73,13 @@
         {% endfor %}
     {% endif %}
 
-    {{ form.password.label(class = "form-text") }}<br>
-    {{ form.password(class="forminput form-text") }}<br>
+    {{ form.password.label(class = "form-text") }} <span class = "form-text">(Optional)</span><br>
+    {{ form.password(class="forminput form-text") }} <br>
     {% for error in form.password.errors%}
     <span style="color: red"> [{{error}}]</span>
     {% endfor %}
 
-    {{ form.password2.label(class = "form-text") }}<br>
+    {{ form.password2.label(class = "form-text") }} <span class = "form-text">(Optional)</span><br>
     {{ form.password2(class="forminput form-text") }}<br>
     {% for error in form.password2.errors%}
     <span style="color: red"> [{{error}}]</span>

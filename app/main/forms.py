@@ -42,8 +42,8 @@ class EditForm(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
     wpi_id = IntegerField('WPI ID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Re-enter Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password')
+    password2 = PasswordField('Re-enter Password', validators=[EqualTo('password')])
     submit = SubmitField('Submit')
     
     def validate_wpi_id(self, wpi_id):
