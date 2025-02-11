@@ -5,8 +5,9 @@ from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
 from app import db
-from app.main.models import Field, Language, Student, Faculty
+from app.main.models import Field, Language, Student, Faculty, User
 import sqlalchemy as sqla
+from flask_login import current_user
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -45,31 +46,20 @@ class EditForm(FlaskForm):
     password2 = PasswordField('Re-enter Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
     
-    def validate_username(self, username):
-        query = sqla.select(Student).where(Student.username == username.data)
-        student = db.session.scalars(query).first()
-        if student is not None:
-            raise ValidationError('This username already exists! Please use a diferent username.')
-        query = sqla.select(Faculty).where(Faculty.username == username.data)
-        faculty = db.session.scalars(query).first()
-        if faculty is not None:
-            raise ValidationError('This username already exists! Please use a diferent username.')
-        
     def validate_wpi_id(self, wpi_id):
-        query = sqla.select(Student).where(Student.wpi_id == wpi_id.data)
-        student = db.session.scalars(query).first()
-        if student is not None:
-            raise ValidationError('This WPI ID already exists! Please use a diferent WPI ID.')
-        query = sqla.select(Faculty).where(Faculty.wpi_id == wpi_id.data)
-        faculty = db.session.scalars(query).first()
-        if faculty is not None:
-            raise ValidationError('This WPI ID already exists! Please use a diferent WPI ID.')
+        existing_user = User.query.filter_by(wpi_id=wpi_id.data).first()
+        if existing_user and existing_user.id != current_user.id:
+            raise ValidationError('WPI ID is already in use. Please choose another.')
         
+    def validate_username(self, username):
+        existing_user = User.query.filter_by(username=username.data).first()
+        if existing_user and existing_user.id != current_user.id:
+            raise ValidationError('Username is already taken. Please choose another.')
+
     def validate_email(self, email):
-        query = sqla.select(Student).where(Student.email == email.data)
-        student = db.session.scalars(query).first()
-        if student is not None:
-            raise ValidationError('The email already exists! Please use a different email.')
+        existing_user = User.query.filter_by(email=email.data).first()
+        if existing_user and existing_user.id != current_user.id:
+            raise ValidationError('Email is already registered.')
         
 class StudentEditForm(EditForm):
     major = StringField("Major")

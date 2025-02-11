@@ -73,7 +73,7 @@ def edit_profile():
         form = FacultyEditForm()
     else:
         form = StudentEditForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         current_user.wpi_id = form.wpi_id.data
         current_user.username = form.username.data
         current_user.firstname = form.firstname.data
@@ -91,7 +91,7 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         return redirect(url_for('main.profile'))
-    elif request.method == 'GET':
+    else:
         form.wpi_id.data = current_user.wpi_id
         form.username.data = current_user.username
         form.firstname.data = current_user.firstname
@@ -105,6 +105,4 @@ def edit_profile():
             form.grad_date.data = current_user.grad_date
             form.fields.data = current_user.fields
             form.languages.data = current_user.languages
-    else:
-        pass
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
