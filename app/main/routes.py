@@ -66,7 +66,7 @@ def language():
 def profile():
     return render_template('display_profile.html', title = 'Profile', user = current_user)
 
-@main.route('/edit/faculty', methods=['GET', 'POST'])
+@main.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     if current_user.type == 'faculty':
