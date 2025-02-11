@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
+from wtforms import FloatField, StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
 from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
@@ -62,7 +62,19 @@ class EditForm(FlaskForm):
             raise ValidationError('The email already exists! Please use a different email.')
         
 class StudentEditForm(EditForm):
-    pass
+    major = StringField("Major")
+    gpa = FloatField("GPA")
+    grad_date = DateField("Graduation Date")
+    fields = QuerySelectMultipleField('Field',
+                                      query_factory = lambda : db.session.scalars(sqla.select(Field)),
+                                      get_label = lambda theField : theField.name,
+                                      widget = ListWidget(prefix_label=False),
+                                      option_widget=CheckboxInput())
+    languages = QuerySelectMultipleField('Language',
+                                         query_factory = lambda : db.session.scalars(sqla.select(Language)),
+                                         get_label = lambda theLanguage : theLanguage.name,
+                                         widget = ListWidget(prefix_label=False),
+                                         option_widget=CheckboxInput())
         
 class FacultyEditForm(EditForm):
     phone_num = StringField('Phone Number', validators=[DataRequired()])

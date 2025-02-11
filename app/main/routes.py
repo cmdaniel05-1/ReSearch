@@ -81,6 +81,12 @@ def edit_profile():
         current_user.email = form.email.data
         if current_user.type == 'faculty':
             current_user.phone_num = form.phone_num.data
+        elif current_user.type == 'student':
+            current_user.major = form.major.data
+            current_user.gpa = form.gpa.data
+            current_user.grad_date = form.grad_date.data
+            current_user.fields = form.fields.data
+            current_user.languages = form.languages.data
         current_user.set_password(form.password.data)
         db.session.add(current_user)
         db.session.commit()
@@ -93,6 +99,12 @@ def edit_profile():
         form.email.data = current_user.email
         if current_user.type == 'faculty':
             form.phone_num.data = current_user.phone_num
+        elif current_user.type == 'student':
+            form.major.data = current_user.major
+            form.gpa.data = current_user.gpa
+            form.grad_date.data = current_user.grad_date
+            form.fields.data = current_user.fields
+            form.languages.data = current_user.languages
     else:
         pass
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)

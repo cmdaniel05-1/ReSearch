@@ -7,8 +7,26 @@
         <p> <b>Name:</b> {{user.firstname}} {{user.lastname}} </p>
         <p> <b>Username:</b> {{user.username}} </p>
         <p> <b>Email:</b> {{user.email}} </p>
-        {% if user.type == 'faculty' %}
+        {% if current_user.type == "faculty" %}
             <p> <b>Phone Number:</b> {{user.phone_num}} </p>
+        {% elif current_user.type == "student" %}
+        <p> <b>Major:</b> {{user.major}}</p>
+        <p> <b>GPA:</b> {{user.gpa}} </p>
+        <p> <b>Graduation Date:</b> {{user.grad_date}} </p>
+        <p><strong>Research Field(s):</strong>
+            {% for f in user.fields %}
+            <span class="rounded-pill border border-1 m-1 p-2">
+                {{f.name}}
+            </span>
+            {% endfor %}
+        </p>
+        <p><strong>Programming Experience Required:</strong>
+            {% for l in user.languages %}
+            <span class="rounded-pill border border-1 m-1 p-2">
+                {{l.name}}
+            </span>
+            {% endfor %}
+        </p>
         {% endif %}
     </div>
     <br>

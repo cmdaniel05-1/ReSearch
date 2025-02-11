@@ -3,67 +3,89 @@
 {% block content %}
 <h1> Edit Profile </h1>
 
-<form action = "{{url_for('main.edit_profile')}}" method = "POST">
+<form action="{{url_for('main.edit_profile')}}" method="POST">
     {{form.hidden_tag()}}
-    <p>
-        {{ form.username.label(class = "form-text") }}<br>
-        {{ form.username(class="forminput form-text")  }}<br>
-        {% for error in form.username.errors%}
-        <span style = "color: red"> [{{error}}]</span>
+
+    {{ form.username.label(class = "form-text") }}<br>
+    {{ form.username(class="forminput form-text") }}<br>
+    {% for error in form.username.errors%}
+        <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.firstname.label(class = "form-text") }}<br>
+    {{ form.firstname(class="forminput form-text") }}<br>
+    {% for error in form.firstname.errors%}
+        <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.lastname.label(class = "form-text") }}<br>
+    {{ form.lastname(class="forminput form-text") }}<br>
+    {% for error in form.lastname.errors%}
+        <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.wpi_id.label(class = "form-text") }}<br>
+    {{ form.wpi_id(class="forminput form-text") }}<br>
+    {% for error in form.wpi_id.errors%}
+        <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.email.label(class = "form-text") }}<br>
+    {{ form.email(class="forminput form-text") }}<br>
+    {% for error in form.email.errors%}
+        <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+    {% if current_user.type == "faculty" %}
+        {{ form.phone_num.label(class = "form-text") }}<br>
+        {{ form.phone_num(class="forminput form-text") }}<br>
+        {% for error in form.phone_num.errors%}
+            <span style="color: red"> [{{error}}]</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.firstname.label(class = "form-text") }}<br>
-        {{ form.firstname(class="forminput form-text")  }}<br>
-        {% for error in form.firstname.errors%}
-        <span style = "color: red"> [{{error}}]</span>
+    {% elif current_user.type == "student" %}
+        {{ form.major.label(class = "form-text") }}<br>
+        {{ form.major(class="forminput form-text") }}<br>
+        {% for error in form.major.errors%}
+            <span style="color: red"> [{{error}}]</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.lastname.label(class = "form-text") }}<br>
-        {{ form.lastname(class="forminput form-text") }}<br>
-        {% for error in form.lastname.errors%}
-        <span style = "color: red"> [{{error}}]</span>
+
+        {{ form.gpa.label(class = "form-text") }}<br>
+        {{ form.gpa(class="forminput form-text") }}<br>
+        {% for error in form.gpa.errors%}
+            <span style="color: red"> [{{error}}]</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.wpi_id.label(class = "form-text") }}<br>
-        {{ form.wpi_id(class="forminput form-text")  }}<br>
-        {% for error in form.wpi_id.errors%}
-        <span style = "color: red"> [{{error}}]</span>
+
+        {{ form.grad_date.label(class = "form-text") }}<br>
+        {{ form.grad_date(class="forminput form-text") }}<br>
+        {% for error in form.grad_date.errors%}
+            <span style="color: red"> [{{error}}]</span>
         {% endfor %}
-    </p>
-    <p>
-        {{ form.email.label(class = "form-text") }}<br>
-        {{ form.email(class="forminput form-text")  }}<br>
-        {% for error in form.email.errors%}
-        <span style = "color: red"> [{{error}}]</span>
+
+        {{ form.fields.label(class = "form-text") }}<br>
+        {{ form.fields(class="forminput form-text") }}
+        {% for error in form.fields.errors%}
+            <span style="color: red"> [{{error}}]</span>
         {% endfor %}
-    </p>
-    {% if current_user.type == 'faculty' %}
-        <p>
-            {{ form.phone_num.label(class = "form-text") }}<br>
-            {{ form.phone_num(class="forminput form-text")  }}<br>
-            {% for error in form.phone_num.errors%}
-            <span style = "color: red"> [{{error}}]</span>
-            {% endfor %}
-        </p>
+
+        {{ form.languages.label(class = "form-text") }}<br>
+        {{ form.languages(class="forminput form-text") }}
+        {% for error in form.languages.errors%}
+            <span style="color: red"> [{{error}}]</span>
+        {% endfor %}
     {% endif %}
-    <p>
-        {{ form.password.label(class = "form-text") }}<br>
-        {{ form.password(class="forminput form-text")  }}<br>
-        {% for error in form.password.errors%}
-        <span style = "color: red"> [{{error}}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password2.label(class = "form-text") }}<br>
-        {{ form.password2(class="forminput form-text")  }}<br>
-        {% for error in form.password2.errors%}
-        <span style = "color: red"> [{{error}}]</span>
-        {% endfor %}
-    </p>
-    <p>{{ form.submit(class="btn btn-secondary") }}</p>
+
+    {{ form.password.label(class = "form-text") }}<br>
+    {{ form.password(class="forminput form-text") }}<br>
+    {% for error in form.password.errors%}
+    <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.password2.label(class = "form-text") }}<br>
+    {{ form.password2(class="forminput form-text") }}<br>
+    {% for error in form.password2.errors%}
+    <span style="color: red"> [{{error}}]</span>
+    {% endfor %}
+
+    {{ form.submit(class="btn btn-secondary mt-2 mb-3") }}
 
 </form>
 
