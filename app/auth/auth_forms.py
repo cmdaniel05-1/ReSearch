@@ -4,7 +4,7 @@ from wtforms import IntegerField, StringField, SubmitField, PasswordField, Boole
 from wtforms.validators import DataRequired, EqualTo, Email, Length, ValidationError
 
 from app import db, login
-from app.main.models import Student, Faculty
+from app.main.models import Student, Faculty, User
 
 
 class LoginForm(FlaskForm):
@@ -24,21 +24,20 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Re-enter Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
     
-    def validate_username(self, username):
-        query = sqla.select(Student).where(Student.username == username.data)
-        student = db.session.scalars(query).first()
-        if student is not None:
-            raise ValidationError('This username already exists! Please use a diferent username.')
-        query = sqla.select(Faculty).where(Faculty.username == username.data)
-        faculty = db.session.scalars(query).first()
-        if faculty is not None:
-            raise ValidationError('This username already exists! Please use a diferent username.')
+    def validate_wpi_id(self, wpi_id):
+        existing_user = User.query.filter_by(wpi_id=wpi_id.data).first()
+        if existing_user:
+            raise ValidationError('WPI ID is already in use. Please choose another.')
         
+    def validate_username(self, username):
+        existing_user = User.query.filter_by(username=username.data).first()
+        if existing_user:
+            raise ValidationError('Username is already taken. Please choose another.')
+
     def validate_email(self, email):
-        query = sqla.select(Student).where(Student.email == email.data)
-        student = db.session.scalars(query).first()
-        if student is not None:
-            raise ValidationError('The email already exists! Please use a different email.')
+        existing_user = User.query.filter_by(email=email.data).first()
+        if existing_user:
+            raise ValidationError('Email is already registered.')
 
 class StudentRegistrationForm(RegistrationForm):
     pass

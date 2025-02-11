@@ -10,48 +10,56 @@
         {{ form.wpi_id(class="forminput form-text") }}<br>
         {% for error in form.wpi_id.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.username.label(class = "form-label") }}<br>
         {{ form.username(class="forminput form-text") }}<br>
         {% for error in form.username.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.firstname.label(class = "form-label") }}<br>
         {{ form.firstname(class="forminput form-text") }}<br>
         {% for error in form.firstname.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.lastname.label(class = "form-label") }}<br>
         {{ form.lastname(class="forminput form-text") }}<br>
         {% for error in form.lastname.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.email.label(class = "form-label") }}<br>
         {{ form.email(class="forminput form-text") }}<br>
         {% for error in form.email.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.phone_num.label(class = "form-label") }}<br>
         {{ form.phone_num(class="forminput form-text") }}<br>
         {% for error in form.phone_num.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.password.label(class = "form-label") }}<br>
         {{ form.password(class="forminput form-text")}}<br>
         {% for error in form.password.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.password2.label(class = "form-label") }}<br>
         {{ form.password2(class="forminput form-text")}}<br>
         {% for error in form.password2.errors %}
             <span style="color: red;">[ {{ error }} ]</span>
+            <br>
         {% endfor %}
 
         {{ form.submit(class="btn btn-secondary mb-4 mt-2") }}
