@@ -31,7 +31,7 @@ Prepared by:
 | ------ | ------ | --------- | --------- |
 |Revision 1 |2024-11-15 |Initial draft | 1.0 |
 |Revision 2 |2025-2-11 | Second draft | 1.5 |
-| | | | |
+
 
 # 1. Introduction
 The purpose of this document is to illustrate our plan for the website.
@@ -81,8 +81,7 @@ for that sub-section in a table.
 |2. |Get, Post |/student-register |Registers a student into the database |
 |3. |Get, Post |/login |Used to login a user, so they can access the website |
 |4. |Get |/logout |Used to logout a user |
-|5. | | | |
-|6. | | | |
+
 #### 2.2.2.2 \<Main> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
@@ -96,8 +95,6 @@ for that sub-section in a table.
 |8. |Post |/withdraw | Allows a student to remove their application from submission|
 |9. |Get, Post |/positions/faculty | allows faculty to see their positions and the students who have applied as well as accept or reject them.|
 |10. |Get |/positions/student |allows student to see their accepted and applied to positions |
-Repeat the above for other modules you included in your
-application.
 
 ### 2.3 User Interface Design
 
