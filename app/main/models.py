@@ -32,12 +32,6 @@ position_languages = db.Table(
     sqla.Column('language_id', sqla.Integer, sqla.ForeignKey('language.id'), primary_key = True)
 )
 
-position_students = db.Table(
-    'position_students',
-    db.metadata,
-    sqla.Column('position_id', sqla.Integer, sqla.ForeignKey('position.id'), primary_key = True),
-    sqla.Column('student_id', sqla.Integer, sqla.ForeignKey('student.id'), primary_key = True)
-)
 student_languages = db.Table(
     'student_languages',
     db.metadata,
