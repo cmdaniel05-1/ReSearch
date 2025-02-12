@@ -55,4 +55,4 @@ As a student, I want to be able to apply to multiple research positions. (Ian) <
 As a student, I want to view the research positions I have already applied to and check their statuses so that I can know my status with the position. (Connor) <br>
 As a faculty member, I want to see the list of students who apply to undergraduate research opportunities I create (April) <br>
 As a faculty member, I want to view the profiles of students who apply for my research positions so that I may review their qualifications (Sarah) <br>
-As a faculty member, I want to view if students have been approved for another opportunity so I know if they are still av
+As a faculty member, I want to view if students have been approved for another opportunity so I know if they are still available (Sarah)
