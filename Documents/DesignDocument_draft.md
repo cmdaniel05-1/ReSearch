@@ -2,7 +2,7 @@
 ## ReSearch
 --------
 Prepared by:
-* `Ian Wood`,`WPI>`
+* `Ian Wood`,`WPI`
 * `Sarah Meyer`,`WPI`
 * `April Zingher`,`WPI`
 * `Connor Daniel`,`WPI`
