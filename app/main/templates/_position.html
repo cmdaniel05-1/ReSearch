@@ -34,7 +34,12 @@
                     {{p.faculty.firstname}} {{p.faculty.lastname}}
                 </span>
             </p>
-            <button class="btn btn-secondary">Apply</button>
+            {% if current_user.is_applied(p) == False %}
+            <form action="{{url_for('main.apply', position_id = p.id)}}" method= "POST">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Apply', class='button') }}
+            </form>
+            {% endif %}
         </div>
     </div>
 </div>
