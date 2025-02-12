@@ -53,6 +53,7 @@ class User(db.Model, UserMixin):
     lastname : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String (100))
     password_hash : sqlo.Mapped[Optional[str]] = sqlo.mapped_column(sqla.String(256))
     email : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(120), index = True, unique = True)
+    phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
     type: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(50)) #'user' or 'faculty'
 
     def __repr__(self):
@@ -103,7 +104,6 @@ class Student(User):
 
 class Faculty(User):
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
-    phone_num: sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(20))
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')

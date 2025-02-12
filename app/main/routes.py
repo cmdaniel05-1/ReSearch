@@ -79,16 +79,15 @@ def edit_profile():
         current_user.firstname = form.firstname.data
         current_user.lastname = form.lastname.data
         current_user.email = form.email.data
-        if current_user.type == 'faculty':
-            current_user.phone_num = form.phone_num.data
-        elif current_user.type == 'student':
+        current_user.phone_num = form.phone_num.data
+        if current_user.type == 'student':
             current_user.major = form.major.data
             current_user.gpa = form.gpa.data
             current_user.grad_date = form.grad_date.data
             current_user.fields = form.fields.data
             current_user.languages = form.languages.data
-        if form.password.data:
-            current_user.set_password(form.password.data)
+        if form.password2.data:
+            current_user.set_password(form.password2.data)
         db.session.add(current_user)
         db.session.commit()
         return redirect(url_for('main.profile'))
@@ -98,9 +97,8 @@ def edit_profile():
         form.firstname.data = current_user.firstname
         form.lastname.data = current_user.lastname
         form.email.data = current_user.email
-        if current_user.type == 'faculty':
-            form.phone_num.data = current_user.phone_num
-        elif current_user.type == 'student':
+        form.phone_num.data = current_user.phone_num
+        if current_user.type == 'student':
             form.major.data = current_user.major
             form.gpa.data = current_user.gpa
             form.grad_date.data = current_user.grad_date

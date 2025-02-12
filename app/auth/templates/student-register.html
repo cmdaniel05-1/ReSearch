@@ -41,6 +41,13 @@
             <br>
         {% endfor %}
 
+        {{ form.phone_num.label(class = "form-label") }}<br>
+        {{ form.phone_num(class="forminput form-text") }}<br>
+        {% for error in form.phone_num.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+            <br>
+        {% endfor %}
+
         {{ form.password.label(class = "form-label") }}<br>
         {{ form.password(class="forminput form-text")}}<br>
         {% for error in form.password.errors %}

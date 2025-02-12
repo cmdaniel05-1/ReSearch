@@ -7,9 +7,8 @@
         <p> <b>Name:</b> {{user.firstname}} {{user.lastname}} </p>
         <p> <b>Username:</b> {{user.username}} </p>
         <p> <b>Email:</b> {{user.email}} </p>
-        {% if current_user.type == "faculty" %}
-            <p> <b>Phone Number:</b> {{user.phone_num}} </p>
-        {% elif current_user.type == "student" %}
+        <p> <b>Phone Number:</b> {{user.phone_num}} </p>
+        {% if current_user.type == "student" %}
         <p> <b>Major:</b> {{user.major}}</p>
         <p> <b>GPA:</b> {{user.gpa}} </p>
         <p> <b>Graduation Date:</b> {{user.grad_date}} </p>

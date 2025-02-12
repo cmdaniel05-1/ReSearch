@@ -66,7 +66,8 @@ def populate_db():
             username="student1",
             firstname="Bob",
             lastname="Brown",
-            email="student1@wpi.edu"
+            email="student1@wpi.edu",
+            phone_num = "7819293929"
         )
 
         student1.set_password("student1")
@@ -76,7 +77,8 @@ def populate_db():
             username="student2",
             firstname="Sara",
             lastname="Green",
-            email="student2@wpi.edu"
+            email="student2@wpi.edu",
+            phone_num = "7810993929"
         )
         student2.set_password("student2")
 

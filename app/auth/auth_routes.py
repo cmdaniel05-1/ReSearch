@@ -38,7 +38,8 @@ def student_register():
                             username = rform.username.data,
                             firstname = rform.firstname.data,
                             lastname = rform.lastname.data,
-                            email = rform.email.data)
+                            email = rform.email.data,
+                            phone_num = rform.phone_num.data)
         student.set_password(rform.password.data)
         db.session.add(student)
         db.session.commit()

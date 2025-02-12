@@ -1,6 +1,7 @@
+
 from flask_wtf import FlaskForm
 from wtforms import FloatField, StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
-from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email
+from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email, Optional
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
@@ -42,6 +43,7 @@ class EditForm(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
     wpi_id = IntegerField('WPI ID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    phone_num = StringField('Phone Number', validators=[DataRequired()])
     password = PasswordField('Password')
     password2 = PasswordField('Re-enter Password', validators=[EqualTo('password')])
     submit = SubmitField('Submit')
@@ -62,9 +64,9 @@ class EditForm(FlaskForm):
             raise ValidationError('Email is already registered.')
         
 class StudentEditForm(EditForm):
-    major = StringField("Major")
-    gpa = FloatField("GPA")
-    grad_date = DateField("Graduation Date")
+    major = StringField("Major", validators=[Optional()])
+    gpa = FloatField("GPA", validators=[Optional()])
+    grad_date = DateField("Graduation Date", validators=[Optional()])
     fields = QuerySelectMultipleField('Field',
                                       query_factory = lambda : db.session.scalars(sqla.select(Field)),
                                       get_label = lambda theField : theField.name,
@@ -77,4 +79,4 @@ class StudentEditForm(EditForm):
                                          option_widget=CheckboxInput())
         
 class FacultyEditForm(EditForm):
-    phone_num = StringField('Phone Number', validators=[DataRequired()])
+    pass
