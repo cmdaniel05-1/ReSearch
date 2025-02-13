@@ -19,6 +19,7 @@ class RegistrationForm(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
     wpi_id = IntegerField('WPI ID', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    phone_num = StringField('Phone Number', validators=[DataRequired()])
     address = TextAreaField('Address', [Length(min=0, max=200)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Re-enter Password', validators=[DataRequired(), EqualTo('password')])
@@ -43,4 +44,4 @@ class StudentRegistrationForm(RegistrationForm):
     pass
         
 class FacultyRegistrationForm(RegistrationForm):
-    phone_num = StringField('Phone Number', validators=[DataRequired()])
+    pass
