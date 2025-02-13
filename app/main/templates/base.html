@@ -75,17 +75,8 @@
             <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
           </li>
 
-          <li class="nav-item dropdown btn btn-light">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Register
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('auth.student_register')}}">Register
-                  Student</a></li>
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('auth.faculty_register')}}">Register
-                  Faculty</a></li>
-            </ul>
+          <li class="nav-item btn btn-light">
+            <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
           </li>
           {% endif %}
         </ul>

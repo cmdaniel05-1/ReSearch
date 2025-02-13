@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 import sqlalchemy as sqla
-from wtforms import IntegerField, StringField, SubmitField, PasswordField, BooleanField, TextAreaField
+from wtforms import IntegerField, SelectField, StringField, SubmitField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Email, Length, ValidationError
 
 from app import db, login
@@ -14,6 +14,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
     
 class RegistrationForm(FlaskForm):
+    type = SelectField('User Type',choices = ["Student", "Faculty"], validators = [DataRequired()])   
     username = StringField('Username', validators = [DataRequired()])
     firstname = StringField('First Name',validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
@@ -39,9 +40,3 @@ class RegistrationForm(FlaskForm):
         existing_user = User.query.filter_by(email=email.data).first()
         if existing_user:
             raise ValidationError('Email is already registered.')
-
-class StudentRegistrationForm(RegistrationForm):
-    pass
-        
-class FacultyRegistrationForm(RegistrationForm):
-    pass

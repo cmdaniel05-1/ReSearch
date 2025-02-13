@@ -6,6 +6,13 @@
     <form action="" method="post" class = "mt-4">
         {{ form.hidden_tag() }}
 
+        {{ form.type.label(class = "form-label") }}<br>
+        {{ form.type(class="forminput form-text") }}<br>
+        {% for error in form.type.errors %}
+            <span style="color: red;">[ {{ error }} ]</span>
+            <br>
+        {% endfor %}
+
         {{ form.wpi_id.label(class = "form-label") }}<br>
         {{ form.wpi_id(class="forminput form-text") }}<br>
         {% for error in form.wpi_id.errors %}
