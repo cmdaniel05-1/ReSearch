@@ -45,8 +45,11 @@ def create():
 def field():
     form = FieldForm()
     if form.validate_on_submit():
-        new_field = Field(name = form.name.data)
-        db.session.add(new_field)
+        if form.name.data:
+            new_field = Field(name = form.name.data)
+            db.session.add(new_field)
+        for f in form.fields.data:
+            db.session.delete(f)
         db.session.commit()
         return redirect(url_for('main.create'))
     return render_template('field.html', form = form)

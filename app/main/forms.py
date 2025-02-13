@@ -30,7 +30,12 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class FieldForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name')
+    fields = QuerySelectMultipleField ('Remove Fields',
+                query_factory = lambda : db.session.scalars(sqla.select(Field).order_by(Field.name)),
+                get_label = lambda theField : theField.name,
+                widget=ListWidget(prefix_label=False),
+                option_widget=CheckboxInput())
     submit = SubmitField('Submit')
 
 class LanguageForm(FlaskForm):
