@@ -21,6 +21,8 @@ def index():
 @main.route('/create/position', methods=['GET', 'POST'])
 @login_required
 def create():
+    if current_user.type == 'student':
+        return redirect(url_for('main.index'))
     form = PostForm()
     if form.validate_on_submit():
         new_position = Position(faculty_id = current_user.id,
@@ -43,6 +45,8 @@ def create():
 @main.route('/create/field', methods=['GET', 'POST'])
 @login_required
 def field():
+    if current_user.type == 'student':
+        return redirect(url_for('main.index'))
     form = FieldForm()
     if form.validate_on_submit():
         if form.name.data:
@@ -57,6 +61,8 @@ def field():
 @main.route('/create/language', methods=['GET', 'POST'])
 @login_required
 def language():
+    if current_user.type == 'student':
+        return redirect(url_for('main.index'))
     form = LanguageForm()
     if form.validate_on_submit():
         if form.name.data:
@@ -116,6 +122,8 @@ def edit_profile():
 @main.route('/apply/<position_id>', methods=['POST'])
 @login_required
 def apply(position_id):
+    if current_user.type == 'faculty':
+        return redirect(url_for('main.index'))
     theposition = db.session.get(Position, position_id)
     if theposition is None:
         flash('No such position exists')
