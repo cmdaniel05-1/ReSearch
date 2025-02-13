@@ -3,10 +3,10 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm, StudentEditForm
+from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm, StudentEditForm, EmptyForm
 from app.main.models import Position, Field, Language
 from app.main import main_blueprint as main
-from app.main.models import Position, Faculty
+from app.main.models import Position
 from flask_login import current_user, login_required
 
 
@@ -14,8 +14,9 @@ from flask_login import current_user, login_required
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
+    form = EmptyForm()
     positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
-    return render_template('index.html', positions = positions)
+    return render_template('index.html', positions = positions, form = form)
 
 @main.route('/create/position', methods=['GET', 'POST'])
 @login_required
@@ -105,3 +106,15 @@ def edit_profile():
             form.fields.data = current_user.fields
             form.languages.data = current_user.languages
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
+
+@main.route('/apply/<position_id>', methods=['POST'])
+@login_required
+def apply(position_id):
+    theposition = db.session.get(Position, position_id)
+    if theposition is None:
+        flash('No such position exists')
+        return redirect(url_for('main.index'))
+    current_user.apply(theposition)
+    db.session.commit()
+    flash('You have applied to {}'.format(theposition.title))
+    return redirect(url_for('main.index'))

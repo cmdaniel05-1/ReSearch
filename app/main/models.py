@@ -93,6 +93,16 @@ class Student(User):
         'polymorphic_identity': 'student'
     }
 
+    def is_applied(self, position):
+        result = db.session.scalars(self.applications.select().where(Application.position_id == position.id)).first()
+        return result is not None
+
+    def apply(self, new_position):
+        if not self.is_applied(new_position):
+            new_application = Application(position_id = new_position.id, student_id = self.id)
+            db.session.add(new_application)
+            db.session.commit()
+
 class Faculty(User):
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
 

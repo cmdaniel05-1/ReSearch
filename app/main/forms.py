@@ -80,3 +80,6 @@ class StudentEditForm(EditForm):
         
 class FacultyEditForm(EditForm):
     pass
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
