@@ -39,7 +39,12 @@ class FieldForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class LanguageForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name')
+    languages = QuerySelectMultipleField ('Remove Languages',
+                query_factory = lambda : db.session.scalars(sqla.select(Language).order_by(Language.name)),
+                get_label = lambda thelanguage : thelanguage.name,
+                widget=ListWidget(prefix_label=False),
+                option_widget=CheckboxInput())
     submit = SubmitField('Submit')
 
 class EditForm(FlaskForm):

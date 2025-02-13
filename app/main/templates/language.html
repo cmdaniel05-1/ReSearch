@@ -14,6 +14,12 @@
     <span style="color: red"> [{{error}}]</span><br>
     {% endfor %}
 
+    {{ form.languages.label(class = "form-label")}}<br>
+    {{ form.languages() }}<br>
+    {% for error in form.languages.errors%}
+    <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
     {{form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
 </form>
 {% endif %}

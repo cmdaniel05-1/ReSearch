@@ -59,8 +59,11 @@ def field():
 def language():
     form = LanguageForm()
     if form.validate_on_submit():
-        new_language = Language(name = form.name.data)
-        db.session.add(new_language)
+        if form.name.data:
+            new_language = Language(name = form.name.data)
+            db.session.add(new_language)
+        for l in form.languages.data:
+            db.session.delete(l)
         db.session.commit()
         return redirect(url_for('main.create'))
     return render_template('language.html', form = form)
