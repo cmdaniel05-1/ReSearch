@@ -29,18 +29,26 @@
                 </span>
                 {% endfor %}
             </p>
+            {% if current_user.type == 'student' %}
             <p><strong>Faculty Member:</strong>
                 <span class="rounded-pill border border-1 m-1 p-2">
                     {{p.faculty.firstname}} {{p.faculty.lastname}}
                 </span>
             </p>
-            {% if current_user.type == 'student' %}
                 {% if current_user.is_applied(p) == False %}
                 <form action="{{url_for('main.apply', position_id = p.id)}}" method= "POST">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Apply', class='button') }}
                 </form>
                 {% endif %}
+            {% elif current_user.type == 'faculty' %}
+            <p><strong>Applying Student(s):</strong>
+                {% for s in p.students %}
+                <span class="rounded-pill border border-1 m-1 p-2">
+                    {{s.name}}
+                </span>
+                {% endfor %}
+            </p>
             {% endif %}
         </div>
     </div>
