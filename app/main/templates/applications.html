@@ -2,46 +2,47 @@
 
 {% block content %}
 
-{% for p in current_user.get_applications() %}
+{% for application in current_user.get_applications() %}
 
-{% set unique_id = 'info_' ~ range(1000, 99999) | random %} {# Generates a (most likely) unique ID for each card #}
+    {% set unique_id = 'info_' ~ range(1000, 99999) | random %} {# Generates a (most likely) unique ID for each card #}
 
-<div class="card mb-3 mt-4">
-    <button
-        class="card-header btn btn-link text-decoration-none w-100 d-flex justify-content-between align-items-center toggle-btn"
-        type="button" data-bs-toggle="collapse" data-bs-target="#{{ unique_id }}" aria-expanded="false"
-        aria-controls="{{ unique_id }}">
-        {{p.title}} <span class="bi bi-caret-down-fill icon"></span>
-    </button>
-    <div class="collapse" id="{{ unique_id }}">
-        <div class="card-body">
-            <p><strong>Description:</strong> {{p.description}}</p>
-            <p><strong>Dates:</strong> {{p.start_date}} to {{p.end_date}}</p>
-            <p><strong>Number Hiring:</strong> {{p.student_count}} students</p>
-            <p><strong>Time Commitment:</strong> {{p.req_time}} hours per week</p>
-            <p><strong>Research Field(s):</strong>
-                {% for f in p.fields %}
-                <span class="rounded-pill border border-1 m-1 p-2">
-                    {{f.name}}
-                </span>
-                {% endfor %}
-            </p>
-            <p><strong>Programming Experience Required:</strong>
-                {% for l in p.languages %}
-                <span class="rounded-pill border border-1 m-1 p-2">
-                    {{l.name}}
-                </span>
-                {% endfor %}
-            </p>
-            <p><strong>Faculty Member:</strong>
-                <span class="rounded-pill border border-1 m-1 p-2">
-                    {{p.faculty.firstname}} {{p.faculty.lastname}}
-                </span>
-            </p>
+    <div class="card mb-3 mt-4">
+        <button
+            class="card-header btn btn-link text-decoration-none w-100 d-flex justify-content-between align-items-center toggle-btn"
+            type="button" data-bs-toggle="collapse" data-bs-target="#{{ unique_id }}" aria-expanded="false"
+            aria-controls="{{ unique_id }}">
+            {{application.applied_position.title}} <span class="bi bi-caret-down-fill icon"></span>
             
+        </button>
+        <div class="collapse" id="{{ unique_id }}">
+            <div class="card-body">
+                <p><strong>Description:</strong> {{application.applied_position.description}}</p>
+                <p><strong>Dates:</strong> {{application.applied_position.start_date}} to {{application.applied_position.end_date}}</p>
+                <p><strong>Number Hiring:</strong> {{application.applied_position.student_count}} students</p>
+                <p><strong>Time Commitment:</strong> {{application.applied_position.req_time}} hours per week</p>
+                <p><strong>Research Field(s):</strong>
+                    {% for f in application.applied_position.fields %}
+                    <span class="rounded-pill border border-1 m-1 p-2">
+                        {{f.name}}
+                    </span>
+                    {% endfor %}
+                </p>
+                <p><strong>Programming Experience Required:</strong>
+                    {% for l in application.applied_position.languages %}
+                    <span class="rounded-pill border border-1 m-1 p-2">
+                        {{l.name}}
+                    </span>
+                    {% endfor %}
+                </p>
+                <p><strong>Faculty Member:</strong>
+                    <span class="rounded-pill border border-1 m-1 p-2">
+                        {{application.applied_position.faculty.firstname}} {{application.applied_position.faculty.lastname}}
+                    </span>
+                </p>
+                
+            </div>
         </div>
     </div>
-</div>
 
 {% endfor %}
 
