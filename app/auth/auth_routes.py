@@ -22,7 +22,7 @@ def register():
                                 email = rform.email.data,
                                 phone_num = rform.phone_num.data)
         else:
-            user = Faculty(wpi_id = rform.wpi_id.data,
+            user = Student(wpi_id = rform.wpi_id.data,
                                 username = rform.username.data,
                                 firstname = rform.firstname.data,
                                 lastname = rform.lastname.data,
@@ -32,7 +32,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         login_user(user)
-        flash('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered {}!'.format(rform.type.data))
         return redirect(url_for('main.index'))
     return render_template('register.html', form = rform)
 
