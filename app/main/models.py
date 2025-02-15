@@ -103,6 +103,9 @@ class Student(User):
             db.session.add(new_application)
             db.session.commit()
 
+    def get_applications(self):
+        return db.session.scalars(self.applications.select()).all()
+
 class Faculty(User):
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
 
