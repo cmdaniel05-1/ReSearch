@@ -11,8 +11,14 @@
             class="card-header btn btn-link text-decoration-none w-100 d-flex justify-content-between align-items-center toggle-btn"
             type="button" data-bs-toggle="collapse" data-bs-target="#{{ unique_id }}" aria-expanded="false"
             aria-controls="{{ unique_id }}">
-            {{application.applied_position.title}} <span class="bi bi-caret-down-fill icon"></span>
-            
+            {{application.applied_position.title}}
+            {% if application.faculty_responded == False %}
+                Pending
+            {% elif application.is_accepted == True %}
+                Accepted
+            {% else %}
+                Rejected
+            {% endif %} <span class="bi bi-caret-down-fill icon"></span>
         </button>
         <div class="collapse" id="{{ unique_id }}">
             <div class="card-body">
