@@ -133,9 +133,9 @@ def apply(position_id):
     flash('You have applied to {}'.format(theposition.title))
     return redirect(url_for('main.index'))
 
-main.route('/applications', methods=['GET'])
+@main.route('/applications/<student_id>', methods=['GET'])
 @login_required
-def view_applications(id):
-    student = db.session.get(Student, id)
+def view_applications(student_id):
+    student = db.session.get(Student, student_id)
     applications = student.get_applications()
-    return render_template('applications.html', title = 'Applications of {}'.format(student.firstname), student = student, applications = applications)
+    return render_template('applications.html', title = 'Applications')

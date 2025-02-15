@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% for p in current_user.get_applications() %}
+
 {% set unique_id = 'info_' ~ range(1000, 99999) | random %} {# Generates a (most likely) unique ID for each card #}
 
 <div class="card mb-3 mt-4">
@@ -39,5 +42,7 @@
         </div>
     </div>
 </div>
+
+{% endfor %}
 
 {% endblock %}
