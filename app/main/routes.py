@@ -4,7 +4,7 @@ import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm, StudentEditForm, EmptyForm
-from app.main.models import Position, Field, Language
+from app.main.models import Position, Field, Language, Student
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -132,3 +132,10 @@ def apply(position_id):
     db.session.commit()
     flash('You have applied to {}'.format(theposition.title))
     return redirect(url_for('main.index'))
+
+main.route('/applications', methods=['GET'])
+@login_required
+def view_applications(id):
+    student = db.session.get(Student, id)
+    applications = student.get_applications()
+    return render_template('applications.html', title = 'Applications of {}'.format(student.firstname), student = student, applications = applications)

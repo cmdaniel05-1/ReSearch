@@ -61,7 +61,7 @@
               <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Faculty Profile</a></li>
               {% else %}
               <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Student Profile</a></li>
-              <li><a class="dropdown-item btn btn-light" href="">My Applications</a></li>
+              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.view_applications')}}">My Applications</a></li>
               {% endif %}
             </ul>
           </li>
