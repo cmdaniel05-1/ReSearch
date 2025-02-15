@@ -141,6 +141,7 @@ class Position(db.Model):
 class Application(db.Model):
     student_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Student.id), primary_key=True)
     position_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Position.id), primary_key=True)
+    faculty_responded : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Boolean, default=False)
     is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=False)
 
     # Relationships
