@@ -4,7 +4,7 @@ import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm
-from app.main.models import Position, Field, Language, Student
+from app.main.models import Position, Field, Language, Student, User
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -91,6 +91,22 @@ def language():
 @login_required
 def profile():
     return render_template('display_profile.html', title = 'Profile', user = current_user)
+
+@main.route('/profile/<username>', methods=['GET'])
+@login_required
+def profile_id(username):
+    if current_user.type == "student":
+        flash("You do not have permission to access to {}'s profile".format(username))
+        return render_template('display_profile.html', title = 'Profile', user = current_user)
+    elif current_user.type == "faculty":
+        user = Student.query.filter(Student.username == username).first()
+        if user is None:
+            flash('User not found')
+            return redirect(url_for('main.index'))
+
+        return render_template('display_profile.html', title = 'Profile', user = user)
+
+
 
 @main.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
