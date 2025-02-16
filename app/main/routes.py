@@ -48,7 +48,7 @@ def field():
     if current_user.type == 'student':
         return redirect(url_for('main.index'))
     createform = AddFieldForm()
-    if createform.validate_on_submit():
+    if 'create_field' in request.form and createform.validate_on_submit():
         if createform.name.data:
             new_field = Field(name = createform.name.data)
             db.session.add(new_field)
@@ -56,7 +56,7 @@ def field():
         return redirect(url_for('main.create'))
     
     deleteform = DeleteFieldForm()
-    if deleteform.validate_on_submit():
+    if 'delete_field' in request.form and deleteform.validate_on_submit():
         for f in deleteform.fields.data:
             db.session.delete(f)
         db.session.commit()
@@ -71,7 +71,7 @@ def language():
     if current_user.type == 'student':
         return redirect(url_for('main.index'))
     createform = AddLanguageForm()
-    if createform.validate_on_submit():
+    if 'create_language' in request.form and createform.validate_on_submit():
         if createform.name.data:
             new_language = Language(name = createform.name.data)
             db.session.add(new_language)
@@ -79,8 +79,7 @@ def language():
         return redirect(url_for('main.create'))
     
     deleteform = DeleteLanguageForm()
-    print(deleteform.languages.data)
-    if deleteform.validate_on_submit():
+    if 'delete_language' in request.form and deleteform.validate_on_submit():
         for l in deleteform.languages.data:
             db.session.delete(l)
         db.session.commit()
