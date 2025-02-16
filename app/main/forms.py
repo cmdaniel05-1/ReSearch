@@ -10,6 +10,10 @@ from app.main.models import Field, Language, Student, Faculty, User
 import sqlalchemy as sqla
 from flask_login import current_user
 
+def validate_checkbox(form, checkbox):
+    if not checkbox.data:
+        raise ValidationError("Please select at least one checkbox.")
+
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description of project goals and objectives', [Length(min = 1, max = 1500)])
@@ -29,22 +33,40 @@ class PostForm(FlaskForm):
                                          option_widget=CheckboxInput())
     submit = SubmitField('Submit')
 
-class FieldForm(FlaskForm):
-    name = StringField('Name')
+class AddFieldForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    def validate_name(self, name):
+        existing_field = Field.query.filter_by(name=name.data).first()
+        if existing_field:
+            raise ValidationError('Field already exists.')
+
+class DeleteFieldForm(FlaskForm):
     fields = QuerySelectMultipleField ('Remove Fields',
                 query_factory = lambda : db.session.scalars(sqla.select(Field).order_by(Field.name)),
                 get_label = lambda theField : theField.name,
                 widget=ListWidget(prefix_label=False),
-                option_widget=CheckboxInput())
+                option_widget=CheckboxInput(),
+                validators=[validate_checkbox])
     submit = SubmitField('Submit')
 
-class LanguageForm(FlaskForm):
-    name = StringField('Name')
+class AddLanguageForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    def validate_name(self, name):
+        existing_language = Language.query.filter_by(name=name.data).first()
+        if existing_language:
+            raise ValidationError('Language already exists.')
+
+class DeleteLanguageForm(FlaskForm):
     languages = QuerySelectMultipleField ('Remove Languages',
                 query_factory = lambda : db.session.scalars(sqla.select(Language).order_by(Language.name)),
                 get_label = lambda thelanguage : thelanguage.name,
                 widget=ListWidget(prefix_label=False),
-                option_widget=CheckboxInput())
+                option_widget=CheckboxInput(),
+                validators=[validate_checkbox])
     submit = SubmitField('Submit')
 
 class EditForm(FlaskForm):

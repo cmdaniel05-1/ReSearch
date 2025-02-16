@@ -2,26 +2,54 @@
 
 {% block content %}
 
-<h1>Create Research Field</h1>
+<h1>Edit Research Field</h1>
 
-{% if form %}
-<form action="{{url_for('main.field')}}" method="post" class = "mt-4">
-    {{ form.hidden_tag() }}
+<!-- Edit (Create or Update) Form -->
+{% if createform %}
+    <div class = "bg-light p-3 mt-3 rounded-4">
+        <h3>Create Research Field</h3>
 
-    {{ form.name.label(class = "form-label")}}<br>
-    {{ form.name(class = "forminput form-text") }}<br>
-    {% for error in form.name.errors%}
-    <span style="color: red"> [{{error}}]</span><br>
-    {% endfor %}
+        <form action="{{url_for('main.field')}}" method="post" class="mt-4">
+            {{ createform.hidden_tag() }}
 
-    {{ form.fields.label(class = "form-label")}}<br>
-    {{ form.fields() }}<br>
-    {% for error in form.fields.errors%}
-    <span style="color: red"> [{{error}}]</span><br>
-    {% endfor %}
+            <!-- Name field -->
+            <div class="mb-1">
+                {{ createform.name.label(class = "form-label")}}<br>
+                {{ createform.name(class = "forminput form-text") }}<br>
+                {% for error in createform.name.errors %}
+                    <span style="color: red"> [{{ error }}]</span><br>
+                {% endfor %}
+            </div>
 
-    {{form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
-</form>
+            <div>
+                <button type="submit" class="btn btn-secondary mb-2 mt-2">
+                    Create Field
+                </button>
+            </div>
+        </form>
+    </div> 
+{% endif %}
+
+{% if fields %}
+    <div class = "bg-light p-3 mt-3 rounded-4">
+        <h3>Delete Research Field</h3>
+        <form action="{{url_for('main.field')}}" method="post" class="mt-4">
+            {{ deleteform.hidden_tag() }}
+
+            {{ deleteform.fields.label(class="form-label") }}<br>
+            {{ deleteform.fields(class = "checkbox-fix") }}<br>
+            {% for error in deleteform.fields.errors %}
+                <span style="color: red">[{{ error }}]</span>
+            {% endfor %}
+            
+            <div>
+                <button type="submit" class="btn btn-danger mb-2" 
+                    onclick="return confirm('Are you sure you want to remove this field?');">
+                    Remove Field
+                </button>
+            </div>
+        </form>
+    </div>
 {% endif %}
 
 {% endblock %}

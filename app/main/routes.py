@@ -3,7 +3,7 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import PostForm, FieldForm, LanguageForm, FacultyEditForm, StudentEditForm, EmptyForm
+from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm
 from app.main.models import Position, Field, Language, Student
 from app.main import main_blueprint as main
 from app.main.models import Position
@@ -42,37 +42,51 @@ def create():
         return redirect(url_for('main.index'))
     return render_template('create.html', form = form)
 
-@main.route('/create/field', methods=['GET', 'POST'])
+@main.route('/edit/field', methods=['GET', 'POST'])
 @login_required
 def field():
     if current_user.type == 'student':
         return redirect(url_for('main.index'))
-    form = FieldForm()
-    if form.validate_on_submit():
-        if form.name.data:
-            new_field = Field(name = form.name.data)
+    createform = AddFieldForm()
+    if createform.validate_on_submit():
+        if createform.name.data:
+            new_field = Field(name = createform.name.data)
             db.session.add(new_field)
-        for f in form.fields.data:
+        db.session.commit()
+        return redirect(url_for('main.create'))
+    
+    deleteform = DeleteFieldForm()
+    if deleteform.validate_on_submit():
+        for f in deleteform.fields.data:
             db.session.delete(f)
         db.session.commit()
         return redirect(url_for('main.create'))
-    return render_template('field.html', form = form)
+    fields = Field.query.all()
+    return render_template('field.html', createform = createform, deleteform = deleteform, fields = fields)
 
-@main.route('/create/language', methods=['GET', 'POST'])
+
+@main.route('/edit/language', methods=['GET', 'POST'])
 @login_required
 def language():
     if current_user.type == 'student':
         return redirect(url_for('main.index'))
-    form = LanguageForm()
-    if form.validate_on_submit():
-        if form.name.data:
-            new_language = Language(name = form.name.data)
+    createform = AddLanguageForm()
+    if createform.validate_on_submit():
+        if createform.name.data:
+            new_language = Language(name = createform.name.data)
             db.session.add(new_language)
-        for l in form.languages.data:
+        db.session.commit()
+        return redirect(url_for('main.create'))
+    
+    deleteform = DeleteLanguageForm()
+    print(deleteform.languages.data)
+    if deleteform.validate_on_submit():
+        for l in deleteform.languages.data:
             db.session.delete(l)
         db.session.commit()
         return redirect(url_for('main.create'))
-    return render_template('language.html', form = form)
+    languages = Language.query.all()
+    return render_template('language.html', createform = createform, deleteform = deleteform, languages = languages)
 
 @main.route('/profile', methods=['GET'])
 @login_required
@@ -133,9 +147,24 @@ def apply(position_id):
     flash('You have applied to {}'.format(theposition.title))
     return redirect(url_for('main.index'))
 
+@main.route('/withdraw/<position_id>', methods=['POST'])
+@login_required
+def withdraw(position_id):
+    if current_user.type == 'faculty':
+        return redirect(url_for('main.index'))
+    theposition = db.session.get(Position, position_id)
+    if theposition is None:
+        flash('No such position exists')
+        return redirect(request.referrer)
+    current_user.withdraw(theposition)
+    db.session.commit()
+    flash('You have withdrawn from {}'.format(theposition.title))
+    return redirect(request.referrer)
+
 @main.route('/applications/<student_id>', methods=['GET'])
 @login_required
 def view_applications(student_id):
     student = db.session.get(Student, student_id)
     applications = student.get_applications()
-    return render_template('applications.html', title = 'Applications')
+    form = EmptyForm()
+    return render_template('applications.html', title = 'Applications', form = form)

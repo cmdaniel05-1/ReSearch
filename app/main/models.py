@@ -103,6 +103,20 @@ class Student(User):
             db.session.add(new_application)
             db.session.commit()
 
+    def withdraw(self, position):
+        if self.is_applied(position):
+            application = db.session.scalars(
+                self.applications.select().where(
+                    Application.position_id == position.id,
+                    Application.student_id == self.id
+                )).first()
+        
+            if application:  # Ensure application exists before deletion
+                db.session.delete(application)
+                db.session.commit()
+
+            
+
     def get_applications(self):
         return db.session.scalars(self.applications.select()).all()
 
@@ -150,7 +164,7 @@ class Application(db.Model):
 
 class Field(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100), unique=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(
@@ -164,7 +178,7 @@ class Field(db.Model):
 
 class Language(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100), unique=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(
