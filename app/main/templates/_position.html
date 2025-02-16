@@ -7,7 +7,28 @@
         class="card-header btn btn-link text-decoration-none w-100 d-flex justify-content-between align-items-center toggle-btn"
         type="button" data-bs-toggle="collapse" data-bs-target="#{{ unique_id }}" aria-expanded="false"
         aria-controls="{{ unique_id }}">
-        {{p.title}} <span class="bi bi-caret-down-fill icon"></span>
+
+        <div class="d-flex align-items-center">
+            <span class="me-3">{{ p.title }}</span>  {# Adds margin to separate title and status #}
+            
+            {% if current_user.is_authenticated and current_user.type == 'student' %}
+                {% set application = current_user.get_applications() | selectattr("position_id", "equalto", p.id) | list | first %}
+                
+                {% if application %}
+                    {% if not application.faculty_responded %}
+                        <span class="status-tag pending">Pending</span>
+                    {% elif application.is_accepted %}
+                        <span class="status-tag accepted">Accepted</span>
+                    {% else %}
+                        <span class="status-tag rejected">Rejected</span>
+                    {% endif %}
+                {% else %}
+                    <span class="status-tag not-applied">Not Applied</span>
+                {% endif %}
+            {% endif %}
+        </div>    
+        
+        <span class="bi bi-caret-down-fill icon"></span>
     </button>
     <div class="collapse" id="{{ unique_id }}">
         <div class="card-body">

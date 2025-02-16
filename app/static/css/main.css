@@ -33,3 +33,27 @@
     font-style: normal;
 }
 
+.status-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.pending {
+    background-color: #ffcc00;  /* Yellow */
+}
+
+.accepted {
+    background-color: #28a745;  /* Green */
+}
+
+.rejected {
+    background-color: #dc3545;  /* Red */
+}
+
+.not-applied {
+    background-color: #6c757d;  /* Gray */
+}
