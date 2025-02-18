@@ -125,6 +125,7 @@ class Faculty(User):
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')
+    reference_requests : sqlo.WriteOnlyMapped['Application'] = sqlo.relationship(back_populates='reference')
 
     __mapper_args__ = {
         'polymorphic_identity': 'faculty',
@@ -155,12 +156,15 @@ class Position(db.Model):
 class Application(db.Model):
     student_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Student.id), primary_key=True)
     position_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Position.id), primary_key=True)
+    reference_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Faculty.id), primary_key=True)
     faculty_responded : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Boolean, default=False)
     is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=False)
+    statement : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(500))
 
     # Relationships
     student_applied : sqlo.Mapped[Student] = sqlo.relationship(back_populates='applications')
     applied_position : sqlo.Mapped[Position] = sqlo.relationship(back_populates='applicants')
+    reference : sqlo.Mapped[Faculty] = sqlo.relationship(back_populates='reference_requests')
 
 class Field(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
