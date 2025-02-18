@@ -39,15 +39,19 @@ The purpose of this document is to illustrate our plan for the website.
 # 2. Software Design
 
 ## 2.1 Database Model
+
+<kbd>
+      <img src="images/uml_diagram.png"  border="2">
+</kbd>
+
 The tables in our Model are: User, Student, Faculty, Position, Field, and Language. User is the table for all users. Student and Faculty are the tables to represent students and faculties. Position is used to represent the research positions from faculty that students can apply for. Field represents fields of research. Languages represent programming languages that are used in a project and that students can be proficient in.
 
 ## 2.2 Modules and Interfaces
 ### 2.2.1 Overview
 Students are in fields; examples include Biotechnology and Computer Science. Positions each require fields, and Students apply for positions. Faculty make positions. There is no direct faculty-student link, each will just be associated with a related position. However, since students and faculty are very similar, they both inherit from a larger User class.
 
-<kbd>
-      <img src="images/uml_diagram.png"  border="2">
-  </kbd>
+UML COMPONENT DIAGRAM NEEDED HERE
+
 
 ### 2.2.2 Interfaces
 #### 2.2.2.1 \<Auth> Routes
