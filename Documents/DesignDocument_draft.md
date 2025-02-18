@@ -93,7 +93,8 @@ See image “UI Mockup.png”
 Pictured above is our UI Mockup. Every page includes a clear header and footer with the appropriate tabs for that user.  
 
 ## Student Home  
-- Displays research positions with dropdowns for each position.  
+- Displays research positions with dropdowns for each position. 
+- Includes application status 
 - Includes an **Apply** button, which triggers a pop-up form.  
 
 ## Faculty Home  
