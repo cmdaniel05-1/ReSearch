@@ -64,21 +64,20 @@ UML COMPONENT DIAGRAM NEEDED HERE
 #### 2.2.2.1 \<Auth> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
-|1. |Get, Post |/faculty-register |Registers a faculty member into the database |
-|2. |Get, Post |/student-register |Registers a student into the database |
-|3. |Get, Post |/login |Used to login a user, so they can access the website |
-|4. |Get |/logout |Used to logout a user |
+|1. |Get, Post |/user/register |Registers a user into the database |
+|3. |Get, Post |/user/login |Used to login a user, so they can access the website |
+|4. |Get |user/logout |Used to logout a user |
 
 #### 2.2.2.2 \<Main> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
 |1. | Get|/index |The main route where users can view projects. |
-|2. |Get, Post |/create/position |Faculty create research positions |
-|3. |Get, Post |/create/field |Faculty can create research fields |
-|4. |Get, Post |/create/language |Faculty create languages |
+|2. |Get, Post |/position/create |Faculty create research positions |
+|3. |Get, Post |/field/create |Faculty can create research fields |
+|4. |Get, Post |/language/create |Faculty create languages |
 |5. |Get, Post |/profile |Allows users to view their own profile, and faculty to accept or reject recommendations |
 |6. |Get, Post |/profile/edit |Allows users to edit their own profile |
-|7. |Post |/Apply |Allows a student to apply to positions |
+|7. |Post |/apply |Allows a student to apply to positions |
 |8. |Post |/withdraw | Allows a student to remove their application from submission|
 |9. |Get, Post |/positions/faculty | allows faculty to see their positions and the students who have applied as well as accept or reject them.|
 |10. |Get |/positions/student |allows student to see their accepted and applied to positions |
