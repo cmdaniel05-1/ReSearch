@@ -37,26 +37,12 @@ Prepared by:
 The purpose of this document is to illustrate our plan for the website.
 
 # 2. Software Design
-(**Note**: For all subsections of Section-2: You should describe
-the design for the end product (completed application) - not only
-your iteration1 version. You will revise this document and add
-more details later.)
 
 ## 2.1 Database Model
-Provide a list of your tables (i.e., SQL Alchemy classes) in your
-database model and briefly explain the role of each table.
-Provide a UML diagram of your database model showing the
-associations and relationships among tables.
 The tables in our Model are: User, Student, Faculty, Position, Field, and Language. User is the table for all users. Student and Faculty are the tables to represent students and faculties. Position is used to represent the research positions from faculty that students can apply for. Field represents fields of research. Languages represent programming languages that are used in a project and that students can be proficient in.
 
 ## 2.2 Modules and Interfaces
 ### 2.2.1 Overview
-Describe the high-level architecture of your software: i.e., the
-major components/modules and how they fit together. Provide a UML
-component diagram that illustrates the architecture of your
-software. Briefly mention the role of each module in your
-architectural design. Please refer to the "System Level Design"
-
 Students are in fields; examples include Biotechnology and Computer Science. Positions each require fields, and Students apply for positions. Faculty make positions. There is no direct faculty-student link, each will just be associated with a related position. However, since students and faculty are very similar, they both inherit from a larger User class.
 
 <kbd>
@@ -64,16 +50,6 @@ Students are in fields; examples include Biotechnology and Computer Science. Pos
   </kbd>
 
 ### 2.2.2 Interfaces
-Include a detailed description of the routes your application
-will implement.
-* Brainstorm with your team members and identify all routes you
-need to implement for the **completed** application.
-* For each route specify its , , and .
-* You can use the following table template to list your route
-specifications.
-* Organize this section according to your module decomposition,
-i.e., include a sub-section for each module and list all routes
-for that sub-section in a table.
 #### 2.2.2.1 \<Auth> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
