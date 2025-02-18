@@ -73,14 +73,18 @@ UML COMPONENT DIAGRAM NEEDED HERE
 |:--|:------------------|:-----------|:-------------|
 |1. | Get|/index |The main route where users can view projects. |
 |2. |Get, Post |/position/create |Faculty create research positions |
-|3. |Get, Post |/field/create |Faculty can create research fields |
-|4. |Get, Post |/language/create |Faculty create languages |
-|5. |Get, Post |/profile |Allows users to view their own profile, and faculty to accept or reject recommendations |
+|3. |Get, Post |/field/edit |Faculty can edit research fields |
+|4. |Get, Post |/language/edit |Faculty edit languages |
+|5. |Get, Post |/profile/<username> |Allows users to view their own profile, and faculty to accept or reject recommendations. Faculty may also see others profiles |
 |6. |Get, Post |/profile/edit |Allows users to edit their own profile |
-|7. |Post |/apply |Allows a student to apply to positions |
-|8. |Post |/withdraw | Allows a student to remove their application from submission|
+|7. |Post |/apply/<position_id> |Allows a student to apply to positions |
+|8. |Post |/withdraw/<position_id> | Allows a student to remove their application from submission|
 |9. |Get, Post |/positions/faculty | allows faculty to see their positions and the students who have applied as well as accept or reject them.|
 |10. |Get |/positions/student |allows student to see their accepted and applied to positions |
+|11. |Post |/faculty/recommend/<student_id> | Allows a faculty to submit a reccomendation for a student|
+|12. |Get| /application/view/<application_id> |allows faculty to view student applications|
+|13. |Get, Post |/application/create/<position_id> |allows student to submit an application |
+
 
 ### 2.3 User Interface Design
 
