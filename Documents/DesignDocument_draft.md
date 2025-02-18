@@ -25,6 +25,13 @@ Prepared by:
       - [2.2.2.1 \<Auth\> Routes](#2221-auth-routes)
       - [2.2.2.2 \<Main\> Routes](#2222-main-routes)
     - [2.3 User Interface Design](#23-user-interface-design)
+  - [Student Home](#student-home)
+  - [Faculty Home](#faculty-home)
+  - [Profile Pages](#profile-pages)
+  - [Editing Profiles](#editing-profiles)
+  - [Creating Research Positions (Faculty)](#creating-research-positions-faculty)
+  - [Registration \& Authentication](#registration--authentication)
+  - [Faculty-Specific Features](#faculty-specific-features)
 - [3. References](#3-references)
 ### Document Revision History
 | Name | Date | Changes | Version |
@@ -78,10 +85,44 @@ UML COMPONENT DIAGRAM NEEDED HERE
 
 ### 2.3 User Interface Design
 
-See image “UI Mockup.jpg”
+See image “UI Mockup.png”
 <kbd>
-      <img src="images/UI Mockup.jpg"  border="2">
-  </kbd>
+      <img src="images/UI Mockup.png"  border="2">
+</kbd>
+
+Pictured above is our UI Mockup. Every page includes a clear header and footer with the appropriate tabs for that user.  
+
+## Student Home  
+- Displays research positions with dropdowns for each position.  
+- Includes an **Apply** button, which triggers a pop-up form.  
+
+## Faculty Home  
+- Identical to the Student Home but **without** the Apply button.  
+
+## Profile Pages  
+- **Students**: View personal information, edit profile, and track research applications.  
+- **Faculty**: View personal information, edit profile, and manage research projects and student applications.  
+
+## Editing Profiles  
+- Clicking **Edit Profile** redirects to a new page with relevant information pre-filled.  
+
+## Creating Research Positions (Faculty)  
+- Faculty can click a button in the navbar to create a research position.  
+- They are redirected to a form where they can:  
+  - Complete fields with relevant information.  
+  - Add and delete fields and languages as needed.  
+
+## Registration & Authentication  
+- Students and faculty register using an identical form with a dropdown to select their user type.  
+- All users sign in using a **username and password**.  
+- A **Register** button is available at the bottom of the sign-in page.  
+
+## Faculty-Specific Features  
+- Faculty can view:  
+  - Research projects they oversee and the associated student applications.  
+  - Individual student applications and profile information.  
+  - **Recommendation requests** from their profile.  
+
 
 # 3. References
 Project Requirements Document, Sakire Aslan Ay
