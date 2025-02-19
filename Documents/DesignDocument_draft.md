@@ -55,10 +55,10 @@ The tables in our Model are: User, Student, Faculty, Position, Field, and Langua
 
 ## 2.2 Modules and Interfaces
 ### 2.2.1 Overview
-Students are in fields; examples include Biotechnology and Computer Science. Positions each require fields, and Students apply for positions. Faculty make positions. There is no direct faculty-student link, each will just be associated with a related position. However, since students and faculty are very similar, they both inherit from a larger User class.
-
-UML COMPONENT DIAGRAM NEEDED HERE
-
+<kbd>
+  <img src = "images/uml_component_diagram.png" border = "2">
+</kdb>
+Our application is very similar in structure to smile app. There exist three blueprints: main, auth, and errors. Auth handles authentication, such as logging in, registering, and using Azure SSO. Errors provides error templates for the website. Main contains the remaining functionality all users. Since there is significant overlap in faculty and student use cases, we chose to keep them integrated instead of separating them into two classes. This prevents duplication of code. Main connects with our model, which uses SQL Lite 3 db.
 
 ### 2.2.2 Interfaces
 #### 2.2.2.1 \<Auth> Routes
