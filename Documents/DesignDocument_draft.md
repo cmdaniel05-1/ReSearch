@@ -77,14 +77,14 @@ UML COMPONENT DIAGRAM NEEDED HERE
 |4. |Get, Post |/language/edit |Faculty can create, edit, or remove languages.|
 |5. |Get, Post |/profile/<user_id_> |Users can view their own profile. Faculty can view others' profiles and accept/reject recommendations.|
 |6. |Get, Post |/profile/edit |Users can edit their own profile.|
-|7. |Post |/withdraw/<position_id> | Students can withdraw their application from a research position.|
-|8. |Get, Post |/positions/faculty | Students can view the positions they have applied to and those they have been accepted for.|
-|9. |Get |/positions/student |allows student to see their accepted and applied to positions |
-|10. |Post |/faculty/recommend/<student_id> | Faculty can submit a recommendation for a student.|
-|11. |Get| /application/view/<application_id> | Faculty can view student applications|
-|12. |Get, Post |/application/create/<position_id> | Students can submit an application for a position. |
-|13. |Get, Post |/application/accept/<application_id> | Faculty can accept a studennt application. |
-|14. |Get, Post |/application/reject/<application_id> | Faculty can reject a studennt application. |
+|7. |Get, Post |/positions/faculty | Students can view the positions they have applied to and those they have been accepted for.|
+|8. |Get |/positions/student |allows student to see their accepted and applied to positions |
+|9. |Post |/faculty/recommend/<student_id> | Faculty can submit a recommendation for a student.|
+|10. |Get| /application/view/<application_id> | Faculty can view student applications|
+|11. |Get, Post |/application/create/<position_id> | Students can submit an application for a position. |
+|12. |Get, Post |/application/accept/<application_id> | Faculty can accept a student application. |
+|13. |Get, Post |/application/reject/<application_id> | Faculty can reject a student application. |
+|14. |Post |application/withdraw/<position_id> | Students can withdraw their application from a research position.|
 
 
 ### 2.3 User Interface Design
