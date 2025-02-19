@@ -57,7 +57,8 @@ The tables in our Model are: User, Student, Faculty, Position, Field, and Langua
 ### 2.2.1 Overview
 <kbd>
   <img src = "images/uml_component_diagram.png" border = "2">
-</kdb>
+</kbd>
+
 Our application is very similar in structure to smile app. There exist three blueprints: main, auth, and errors. Auth handles authentication, such as logging in, registering, and using Azure SSO. Errors provides error templates for the website. Main contains the remaining functionality all users. Since there is significant overlap in faculty and student use cases, we chose to keep them integrated instead of separating them into two classes. This prevents duplication of code. Main connects with our model, which uses SQL Lite 3 db.
 
 ### 2.2.2 Interfaces
