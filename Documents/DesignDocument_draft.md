@@ -57,7 +57,12 @@ The tables in our Model are: User, Student, Faculty, Position, Field, and Langua
 ### 2.2.1 Overview
 <kbd>
   <img src = "images/uml_component_diagram.png" border = "2">
+<<<<<<< HEAD
 </kdb>
+=======
+</kbd>
+
+>>>>>>> d82d2008a60cdf29d20d63ab7881005a594ab94b
 Our application is very similar in structure to smile app. There exist three blueprints: main, auth, and errors. Auth handles authentication, such as logging in, registering, and using Azure SSO. Errors provides error templates for the website. Main contains the remaining functionality all users. Since there is significant overlap in faculty and student use cases, we chose to keep them integrated instead of separating them into two classes. This prevents duplication of code. Main connects with our model, which uses SQL Lite 3 db.
 
 ### 2.2.2 Interfaces
@@ -130,4 +135,5 @@ Pictured above is our UI Mockup. Every page includes a clear header and footer w
 
 
 # 3. References
-Project Requirements Document, Sakire Aslan Ay
+- Project Requirements Document, Sakire Arslan Ay
+- Week4 - System Level Design.pdf, Sakire Arslan Ay
