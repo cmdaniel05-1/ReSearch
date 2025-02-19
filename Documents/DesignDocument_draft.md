@@ -66,7 +66,7 @@ UML COMPONENT DIAGRAM NEEDED HERE
 |:--|:------------------|:-----------|:-------------|
 |1. |Get, Post |/user/register |Registers a user into the database |
 |3. |Get, Post |/user/login |Used to login a user, so they can access the website |
-|4. |Get |user/logout |Used to logout a user |
+|4. |Get |/user/logout |Used to logout a user |
 
 #### 2.2.2.2 \<Main> Routes
 | | Methods | URL Path | Description |
@@ -75,7 +75,7 @@ UML COMPONENT DIAGRAM NEEDED HERE
 |2. |Get, Post |/position/create |Faculty create research positions |
 |3. |Get, Post |/field/edit |Faculty can create, edit, or remove research fields.|
 |4. |Get, Post |/language/edit |Faculty can create, edit, or remove languages.|
-|5. |Get, Post |/profile/<username> |Users can view their own profile. Faculty can view others' profiles and accept/reject recommendations.|
+|5. |Get, Post |/profile/<user_id_> |Users can view their own profile. Faculty can view others' profiles and accept/reject recommendations.|
 |6. |Get, Post |/profile/edit |Users can edit their own profile.|
 |7. |Post |/withdraw/<position_id> | Students can withdraw their application from a research position.|
 |8. |Get, Post |/positions/faculty | Students can view the positions they have applied to and those they have been accepted for.|
@@ -83,6 +83,8 @@ UML COMPONENT DIAGRAM NEEDED HERE
 |10. |Post |/faculty/recommend/<student_id> | Faculty can submit a recommendation for a student.|
 |11. |Get| /application/view/<application_id> | Faculty can view student applications|
 |12. |Get, Post |/application/create/<position_id> | Students can submit an application for a position. |
+|13. |Get, Post |/application/accept/<application_id> | Faculty can accept a studennt application. |
+|14. |Get, Post |/application/reject/<application_id> | Faculty can reject a studennt application. |
 
 
 ### 2.3 User Interface Design
