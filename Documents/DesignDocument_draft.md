@@ -25,6 +25,13 @@ Prepared by:
       - [2.2.2.1 \<Auth\> Routes](#2221-auth-routes)
       - [2.2.2.2 \<Main\> Routes](#2222-main-routes)
     - [2.3 User Interface Design](#23-user-interface-design)
+      - [Student Home](#student-home)
+      - [Faculty Home](#faculty-home)
+      - [Profile Pages](#profile-pages)
+      - [Editing Profiles](#editing-profiles)
+      - [Creating Research Positions (Faculty)](#creating-research-positions-faculty)
+      - [Registration \& Authentication](#registration--authentication)
+      - [Faculty-Specific Features](#faculty-specific-features)
 - [3. References](#3-references)
 ### Document Revision History
 | Name | Date | Changes | Version |
@@ -37,71 +44,90 @@ Prepared by:
 The purpose of this document is to illustrate our plan for the website.
 
 # 2. Software Design
-(**Note**: For all subsections of Section-2: You should describe
-the design for the end product (completed application) - not only
-your iteration1 version. You will revise this document and add
-more details later.)
 
 ## 2.1 Database Model
-Provide a list of your tables (i.e., SQL Alchemy classes) in your
-database model and briefly explain the role of each table.
-Provide a UML diagram of your database model showing the
-associations and relationships among tables.
+
+<kbd>
+      <img src="images/uml_diagram.png"  border="2">
+</kbd>
+
 The tables in our Model are: User, Student, Faculty, Position, Field, and Language. User is the table for all users. Student and Faculty are the tables to represent students and faculties. Position is used to represent the research positions from faculty that students can apply for. Field represents fields of research. Languages represent programming languages that are used in a project and that students can be proficient in.
 
 ## 2.2 Modules and Interfaces
 ### 2.2.1 Overview
-Describe the high-level architecture of your software: i.e., the
-major components/modules and how they fit together. Provide a UML
-component diagram that illustrates the architecture of your
-software. Briefly mention the role of each module in your
-architectural design. Please refer to the "System Level Design"
-
 Students are in fields; examples include Biotechnology and Computer Science. Positions each require fields, and Students apply for positions. Faculty make positions. There is no direct faculty-student link, each will just be associated with a related position. However, since students and faculty are very similar, they both inherit from a larger User class.
 
-<kbd>
-      <img src="images/uml_diagram.png"  border="2">
-  </kbd>
+UML COMPONENT DIAGRAM NEEDED HERE
+
 
 ### 2.2.2 Interfaces
-Include a detailed description of the routes your application
-will implement.
-* Brainstorm with your team members and identify all routes you
-need to implement for the **completed** application.
-* For each route specify its , , and .
-* You can use the following table template to list your route
-specifications.
-* Organize this section according to your module decomposition,
-i.e., include a sub-section for each module and list all routes
-for that sub-section in a table.
 #### 2.2.2.1 \<Auth> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
-|1. |Get, Post |/faculty-register |Registers a faculty member into the database |
-|2. |Get, Post |/student-register |Registers a student into the database |
-|3. |Get, Post |/login |Used to login a user, so they can access the website |
-|4. |Get |/logout |Used to logout a user |
+|1. |Get, Post |/user/register |Registers a user into the database |
+|3. |Get, Post |/user/login |Used to login a user, so they can access the website |
+|4. |Get |/user/logout |Used to logout a user |
 
 #### 2.2.2.2 \<Main> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
 |1. | Get|/index |The main route where users can view projects. |
-|2. |Get, Post |/create/position |Faculty create research positions |
-|3. |Get, Post |/create/field |Faculty can create research fields |
-|4. |Get, Post |/create/language |Faculty create languages |
-|5. |Get, Post |/profile |Allows users to view their own profile, and faculty to accept or reject recommendations |
-|6. |Get, Post |/profile/edit |Allows users to edit their own profile |
-|7. |Post |/Apply |Allows a student to apply to positions |
-|8. |Post |/withdraw | Allows a student to remove their application from submission|
-|9. |Get, Post |/positions/faculty | allows faculty to see their positions and the students who have applied as well as accept or reject them.|
-|10. |Get |/positions/student |allows student to see their accepted and applied to positions |
+|2. |Get, Post |/position/create |Faculty create research positions |
+|3. |Get, Post |/field/edit |Faculty can create, edit, or remove research fields.|
+|4. |Get, Post |/language/edit |Faculty can create, edit, or remove languages.|
+|5. |Get, Post |/profile/<user_id_> |Users can view their own profile. Faculty can view others' profiles and accept/reject recommendations.|
+|6. |Get, Post |/profile/edit |Users can edit their own profile.|
+|7. |Get, Post |/positions/faculty | Students can view the positions they have applied to and those they have been accepted for.|
+|8. |Get |/positions/student |allows student to see their accepted and applied to positions |
+|9. |Post |/faculty/recommend/<student_id> | Faculty can submit a recommendation for a student.|
+|10. |Get| /application/view/<application_id> | Faculty can view student applications|
+|11. |Get, Post |/application/create/<position_id> | Students can submit an application for a position. |
+|12. |Get, Post |/application/accept/<application_id> | Faculty can accept a student application. |
+|13. |Get, Post |/application/reject/<application_id> | Faculty can reject a student application. |
+|14. |Post |application/withdraw/<position_id> | Students can withdraw their application from a research position.|
+
 
 ### 2.3 User Interface Design
 
-See image “UI Mockup.jpg”
+See image “UI Mockup.png”
 <kbd>
-      <img src="images/UI Mockup.jpg"  border="2">
-  </kbd>
+      <img src="images/UI Mockup.png"  border="2">
+</kbd>
+
+Pictured above is our UI Mockup. Every page includes a clear header and footer with the appropriate tabs for that user.  
+
+#### Student Home  
+- Displays research positions with dropdowns for each position. 
+- Includes application status 
+- Includes an **Apply** button, which triggers a pop-up form.  
+
+#### Faculty Home  
+- Identical to the Student Home but **without** the Apply button.  
+
+#### Profile Pages  
+- **Students**: View personal information, edit profile, and track research applications.  
+- **Faculty**: View personal information, edit profile, and manage research projects and student applications.  
+
+#### Editing Profiles  
+- Clicking **Edit Profile** redirects to a new page with relevant information pre-filled.  
+
+#### Creating Research Positions (Faculty)  
+- Faculty can click a button in the navbar to create a research position.  
+- They are redirected to a form where they can:  
+  - Complete fields with relevant information.  
+  - Add and delete fields and languages as needed.  
+
+#### Registration & Authentication  
+- Students and faculty register using an identical form with a dropdown to select their user type.  
+- All users sign in using a **username and password**.  
+- A **Register** button is available at the bottom of the sign-in page.  
+
+#### Faculty-Specific Features  
+- Faculty can view:  
+  - Research projects they oversee and the associated student applications.  
+  - Individual student applications and profile information.  
+  - **Recommendation requests** from their profile.  
+
 
 # 3. References
 Project Requirements Document, Sakire Aslan Ay

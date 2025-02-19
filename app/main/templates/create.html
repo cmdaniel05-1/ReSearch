@@ -44,11 +44,14 @@
     <span style="color: red"> [{{error}}]</span><br>
     {% endfor %}
 
-    {{form.fields.label(class="form-label")}} <p style="display: inline;">Incomplete? <a href="{{url_for('main.field')}}">Click to add more.</a></p>
-    {{form.fields}}
+    {{ form.fields.label(class="form-label") }}
+    <a href="{{ url_for('main.field') }}" class="btn btn-secondary btn-sm py-0 ms-1">Edit</a>
+    {{ form.fields(style = "list-style-type: none;  margin: 0; padding: 0;") }} <br>
 
-    {{form.languages.label(class="form-label")}} <p style="display: inline;">Incomplete? <a href="{{url_for('main.language')}}">Click to add more.</a></p>
-    {{form.languages}}
+    {{ form.languages.label(class="form-label") }}
+    <a href="{{ url_for('main.language') }}" class="btn btn-secondary btn-sm py-0 ms-1">Edit</a>
+    {{ form.languages(class = "checkbox-fix") }} <br>
+
 
     {{form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
 </form>

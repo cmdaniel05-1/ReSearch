@@ -103,6 +103,20 @@ class Student(User):
             db.session.add(new_application)
             db.session.commit()
 
+    def withdraw(self, position):
+        if self.is_applied(position):
+            application = db.session.scalars(
+                self.applications.select().where(
+                    Application.position_id == position.id,
+                    Application.student_id == self.id
+                )).first()
+        
+            if application:  # Ensure application exists before deletion
+                db.session.delete(application)
+                db.session.commit()
+
+            
+
     def get_applications(self):
         return db.session.scalars(self.applications.select()).all()
 
@@ -111,6 +125,7 @@ class Faculty(User):
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')
+    reference_requests : sqlo.WriteOnlyMapped['Application'] = sqlo.relationship(back_populates='reference')
 
     __mapper_args__ = {
         'polymorphic_identity': 'faculty',
@@ -141,16 +156,19 @@ class Position(db.Model):
 class Application(db.Model):
     student_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Student.id), primary_key=True)
     position_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Position.id), primary_key=True)
+    reference_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Faculty.id), primary_key=True)
     faculty_responded : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Boolean, default=False)
     is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=False)
+    statement : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(500))
 
     # Relationships
     student_applied : sqlo.Mapped[Student] = sqlo.relationship(back_populates='applications')
     applied_position : sqlo.Mapped[Position] = sqlo.relationship(back_populates='applicants')
+    reference : sqlo.Mapped[Faculty] = sqlo.relationship(back_populates='reference_requests')
 
 class Field(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100), unique=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(
@@ -164,7 +182,7 @@ class Field(db.Model):
 
 class Language(db.Model):
     id : sqlo.Mapped[int] = sqlo.mapped_column(primary_key=True)
-    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100))
+    name : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(100), unique=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(
