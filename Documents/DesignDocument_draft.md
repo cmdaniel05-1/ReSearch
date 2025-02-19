@@ -131,5 +131,5 @@ Pictured above is our UI Mockup. Every page includes a clear header and footer w
 
 
 # 3. References
-- Project Requirements Document, Sakire Aslan Ay
-- Week4 - System Level Design.pdf, Sakire Aslan Ay
+- Project Requirements Document, Sakire Arslan Ay
+- Week4 - System Level Design.pdf, Sakire Arslan Ay
