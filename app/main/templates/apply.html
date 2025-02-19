@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Create Research Position</h1>
+
+{% if form %}
+<form action="{{url_for('main.apply', position_id = position_id)}}" method="post" class = "mt-4">
+    {{ form.hidden_tag() }}
+
+    {{ form.statement.label(class="form-label") }}<br>
+    {{ form.statement(class="forminput form-text") }}<br>
+    {% for error in form.statement.errors%}
+    <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}<br>
+    
+    <h1>Give a faculty Reference</h1><br>
+
+    {{ form.firstname.label(class = "form-text") }}<br>
+    {{ form.firstname(class="forminput form-text") }}<br>
+    {% for error in form.firstname.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{ form.lastname.label(class = "form-text") }}<br>
+    {{ form.lastname(class="forminput form-text") }}<br>
+    {% for error in form.lastname.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{ form.email.label(class = "form-text") }}<br>
+    {{ form.email(class="forminput form-text") }}<br>
+    {% for error in form.email.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
+</form>
+{% endif %}
+
+{% endblock %}

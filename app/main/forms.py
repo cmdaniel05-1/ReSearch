@@ -115,3 +115,17 @@ class FacultyEditForm(EditForm):
 
 class EmptyForm(FlaskForm):
     submit = SubmitField('Submit')
+
+class ApplicationForm(FlaskForm):
+    statement = TextAreaField('Why are you interested in this position and what do you hope to gain?', [Length(min = 1, max = 500)])
+    firstname = StringField('First Name',validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+    def validate_email(self, email):
+        theuser = Faculty.query.filter_by(email=email.data).first()
+        if theuser:
+            return
+        else:
+            raise ValidationError('No Faculty with that email exists.')

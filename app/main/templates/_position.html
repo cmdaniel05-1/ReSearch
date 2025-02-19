@@ -57,10 +57,7 @@
                 </span>
             </p>
                 {% if current_user.is_applied(p) == False %}
-                <form action="{{url_for('main.apply', position_id = p.id)}}" method= "POST">
-                    {{ form.hidden_tag() }}
-                    {{ form.submit(value='Apply', class='btn btn-secondary') }}
-                </form>
+                <a class='btn btn-secondary' href="{{url_for('main.apply', position_id = p.id)}}">Apply</a>
                 {% else %}
                 <form action="{{url_for('main.withdraw', position_id = p.id)}}" method= "POST">
                     {{ form.hidden_tag() }}

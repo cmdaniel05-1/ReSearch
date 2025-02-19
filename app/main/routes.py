@@ -3,8 +3,8 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm
-from app.main.models import Position, Field, Language, Student, User
+from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm
+from app.main.models import Position, Field, Language, Student, User, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -148,19 +148,25 @@ def edit_profile():
             form.languages.data = current_user.languages
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
 
-@main.route('/apply/<position_id>', methods=['POST'])
+@main.route('/application/create/<position_id>', methods=['GET', 'POST'])
 @login_required
 def apply(position_id):
     if current_user.type == 'faculty':
         return redirect(url_for('main.index'))
-    theposition = db.session.get(Position, position_id)
-    if theposition is None:
-        flash('No such position exists')
+    form = ApplicationForm()
+    if form.validate_on_submit():
+        reference = Faculty.query.filter(Faculty.email == form.email.data).first()
+        if reference.firstname != form.firstname.data or reference.lastname != form.lastname.data:
+            flash('Reference email does not match name.')
+            return redirect(url_for('main.apply', position_id = position_id))
+        theposition = db.session.get(Position, position_id)
+        if theposition is None:
+            flash('No such position exists')
+            return redirect(url_for('main.index'))
+        current_user.apply(theposition, reference, form.statement.data)
+        flash('You have applied to {}.'.format(theposition.title))
         return redirect(url_for('main.index'))
-    current_user.apply(theposition)
-    db.session.commit()
-    flash('You have applied to {}'.format(theposition.title))
-    return redirect(url_for('main.index'))
+    return render_template('apply.html', title = 'Apply', form = form, position_id = position_id)
 
 @main.route('/withdraw/<position_id>', methods=['POST'])
 @login_required
