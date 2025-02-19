@@ -6,7 +6,9 @@
 <div class="container mt-4">
     <h2>Research Positions</h2>
     {% for p in positions %}
+    {% if p.faculty.username == current_user.username or current_user %}
         {% include '_position.html' %}
+    {% endif %}
     {% endfor %}
 </div>
 
