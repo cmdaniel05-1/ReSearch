@@ -55,10 +55,10 @@ The tables in our Model are: User, Student, Faculty, Position, Field, and Langua
 
 ## 2.2 Modules and Interfaces
 ### 2.2.1 Overview
-Students are in fields; examples include Biotechnology and Computer Science. Positions each require fields, and Students apply for positions. Faculty make positions. There is no direct faculty-student link, each will just be associated with a related position. However, since students and faculty are very similar, they both inherit from a larger User class.
-
-UML COMPONENT DIAGRAM NEEDED HERE
-
+<kbd>
+  <img src = "images/uml_component_diagram.png" border = "2">
+</kdb>
+Our application is very similar in structure to smile app. There exist three blueprints: main, auth, and errors. Auth handles authentication, such as logging in, registering, and using Azure SSO. Errors provides error templates for the website. Main contains the remaining functionality all users. Since there is significant overlap in faculty and student use cases, we chose to keep them integrated instead of separating them into two classes. This prevents duplication of code. Main connects with our model, which uses SQL Lite 3 db.
 
 ### 2.2.2 Interfaces
 #### 2.2.2.1 \<Auth> Routes
@@ -71,20 +71,20 @@ UML COMPONENT DIAGRAM NEEDED HERE
 #### 2.2.2.2 \<Main> Routes
 | | Methods | URL Path | Description |
 |:--|:------------------|:-----------|:-------------|
-|1. | Get|/index |The main route where users can view projects. |
-|2. |Get, Post |/position/create |Faculty create research positions |
-|3. |Get, Post |/field/edit |Faculty can create, edit, or remove research fields.|
-|4. |Get, Post |/language/edit |Faculty can create, edit, or remove languages.|
-|5. |Get, Post |/profile/<user_id_> |Users can view their own profile. Faculty can view others' profiles and accept/reject recommendations.|
-|6. |Get, Post |/profile/edit |Users can edit their own profile.|
-|7. |Get, Post |/positions/faculty | Students can view the positions they have applied to and those they have been accepted for.|
-|8. |Get |/positions/student |allows student to see their accepted and applied to positions |
-|9. |Post |/faculty/recommend/<student_id> | Faculty can submit a recommendation for a student.|
-|10. |Get| /application/view/<application_id> | Faculty can view student applications|
-|11. |Get, Post |/application/create/<position_id> | Students can submit an application for a position. |
-|12. |Get, Post |/application/accept/<application_id> | Faculty can accept a student application. |
-|13. |Get, Post |/application/reject/<application_id> | Faculty can reject a student application. |
-|14. |Post |application/withdraw/<position_id> | Students can withdraw their application from a research position.|
+|1. | Get | /index | The main route where users can view projects. |
+|2. | Get, Post | /position/creation | Faculty create research positions. |
+|3. | Get, Post | /field/<field_id>/edit | Faculty create, edit, or remove research fields. |
+|4. | Get, Post | /language/<language_id>/edit | Faculty create, edit, or remove languages. |
+|5. | Get, Post | /profile/<user_id> | Users view their own profile. Faculty view others' profiles and accept/reject recommendations. |
+|6. | Get, Post | /profile/<user_id>/edit | Users edit their own profile. |
+|7. | Get, Post | /positions/faculty | Students view the positions they have applied to and those they have been accepted for. |
+|8. | Get | /positions/student | Students see their accepted and applied to positions. |
+|9. | Post | /faculty/recommendation/<student_id> | Faculty submit a recommendation for a student. |
+|10. | Get | /application/<application_id>/view | Faculty view student applications. |
+|11. | Get, Post | /application/<position_id>/submission | Students submit an application for a position. |
+|12. | Get, Post | /application/<application_id>/approval | Faculty accept a student application. |
+|13. | Get, Post | /application/<application_id>/rejection | Faculty reject a student application. |
+|14. | Post | /application/<position_id>/withdrawal | Students withdraw their application from a research position. |
 
 
 ### 2.3 User Interface Design
@@ -130,4 +130,5 @@ Pictured above is our UI Mockup. Every page includes a clear header and footer w
 
 
 # 3. References
-Project Requirements Document, Sakire Aslan Ay
+- Project Requirements Document, Sakire Arslan Ay
+- Week4 - System Level Design.pdf, Sakire Arslan Ay

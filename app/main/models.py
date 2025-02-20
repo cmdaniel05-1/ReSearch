@@ -97,9 +97,12 @@ class Student(User):
         result = db.session.scalars(self.applications.select().where(Application.position_id == position.id)).first()
         return result is not None
 
-    def apply(self, new_position):
+    def apply(self, new_position, reference, statement):
         if not self.is_applied(new_position):
-            new_application = Application(position_id = new_position.id, student_id = self.id)
+            new_application = Application(position_id = new_position.id,
+                                          student_id = self.id,
+                                          reference_id = reference.id,
+                                          statement = statement)
             db.session.add(new_application)
             db.session.commit()
 

@@ -1,0 +1,40 @@
+
+
+{% block content %}
+
+{% if application_form %}
+<form action="{{url_for('main.apply', position_id = p.id)}}" method="post" class = "mt-4">
+    {{ application_form.hidden_tag() }}
+
+    <p>Interest</p>
+    {{ application_form.statement.label(class="form-text") }}<br>
+    {{ application_form.statement(class="forminput form-text", style = "width: 100%") }}<br>
+    {% for error in application_form.statement.errors%}
+    <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+    
+    <p>Request Faculty Reference</p>
+
+    {{ application_form.firstname.label(class = "form-text") }}<br>
+    {{ application_form.firstname(class="forminput form-text", style = "width: 100%") }}<br>
+    {% for error in application_form.firstname.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{ application_form.lastname.label(class = "form-text") }}<br>
+    {{ application_form.lastname(class="forminput form-text", style = "width: 100%") }}<br>
+    {% for error in application_form.lastname.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{ application_form.email.label(class = "form-text") }}<br>
+    {{ application_form.email(class="forminput form-text", style = "width: 100%") }}<br>
+    {% for error in application_form.email.errors%}
+        <span style="color: red"> [{{error}}]</span><br>
+    {% endfor %}
+
+    {{application_form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
+</form>
+
+{% endif %}
+{% endblock %}
