@@ -80,10 +80,10 @@ Our application is very similar in structure to smile app. There exist three blu
 |7. | Get, Post | /positions/faculty | Students view the positions they have applied to and those they have been accepted for. |
 |8. | Get | /positions/student | Students see their accepted and applied to positions. |
 |9. | Post | /faculty/recommendation/<student_id> | Faculty submit a recommendation for a student. |
-|10. | Get | /application/<application_id>/view | Faculty view student applications. |
+|10. | Get | /application/<position_id>/<student_id>/view | Faculty view student applications. |
 |11. | Get, Post | /application/<position_id>/submission | Students submit an application for a position. |
-|12. | Get, Post | /application/<application_id>/approval | Faculty accept a student application. |
-|13. | Get, Post | /application/<application_id>/rejection | Faculty reject a student application. |
+|12. | Get, Post | /application/<position_id>/<student_id>/approval | Faculty accept a student application. |
+|13. | Get, Post | /application/<position_id>/<student_id>/rejection | Faculty reject a student application. |
 |14. | Post | /application/<position_id>/withdrawal | Students withdraw their application from a research position. |
 
 
