@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for, request
+from flask import render_template, redirect, flash, session, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
@@ -14,9 +14,10 @@ from flask_login import current_user, login_required
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
-    form = EmptyForm()
+    empty_form = EmptyForm()
+    application_form = ApplicationForm()
     positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
-    return render_template('index.html', positions = positions, form = form)
+    return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form)
 
 @main.route('/create/position', methods=['GET', 'POST'])
 @login_required
@@ -148,25 +149,43 @@ def edit_profile():
             form.languages.data = current_user.languages
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
 
-@main.route('/application/create/<position_id>', methods=['GET', 'POST'])
+@main.route('/application/create/<position_id>', methods=['POST'])
 @login_required
 def apply(position_id):
     if current_user.type == 'faculty':
         return redirect(url_for('main.index'))
-    form = ApplicationForm()
+    
+    # Access the form data directly from the request
+    form = ApplicationForm(request.form)
+
+    #variables for redirect
+    empty_form = EmptyForm()
+    positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
+    
     if form.validate_on_submit():
         reference = Faculty.query.filter(Faculty.email == form.email.data).first()
-        if reference.firstname != form.firstname.data or reference.lastname != form.lastname.data:
+        
+        # Check if the reference exists and matches the first and last names
+        if reference is None or reference.firstname != form.firstname.data or reference.lastname != form.lastname.data:
             flash('Reference email does not match name.')
-            return redirect(url_for('main.apply', position_id = position_id))
+            return redirect(url_for('main.index')) 
+        
         theposition = db.session.get(Position, position_id)
+        
         if theposition is None:
             flash('No such position exists')
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.index')) 
+        
         current_user.apply(theposition, reference, form.statement.data)
         flash('You have applied to {}.'.format(theposition.title))
         return redirect(url_for('main.index'))
-    return render_template('apply.html', title = 'Apply', form = form, position_id = position_id)
+    
+    for field, errors in form.errors.items():
+            for error in errors:
+                flash(f'Error in {field}: {error}')
+                
+    return redirect(url_for('main.index')) 
+
 
 @main.route('/withdraw/<position_id>', methods=['POST'])
 @login_required
