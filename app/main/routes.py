@@ -1,10 +1,10 @@
-from flask import render_template, redirect, flash, session, url_for, request
+from flask import jsonify, render_template, redirect, flash, session, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm
-from app.main.models import Position, Field, Language, Student, User, Faculty
+from app.main.models import Application, Position, Field, Language, Student, User, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -201,7 +201,7 @@ def withdraw(position_id):
     flash('You have withdrawn from {}'.format(theposition.title))
     return redirect(request.referrer)
 
-@main.route('/applications/<student_id>', methods=['GET'])
+@main.route('/applications/<student_id>/view', methods=['GET'])
 @login_required
 def view_applications(student_id):
     student = db.session.get(Student, student_id)

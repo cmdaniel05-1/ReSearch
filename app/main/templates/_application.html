@@ -1,0 +1,13 @@
+
+{% block content %}
+    <p>Interest</p>
+    {{application.statement}}
+    
+    <p>Faculty Reference</p>
+    {{application.reference.firstname}}
+    {{application.reference.lastname}}
+    {{application.reference.email}}
+</form>
+
+{% endif %}
+{% endblock %}
