@@ -73,11 +73,11 @@ Our application is very similar in structure to smile app. There exist three blu
 |:--|:------------------|:-----------|:-------------|
 |1. | Get | /index | The main route where users can view projects. |
 |2. | Get, Post | /position/creation | Faculty create research positions. |
-|3. | Get, Post | /field/<field_id>/edit | Faculty create, edit, or remove research fields. |
-|4. | Get, Post | /language/<language_id>/edit | Faculty create, edit, or remove languages. |
+|3. | Get, Post | /field/edit | Faculty create, edit, or remove research fields. |
+|4. | Get, Post | /language/edit | Faculty create, edit, or remove languages. |
 |5. | Get, Post | /profile/<user_id> | Users view their own profile. Faculty view others' profiles and accept/reject recommendations. |
-|6. | Get, Post | /profile/<user_id>/edit | Users edit their own profile. |
-|7. | Get, Post | /positions/faculty | Students view the positions they have applied to and those they have been accepted for. |
+|6. | Get, Post | /profile/edit | Users edit their own profile. |
+|7. | Get, Post | /applications/<student_id>/view | Students view the positions they have applied to and those they have been accepted for. |
 |8. | Get | /positions/student | Students see their accepted and applied to positions. |
 |9. | Post | /faculty/recommendation/<student_id> | Faculty submit a recommendation for a student. |
 |10. | Get | /application/<position_id>/<student_id>/view | Faculty view student applications. |
