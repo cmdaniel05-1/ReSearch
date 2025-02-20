@@ -1,4 +1,6 @@
-from flask import jsonify, render_template, redirect, flash, session, url_for, request
+from email.mime import application
+from turtle import pos
+from flask import app, jsonify, render_template, redirect, flash, session, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
@@ -205,6 +207,15 @@ def withdraw(position_id):
 @login_required
 def view_applications(student_id):
     student = db.session.get(Student, student_id)
-    applications = student.get_applications()
     form = EmptyForm()
     return render_template('applications.html', title = 'Applications', form = form)
+
+
+@main.route('/application/<position_id>/<student_id>/view', methods=['GET'])
+@login_required
+def view_application(position_id, student_id):
+    application = db.session.query(Application).filter(
+        Application.position_id == position_id,
+        Application.student_id == student_id
+    ).first() 
+    return render_template('application.html', application = application)

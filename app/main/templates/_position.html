@@ -71,7 +71,7 @@
             <p><strong>Applying Student(s):</strong>
             <div class = "border border-1 mt-1 mb-1 p-2 rounded-2">
                     {% for application in p.applicants %}
-                    <a href="{{ url_for('main.profile_id', username=application.student_applied.username) }}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
+                    <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
                         {{application.student_applied.firstname + " " + application.student_applied.lastname}}
                     </a>
                     {% endfor %}
