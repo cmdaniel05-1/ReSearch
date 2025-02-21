@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Application Details</h4>
+        </div>
+        <div class="card-body">
+
+            <div class="mb-4">
+                <h5 class="card-title">Student</h5>
+                <a href="{{ url_for('main.profile_id', username=application.student_applied.username)}}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
+                    {{application.student_applied.firstname + " " + application.student_applied.lastname}}
+                </a>
+            </div>
+
+            <div class="mb-4">
+                <h5 class="card-title">Position</h5>
+                <p>{{ application.applied_position.title }}</p>
+            </div>
+
+            <div class="mb-4">
+                <h5 class="card-title">Interest</h5>
+                <p>{{ application.statement }}</p>
+            </div>
+            <div class="mb-4">
+                <h5 class="card-title">Faculty Reference</h5>
+                <p><strong>Name:</strong> {{ application.reference.firstname }} {{ application.reference.lastname }}</p>
+                <p><strong>Email:</strong> <a href="mailto:{{ application.reference.email }}">{{ application.reference.email }}</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

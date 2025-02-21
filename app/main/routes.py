@@ -1,10 +1,12 @@
-from flask import render_template, redirect, flash, session, url_for, request
+from email.mime import application
+from turtle import pos
+from flask import app, jsonify, render_template, redirect, flash, session, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm
-from app.main.models import Position, Field, Language, Student, User, Faculty
+from app.main.models import Application, Position, Field, Language, Student, User, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -19,7 +21,7 @@ def index():
     positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form)
 
-@main.route('/create/position', methods=['GET', 'POST'])
+@main.route('/position/creation', methods=['GET', 'POST'])
 @login_required
 def create():
     if current_user.type == 'student':
@@ -43,7 +45,7 @@ def create():
         return redirect(url_for('main.index'))
     return render_template('create.html', form = form)
 
-@main.route('/edit/field', methods=['GET', 'POST'])
+@main.route('/field/edit', methods=['GET', 'POST'])
 @login_required
 def field():
     if current_user.type == 'student':
@@ -66,7 +68,7 @@ def field():
     return render_template('field.html', createform = createform, deleteform = deleteform, fields = fields)
 
 
-@main.route('/edit/language', methods=['GET', 'POST'])
+@main.route('/language/edit', methods=['GET', 'POST'])
 @login_required
 def language():
     if current_user.type == 'student':
@@ -149,7 +151,7 @@ def edit_profile():
             form.languages.data = current_user.languages
     return render_template('edit_profile.html', title = 'Edit Profile', form = form)
 
-@main.route('/application/create/<position_id>', methods=['POST'])
+@main.route('/application/<position_id>/submission', methods=['POST'])
 @login_required
 def apply(position_id):
     if current_user.type == 'faculty':
@@ -187,7 +189,7 @@ def apply(position_id):
     return redirect(url_for('main.index')) 
 
 
-@main.route('/withdraw/<position_id>', methods=['POST'])
+@main.route('/application/<position_id>/withdrawal', methods=['POST'])
 @login_required
 def withdraw(position_id):
     if current_user.type == 'faculty':
@@ -201,10 +203,19 @@ def withdraw(position_id):
     flash('You have withdrawn from {}'.format(theposition.title))
     return redirect(request.referrer)
 
-@main.route('/applications/<student_id>', methods=['GET'])
+@main.route('/applications/<student_id>/view', methods=['GET'])
 @login_required
 def view_applications(student_id):
     student = db.session.get(Student, student_id)
-    applications = student.get_applications()
     form = EmptyForm()
     return render_template('applications.html', title = 'Applications', form = form)
+
+
+@main.route('/application/<position_id>/<student_id>/view', methods=['GET'])
+@login_required
+def view_application(position_id, student_id):
+    application = db.session.query(Application).filter(
+        Application.position_id == position_id,
+        Application.student_id == student_id
+    ).first() 
+    return render_template('application.html', application = application)

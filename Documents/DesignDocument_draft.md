@@ -57,7 +57,7 @@ The tables in our Model are: User, Student, Faculty, Position, Field, and Langua
 ### 2.2.1 Overview
 <kbd>
   <img src = "images/uml_component_diagram.png" border = "2">
-</kdb>
+</kbd>
 Our application is very similar in structure to smile app. There exist three blueprints: main, auth, and errors. Auth handles authentication, such as logging in, registering, and using Azure SSO. Errors provides error templates for the website. Main contains the remaining functionality all users. Since there is significant overlap in faculty and student use cases, we chose to keep them integrated instead of separating them into two classes. This prevents duplication of code. Main connects with our model, which uses SQL Lite 3 db.
 
 ### 2.2.2 Interfaces
@@ -73,17 +73,17 @@ Our application is very similar in structure to smile app. There exist three blu
 |:--|:------------------|:-----------|:-------------|
 |1. | Get | /index | The main route where users can view projects. |
 |2. | Get, Post | /position/creation | Faculty create research positions. |
-|3. | Get, Post | /field/<field_id>/edit | Faculty create, edit, or remove research fields. |
-|4. | Get, Post | /language/<language_id>/edit | Faculty create, edit, or remove languages. |
+|3. | Get, Post | /field/edit | Faculty create, edit, or remove research fields. |
+|4. | Get, Post | /language/edit | Faculty create, edit, or remove languages. |
 |5. | Get, Post | /profile/<user_id> | Users view their own profile. Faculty view others' profiles and accept/reject recommendations. |
-|6. | Get, Post | /profile/<user_id>/edit | Users edit their own profile. |
-|7. | Get, Post | /positions/faculty | Students view the positions they have applied to and those they have been accepted for. |
+|6. | Get, Post | /profile/edit | Users edit their own profile. |
+|7. | Get, Post | /applications/<student_id>/view | Students view the positions they have applied to and those they have been accepted for. |
 |8. | Get | /positions/student | Students see their accepted and applied to positions. |
 |9. | Post | /faculty/recommendation/<student_id> | Faculty submit a recommendation for a student. |
-|10. | Get | /application/<application_id>/view | Faculty view student applications. |
+|10. | Get | /application/<position_id>/<student_id>/view | Faculty view student applications. |
 |11. | Get, Post | /application/<position_id>/submission | Students submit an application for a position. |
-|12. | Get, Post | /application/<application_id>/approval | Faculty accept a student application. |
-|13. | Get, Post | /application/<application_id>/rejection | Faculty reject a student application. |
+|12. | Get, Post | /application/<position_id>/<student_id>/approval | Faculty accept a student application. |
+|13. | Get, Post | /application/<position_id>/<student_id>/rejection | Faculty reject a student application. |
 |14. | Post | /application/<position_id>/withdrawal | Students withdraw their application from a research position. |
 
 

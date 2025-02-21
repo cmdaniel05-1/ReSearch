@@ -38,24 +38,25 @@
             <p><strong>Time Commitment:</strong> {{p.req_time}} hours per week</p>
             <p><strong>Research Field(s):</strong>
                 {% for f in p.fields %}
-                <span class="rounded-pill border border-1 m-1 p-2">
+                <span class="rounded-pill border border-1 m-1 p-2" style="background-color: #F8F9FA;">
                     {{f.name}}
                 </span>
                 {% endfor %}
             </p>
             <p><strong>Programming Experience Required:</strong>
                 {% for l in p.languages %}
-                <span class="rounded-pill border border-1 m-1 p-2">
+                <span class="rounded-pill border border-1 m-1 p-2" style="background-color: #F8F9FA;">
                     {{l.name}}
                 </span>
                 {% endfor %}
             </p>
-            {% if current_user.type == 'student' %}
+            
             <p><strong>Faculty Member:</strong>
-                <span class="rounded-pill border border-1 m-1 p-2">
+                <span class="rounded-pill border border-1 m-1 p-2" style="background-color: #F8F9FA;">
                     {{p.faculty.firstname}} {{p.faculty.lastname}}
                 </span>
             </p>
+            {% if current_user.type == 'student' %}
                 {% if current_user.is_applied(p) == False %}
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#applyModal_{{ p.id }}">
                     Apply
@@ -68,11 +69,13 @@
                 {% endif %}
             {% elif current_user.type == 'faculty' %}
             <p><strong>Applying Student(s):</strong>
-                {% for s in p.students %}
-                <span class="rounded-pill border border-1 m-1 p-2">
-                    {{s.name}}
-                </span>
-                {% endfor %}
+            <div class = "border border-1 mt-1 mb-1 p-2 rounded-2">
+                    {% for application in p.applicants %}
+                    <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
+                        {{application.student_applied.firstname + " " + application.student_applied.lastname}}
+                    </a>
+                    {% endfor %}
+            </div>
             </p>
             {% endif %}
         </div>

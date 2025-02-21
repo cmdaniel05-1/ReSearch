@@ -79,7 +79,7 @@ class Student(User):
 
 
     # Relationships
-    applications : sqlo.WriteOnlyMapped['Application'] = sqlo.relationship(back_populates='student_applied')
+    applications : sqlo.Mapped[list['Application']] = sqlo.relationship(back_populates='student_applied')
     languages : sqlo.Mapped[list['Language']] = sqlo.relationship(
         secondary = student_languages,
         back_populates = 'students'
@@ -94,8 +94,12 @@ class Student(User):
     }
 
     def is_applied(self, position):
-        result = db.session.scalars(self.applications.select().where(Application.position_id == position.id)).first()
+        result = db.session.query(Application).filter(
+            Application.student_id == self.id,
+            Application.position_id == position.id
+        ).first()
         return result is not None
+
 
     def apply(self, new_position, reference, statement):
         if not self.is_applied(new_position):
@@ -108,27 +112,26 @@ class Student(User):
 
     def withdraw(self, position):
         if self.is_applied(position):
-            application = db.session.scalars(
-                self.applications.select().where(
-                    Application.position_id == position.id,
-                    Application.student_id == self.id
-                )).first()
+            application = db.session.query(Application).filter(
+                Application.position_id == position.id,
+                Application.student_id == self.id
+            ).first()
         
             if application:  # Ensure application exists before deletion
                 db.session.delete(application)
                 db.session.commit()
 
-            
-
     def get_applications(self):
-        return db.session.scalars(self.applications.select()).all()
+        # Query the Application table and filter by student_id
+        return db.session.query(Application).filter(Application.student_id == self.id).all()
+
 
 class Faculty(User):
     id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer, sqla.ForeignKey('user.id'), primary_key=True)
 
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')
-    reference_requests : sqlo.WriteOnlyMapped['Application'] = sqlo.relationship(back_populates='reference')
+    reference_requests : sqlo.Mapped['Application'] = sqlo.relationship(back_populates='reference')
 
     __mapper_args__ = {
         'polymorphic_identity': 'faculty',
@@ -145,7 +148,7 @@ class Position(db.Model):
     student_count : sqlo.Mapped[int] = sqlo.mapped_column(sqla.Integer)
 
     # Relationships
-    applicants : sqlo.WriteOnlyMapped['Application'] = sqlo.relationship(back_populates='applied_position')
+    applicants : sqlo.Mapped[list['Application']] = sqlo.relationship(back_populates='applied_position')
     faculty : sqlo.Mapped[Faculty] = sqlo.relationship(back_populates='positions')
     fields : sqlo.Mapped[list['Field']] = sqlo.relationship(
         secondary = position_fields,
