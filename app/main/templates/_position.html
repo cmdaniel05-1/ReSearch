@@ -15,7 +15,7 @@
                 {% set application = current_user.get_applications() | selectattr("position_id", "equalto", p.id) | list | first %}
                 
                 {% if application %}
-                    {% if not application.faculty_responded %}
+                    {% if application.is_accepted == None %}
                         <span class="status-tag pending">Pending</span>
                     {% elif application.is_accepted %}
                         <span class="status-tag accepted">Accepted</span>

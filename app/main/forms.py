@@ -1,6 +1,7 @@
 
+from flask.debughelpers import _dump_loader_info
 from flask_wtf import FlaskForm
-from wtforms import FloatField, StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
+from wtforms import FloatField, SelectField, StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
 from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email, Optional
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
@@ -129,3 +130,16 @@ class ApplicationForm(FlaskForm):
             return
         else:
             raise ValidationError('No Faculty with that email exists.')
+        
+class UpdateStatusForm(FlaskForm):
+     status = SelectField('Select an option:', 
+                          choices=[('Approve', 'Approve'), ('Pending', 'Pending'), ('Reject', 'Reject'), ('', 'Select an option')], 
+                          validators=[DataRequired()],
+                          default='')
+     submit = SubmitField('Submit')
+
+     def validate_status(self, field):
+         if field.data == '':
+            raise ValidationError("Please choose a valid option")
+             
+        

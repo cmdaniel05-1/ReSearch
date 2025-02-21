@@ -5,7 +5,7 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm
+from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm, UpdateStatusForm
 from app.main.models import Application, Position, Field, Language, Student, User, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
@@ -214,8 +214,43 @@ def view_applications(student_id):
 @main.route('/application/<position_id>/<student_id>/view', methods=['GET'])
 @login_required
 def view_application(position_id, student_id):
+    if current_user.type == "student":
+        return redirect(url_for('main.index'))
+    form = UpdateStatusForm()
     application = db.session.query(Application).filter(
-        Application.position_id == position_id,
-        Application.student_id == student_id
-    ).first() 
-    return render_template('application.html', application = application)
+            Application.position_id == position_id,
+            Application.student_id == student_id
+        ).first() 
+    if application == None:
+        flash("This application does not exist")
+        return redirect(url_for('main.index'))
+    
+    return render_template('application.html', application = application, form = form)
+
+@main.route('/application/<position_id>/<student_id>/update',  methods = ['POST'])
+@login_required
+def update_status(position_id, student_id):
+    if current_user.type == "student":
+        return redirect(url_for('main.index'))
+    
+    application = db.session.query(Application).filter(
+            Application.position_id == position_id,
+            Application.student_id == student_id
+        ).first() 
+    if application == None:
+        flash("This application does not exist")
+        return redirect(url_for('main.index'))
+    form = UpdateStatusForm(request.form)
+    if form.validate_on_submit():
+        if form.status.data == "Approve":
+            application.is_accepted = True
+        elif form.status.data == "Pending":
+            application.is_accepted = None
+        else:
+            application.is_accepted = False
+        db.session.add(application)
+        db.session.commit()
+        flash("Application status successfully updated")
+    else:
+        flash("Application status not updated, please check form input")
+    return redirect(url_for("main.view_application", position_id = position_id, student_id = student_id))

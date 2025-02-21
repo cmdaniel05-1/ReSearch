@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="card">
-        <div class="card-header">
-            <h4>Application Details</h4>
-        </div>
+        <div class="card-header d-flex align-items-center">
+            <h4 class="mb-0" style="display: inline;">Application Details</h4>
+            <a href="{{ url_for('main.profile_id', username=application.student_applied.username)}}" class="btn btn-light rounded-pill border border-1 m-1 ms-2">
+                {{application.student_applied.firstname + " " + application.student_applied.lastname}}
+            </a>
+        </div>        
         <div class="card-body">
-
-            <div class="mb-4">
-                <h5 class="card-title">Student</h5>
-                <a href="{{ url_for('main.profile_id', username=application.student_applied.username)}}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
-                    {{application.student_applied.firstname + " " + application.student_applied.lastname}}
-                </a>
-            </div>
 
             <div class="mb-4">
                 <h5 class="card-title">Position</h5>
@@ -28,6 +24,31 @@
                 <h5 class="card-title">Faculty Reference</h5>
                 <p><strong>Name:</strong> {{ application.reference.firstname }} {{ application.reference.lastname }}</p>
                 <p><strong>Email:</strong> <a href="mailto:{{ application.reference.email }}">{{ application.reference.email }}</a></p>
+            </div>
+
+            <div class="mb-1">
+                <h5 class="card-title">Update Status
+                    <span class = "ms-2">
+                        {% if application.is_accepted == None %}
+                            <span class="status-tag pending">Pending</span>
+                        {% elif application.is_accepted %}
+                            <span class="status-tag accepted">Accepted</span>
+                        {% else %}
+                            <span class="status-tag rejected">Rejected</span>
+                        {% endif %}
+                    </span>
+                </h5>
+
+                <form action="{{url_for('main.update_status', position_id = application.position_id, student_id = application.student_id)}}" method= "POST">
+                    {{ form.hidden_tag() }}
+                    
+                    {{ form.status(class="forminput form-text", style = "width: 200px") }}<br>
+                    {% for error in form.status.errors%}
+                        <span style="color: red"> [{{error}}]</span><br>
+                    {% endfor %}
+
+                    {{ form.submit(value='Update Status', class='btn btn-danger mt-3') }}
+                </form>
             </div>
         </div>
     </div>
