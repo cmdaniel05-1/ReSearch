@@ -20,7 +20,7 @@
 
 <body class = "d-flex flex-column min-vh-100">
 
-  <nav class="navbar navbar-light navbar-expand-lg" style="background-color: #ac2b37; height: 50px; position: relative; z-index: 1050;">
+  <nav class="navbar navbar-light navbar-expand-lg" style="background-color: #ac2b37; height: 60px; position: relative; z-index: 1050;">
     <div class="container">
       {% include '_wpi_svg.html' %}
       <a class="navbar-brand" href="{{ url_for('main.index') }}"
@@ -34,53 +34,49 @@
 
       <!-- Navbar items -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item btn btn-light">
-            <a class="nav-link" aria-current="page" href="{{ url_for('main.index') }}">Available Positions</a>
+        <ul class="navbar-nav me-auto mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{ url_for('main.index') }}">Available Positions</a>
           </li>
           {% if current_user.is_authenticated and current_user.type == 'faculty' %}
-          <li class="nav-item btn btn-light">
-            <a class="nav-link" aria-current="page" href="{{url_for('main.create')}}">Create Position</a>
+          <li class="nav-item">
+            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{url_for('main.create')}}">Create Position</a>
           </li>
           {% endif %}
         </ul>
-
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        
+        <ul class="navbar-nav ms-auto mb-lg-0">
           {% if current_user.is_authenticated %}
-          <li class="nav-item">
-            <span class="nav-link mb-0 text-white">Hi {{ current_user.username }}!</span>
-          </li>
-
-
-          <li class="nav-item dropdown btn btn-light">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+          <li class="nav-item dropdown">
+            <a class="nav-link btn btn-light custom-btn dropdown-toggle" href="#" id="navbarDropdown" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               My Info
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               {% if current_user.type == 'faculty' %}
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Faculty Profile</a></li>
+              <li><a class="dropdown-item btn btn-light custom-btn" href="{{url_for('main.profile')}}">Faculty Profile</a></li>
               {% else %}
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.profile')}}">Student Profile</a></li>
-              <li><a class="dropdown-item btn btn-light" href="{{url_for('main.view_applications', student_id = current_user.id)}}">My Applications</a></li>
+              <li><a class="dropdown-item btn btn-light custom-btn" href="{{url_for('main.profile')}}">Student Profile</a></li>
+              <li><a class="dropdown-item btn btn-light custom-btn" href="{{url_for('main.view_applications', student_id = current_user.id)}}">My Applications</a></li>
               {% endif %}
             </ul>
           </li>
-
-          <li class="nav-item btn btn-light">
-            <a class="nav-link" href="{{url_for('auth.logout')}}">Logout</a>
+        
+          <li class="nav-item">
+            <a class="nav-link btn btn-light custom-btn" href="{{url_for('auth.logout')}}">Logout</a>
           </li>
           {% else %}
-
-          <li class="nav-item btn btn-light">
-            <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+        
+          <li class="nav-item">
+            <a class="nav-link btn btn-light custom-btn" href="{{url_for('auth.login')}}">Login</a>
           </li>
-
-          <li class="nav-item btn btn-light">
-            <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
+        
+          <li class="nav-item">
+            <a class="nav-link btn btn-light custom-btn" href="{{url_for('auth.register')}}">Register</a>
           </li>
           {% endif %}
-        </ul>
+        </ul>        
+        
       </div>
     </div>
   </nav>

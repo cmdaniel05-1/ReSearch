@@ -72,15 +72,30 @@
 
 @media (max-width: 991px) {
     .navbar-collapse {
-        background-color: #ac2b37; /* Set the background color you want */
+        background-color: #ac2b37;
         position: absolute;
-        top: 50px; /* Adjust this if necessary to ensure it doesn't overlap other elements */
+        top: 60px;
         left: 0;
-        width: 100%; /* Ensure the menu is full width */
-        z-index: 1040; /* Ensure the menu is above other content */
+        width: 100%;
+        z-index: 1040;
     }
     
     .navbar-nav .nav-item a {
-        color: black; /* Change text color in the mobile menu */
+        color: black;
+        margin-bottom: 5px;
     }
+}
+
+.custom-btn {
+    background-color: white;
+    color: black;
+}
+
+.custom-btn:hover {
+    background-color: #d5d7d8;
+    color: black; 
+}
+
+.custom-btn:active {
+    background-color: #e2e6ea;
 }
