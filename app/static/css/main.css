@@ -72,11 +72,7 @@
 
 @media (max-width: 991px) {
     .navbar-collapse {
-        background-color: #ac2b37;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
+        background-image: linear-gradient(#ac2b37, #ac2b3869);
         z-index: 1040;
     }
     
@@ -84,7 +80,17 @@
         color: black;
         margin-bottom: 5px;
     }
+
+    .nav-link {
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+
+    .container-fluid{
+        padding: 0px;
+    }
 }
+
 
 .custom-btn {
     background-color: white;
