@@ -99,6 +99,14 @@ class Student(User):
             Application.position_id == position.id
         ).first()
         return result is not None
+    
+    #returns true if student is available
+    def is_available(self):
+        for application in self.applications:
+            if application.is_accepted:
+                return False
+        return True
+
 
 
     def apply(self, new_position, reference, statement):

@@ -8,6 +8,11 @@
             <a href="{{ url_for('main.profile_id', username=application.student_applied.username)}}" class="btn btn-light rounded-pill border border-1 m-1 ms-2">
                 {{application.student_applied.firstname + " " + application.student_applied.lastname}}
             </a>
+            {% if is_available %}
+                        <span class="status-tag pending ms-2">Student Available</span>
+            {% else %}
+                        <span class="status-tag rejected ms-2">Student Not Available</span>
+            {% endif %}
         </div>        
         <div class="card-body">
 

@@ -225,7 +225,7 @@ def view_application(position_id, student_id):
         flash("This application does not exist")
         return redirect(url_for('main.index'))
     
-    return render_template('application.html', application = application, form = form)
+    return render_template('application.html', application = application, form = form, is_available = application.student_applied.is_available())
 
 @main.route('/application/<position_id>/<student_id>/update',  methods = ['POST'])
 @login_required

@@ -18,7 +18,6 @@ def inject_user_type():
         "is_faculty": current_user.is_authenticated and current_user.type == 'Faculty',
         "is_student": current_user.is_authenticated and current_user.type == 'Student'
     }
-
     
 @app.before_request
 def initDB(*args, **kwargs):
