@@ -69,3 +69,18 @@
 .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.7);
 }
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: #ac2b37; /* Set the background color you want */
+        position: absolute;
+        top: 50px; /* Adjust this if necessary to ensure it doesn't overlap other elements */
+        left: 0;
+        width: 100%; /* Ensure the menu is full width */
+        z-index: 1040; /* Ensure the menu is above other content */
+    }
+    
+    .navbar-nav .nav-item a {
+        color: black; /* Change text color in the mobile menu */
+    }
+}
