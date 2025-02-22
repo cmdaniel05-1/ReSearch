@@ -48,10 +48,12 @@
 
 .accepted {
     background-color: #28a745;
+    color: white;
 }
 
 .rejected {
     background-color: #dc3545;
+    color: white;
 }
 
 .not-applied {

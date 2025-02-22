@@ -71,9 +71,17 @@
             <p><strong>Applying Student(s):</strong>
             <div class = "border border-1 mt-1 mb-1 p-2 rounded-2">
                     {% for application in p.applicants %}
-                    <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-pill border border-1 m-1 p-2">
+                    <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-4 border border-1 m-1 p-2">
                         {{application.student_applied.firstname + " " + application.student_applied.lastname}}
+                        {% if application.is_accepted == None %}
+                            <span class="status-tag pending p-1 ms-2">Pending</span>
+                        {% elif application.is_accepted %}
+                            <span class="status-tag accepted p-1 ms-2">Accepted</span>
+                        {% else %}
+                            <span class="status-tag rejected p-1 ms-2">Rejected</span>
+                        {% endif %}
                     </a>
+                    
                     {% endfor %}
             </div>
             </p>
