@@ -24,7 +24,7 @@ class DatabaseTestCase(unittest.TestCase):
         app = create_app()
         """ Test if a student can be created and retrieved """
         with app.app_context():
-            student = Student(wpi_id=123456, username="testuser", firstname="John", lastname="Doe", email="test@example.com")
+            student = Student(wpi_id=123456, username="testuser", firstname="John", lastname="Doe", email="test@example.com", phone_num = "7816662121")
             student.set_password("securepassword")
             db.session.add(student)
             db.session.commit()
