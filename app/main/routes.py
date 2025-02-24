@@ -242,12 +242,18 @@ def update_status(position_id, student_id):
         return redirect(url_for('main.index'))
     form = UpdateStatusForm(request.form)
     if form.validate_on_submit():
-        if form.status.data == "Approve":
+        if form.app_status.data == "Approve":
             application.app_is_accepted = True
-        elif form.status.data == "Pending":
+        elif form.app_status.data == "Pending":
             application.app_is_accepted = None
         else:
             application.app_is_accepted = False
+        if form.ref_status.data == "Approve":
+            application.ref_is_accepted = True
+        elif form.ref_status.data == "Pending":
+            application.ref_is_accepted = None
+        else:
+            application.ref_is_accepted = False
         db.session.add(application)
         db.session.commit()
         flash("Application status successfully updated")

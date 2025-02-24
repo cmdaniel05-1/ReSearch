@@ -132,7 +132,11 @@ class ApplicationForm(FlaskForm):
             raise ValidationError('No Faculty with that email exists.')
         
 class UpdateStatusForm(FlaskForm):
-     status = SelectField('Select an option:', 
+     app_status = SelectField('Select an option:', 
+                          choices=[('Approve', 'Approve'), ('Pending', 'Pending'), ('Reject', 'Reject'), ('', 'Select an option')], 
+                          validators=[DataRequired()],
+                          default='')
+     ref_status = SelectField('Select an option:', 
                           choices=[('Approve', 'Approve'), ('Pending', 'Pending'), ('Reject', 'Reject'), ('', 'Select an option')], 
                           validators=[DataRequired()],
                           default='')
