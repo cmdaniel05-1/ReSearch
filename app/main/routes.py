@@ -243,11 +243,11 @@ def update_status(position_id, student_id):
     form = UpdateStatusForm(request.form)
     if form.validate_on_submit():
         if form.status.data == "Approve":
-            application.is_accepted = True
+            application.app_is_accepted = True
         elif form.status.data == "Pending":
-            application.is_accepted = None
+            application.app_is_accepted = None
         else:
-            application.is_accepted = False
+            application.app_is_accepted = False
         db.session.add(application)
         db.session.commit()
         flash("Application status successfully updated")

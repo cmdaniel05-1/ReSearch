@@ -103,7 +103,7 @@ class Student(User):
     #returns true if student is available
     def is_available(self):
         for application in self.applications:
-            if application.is_accepted:
+            if application.app_is_accepted:
                 return False
         return True
 
@@ -170,9 +170,11 @@ class Position(db.Model):
 class Application(db.Model):
     student_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Student.id), primary_key=True)
     position_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Position.id), primary_key=True)
-    reference_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Faculty.id), primary_key=True)
-    is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=None, nullable=True)
+    app_is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=None, nullable=True)
     statement : sqlo.Mapped[str] = sqlo.mapped_column(sqla.String(500))
+
+    reference_id : sqlo.Mapped[int] = sqlo.mapped_column(sqla.ForeignKey(Faculty.id), primary_key=True)
+    ref_is_accepted : sqlo.Mapped[bool] = sqlo.mapped_column(sqla.Boolean, default=None, nullable=True)
 
     # Relationships
     student_applied : sqlo.Mapped[Student] = sqlo.relationship(back_populates='applications')

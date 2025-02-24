@@ -16,9 +16,9 @@
                 <span class="me-3">{{ application.applied_position.title }}</span>  {# Adds margin to separate title and status #}
                 
                 {% if current_user.is_authenticated and current_user.type == 'student' %}
-                    {% if not application.faculty_responded %}
+                    {% if application.app_is_accepted == None %}
                         <span class="status-tag pending">Pending</span>
-                    {% elif application.is_accepted %}
+                    {% elif application.app_is_accepted %}
                         <span class="status-tag accepted">Accepted</span>
                     {% else %}
                         <span class="status-tag rejected">Rejected</span>

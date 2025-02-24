@@ -15,9 +15,9 @@
                 {% set application = current_user.get_applications() | selectattr("position_id", "equalto", p.id) | list | first %}
                 
                 {% if application %}
-                    {% if application.is_accepted == None %}
+                    {% if application.app_is_accepted == None %}
                         <span class="status-tag pending">Pending</span>
-                    {% elif application.is_accepted %}
+                    {% elif application.app_is_accepted %}
                         <span class="status-tag accepted">Accepted</span>
                     {% else %}
                         <span class="status-tag rejected">Rejected</span>
@@ -73,9 +73,9 @@
                     {% for application in p.applicants %}
                     <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-4 border border-1 m-1 p-2">
                         {{application.student_applied.firstname + " " + application.student_applied.lastname}}
-                        {% if application.is_accepted == None %}
+                        {% if application.app_is_accepted == None %}
                             <span class="status-tag pending p-1 ms-2">Pending</span>
-                        {% elif application.is_accepted %}
+                        {% elif application.app_is_accepted %}
                             <span class="status-tag accepted p-1 ms-2">Accepted</span>
                         {% else %}
                             <span class="status-tag rejected p-1 ms-2">Rejected</span>
