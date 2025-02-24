@@ -17,19 +17,19 @@
                 
                 {% if current_user.is_authenticated and current_user.type == 'student' %}
                     {% if application.app_is_accepted == None %}
-                        <span class="status-tag pending">Application Pending</span>
+                        <span class="status-tag pending ms-2">Application Pending</span>
                     {% elif application.app_is_accepted %}
-                        <span class="status-tag accepted">Application Accepted</span>
+                        <span class="status-tag accepted ms-2">Application Accepted</span>
                     {% else %}
-                        <span class="status-tag rejected">Application Rejected</span>
+                        <span class="status-tag rejected ms-2">Application Rejected</span>
                     {% endif %}
                 
                     {% if application.ref_is_accepted == None %}
-                        <span class="status-tag pending">Reference Pending</span>
+                        <span class="status-tag pending ms-2">Reference Pending</span>
                     {% elif application.ref_is_accepted %}
-                        <span class="status-tag accepted">Reference Accepted</span>
+                        <span class="status-tag accepted ms-2">Reference Accepted</span>
                     {% else %}
-                        <span class="status-tag rejected">Reference Rejected</span>
+                        <span class="status-tag rejected ms-2">Reference Rejected</span>
                     {% endif %}
                 {% endif %}
             </div>    
