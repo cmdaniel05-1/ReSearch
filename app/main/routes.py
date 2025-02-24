@@ -18,6 +18,8 @@ from flask_login import current_user, login_required
 def index():
     empty_form = EmptyForm()
     application_form = ApplicationForm()
+    faculty = db.session.query(Faculty).all()
+    application_form.reference.choices = [(f.id, f.firstname + ' ' + f.lastname + ' - ' + f.email) for f in faculty]
     positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form)
 
@@ -159,18 +161,15 @@ def apply(position_id):
     
     # Access the form data directly from the request
     form = ApplicationForm(request.form)
+    faculty = db.session.query(Faculty).all()
+    form.reference.choices = [(f.id, f.firstname + ' ' + f.lastname + ' - ' + f.email) for f in faculty]
 
     #variables for redirect
     empty_form = EmptyForm()
     positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     
     if form.validate_on_submit():
-        reference = Faculty.query.filter(Faculty.email == form.email.data).first()
-        
-        # Check if the reference exists and matches the first and last names
-        if reference is None or reference.firstname != form.firstname.data or reference.lastname != form.lastname.data:
-            flash('Reference email does not match name.')
-            return redirect(url_for('main.index')) 
+        reference = Faculty.query.filter(Faculty.id == form.reference.data).first()
         
         theposition = db.session.get(Position, position_id)
         
@@ -185,7 +184,7 @@ def apply(position_id):
     for field, errors in form.errors.items():
             for error in errors:
                 flash(f'Error in {field}: {error}')
-                
+    
     return redirect(url_for('main.index')) 
 
 

@@ -15,21 +15,9 @@
     
     <p>Request Faculty Reference</p>
 
-    {{ application_form.firstname.label(class = "form-text") }}<br>
-    {{ application_form.firstname(class="forminput form-text", style = "width: 100%") }}<br>
-    {% for error in application_form.firstname.errors%}
-        <span style="color: red"> [{{error}}]</span><br>
-    {% endfor %}
-
-    {{ application_form.lastname.label(class = "form-text") }}<br>
-    {{ application_form.lastname(class="forminput form-text", style = "width: 100%") }}<br>
-    {% for error in application_form.lastname.errors%}
-        <span style="color: red"> [{{error}}]</span><br>
-    {% endfor %}
-
-    {{ application_form.email.label(class = "form-text") }}<br>
-    {{ application_form.email(class="forminput form-text", style = "width: 100%") }}<br>
-    {% for error in application_form.email.errors%}
+    {{ application_form.reference.label(class = "form-text") }}<br>
+    {{ application_form.reference(class="forminput form-text", style = "width: 100%") }}<br>
+    {% for error in application_form.reference.errors%}
         <span style="color: red"> [{{error}}]</span><br>
     {% endfor %}
 
