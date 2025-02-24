@@ -34,9 +34,17 @@
             <div class="mb-1">
                 <h5 class="card-title">Update Status
                     <span class = "ms-2">
-                        {% if application.is_accepted == None %}
+                        {% if application.app_is_accepted == None %}
                             <span class="status-tag pending">Pending</span>
-                        {% elif application.is_accepted %}
+                        {% elif application.app_is_accepted %}
+                            <span class="status-tag accepted">Accepted</span>
+                        {% else %}
+                            <span class="status-tag rejected">Rejected</span>
+                        {% endif %}
+
+                        {% if application.ref_is_accepted == None %}
+                            <span class="status-tag pending">Pending</span>
+                        {% elif application.ref_is_accepted %}
                             <span class="status-tag accepted">Accepted</span>
                         {% else %}
                             <span class="status-tag rejected">Rejected</span>
@@ -47,8 +55,13 @@
                 <form action="{{url_for('main.update_status', position_id = application.position_id, student_id = application.student_id)}}" method= "POST">
                     {{ form.hidden_tag() }}
                     
-                    {{ form.status(class="forminput form-text", style = "width: 200px") }}<br>
-                    {% for error in form.status.errors%}
+                    {{ form.app_status(class="forminput form-text", style = "width: 200px") }}<br>
+                    {% for error in form.app_status.errors%}
+                        <span style="color: red"> [{{error}}]</span><br>
+                    {% endfor %}
+
+                    {{ form.ref_status(class="forminput form-text", style = "width: 200px") }}<br>
+                    {% for error in form.ref_status.errors%}
                         <span style="color: red"> [{{error}}]</span><br>
                     {% endfor %}
 

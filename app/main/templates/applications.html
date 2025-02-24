@@ -16,12 +16,20 @@
                 <span class="me-3">{{ application.applied_position.title }}</span>  {# Adds margin to separate title and status #}
                 
                 {% if current_user.is_authenticated and current_user.type == 'student' %}
-                    {% if not application.faculty_responded %}
-                        <span class="status-tag pending">Pending</span>
-                    {% elif application.is_accepted %}
-                        <span class="status-tag accepted">Accepted</span>
+                    {% if application.app_is_accepted == None %}
+                        <span class="status-tag pending">Application Pending</span>
+                    {% elif application.app_is_accepted %}
+                        <span class="status-tag accepted">Application Accepted</span>
                     {% else %}
-                        <span class="status-tag rejected">Rejected</span>
+                        <span class="status-tag rejected">Application Rejected</span>
+                    {% endif %}
+                
+                    {% if application.ref_is_accepted == None %}
+                        <span class="status-tag pending">Reference Pending</span>
+                    {% elif application.ref_is_accepted %}
+                        <span class="status-tag accepted">Reference Accepted</span>
+                    {% else %}
+                        <span class="status-tag rejected">Reference Rejected</span>
                     {% endif %}
                 {% endif %}
             </div>    

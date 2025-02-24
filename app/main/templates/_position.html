@@ -15,12 +15,24 @@
                 {% set application = current_user.get_applications() | selectattr("position_id", "equalto", p.id) | list | first %}
                 
                 {% if application %}
-                    {% if application.is_accepted == None %}
-                        <span class="status-tag pending">Pending</span>
-                    {% elif application.is_accepted %}
-                        <span class="status-tag accepted">Accepted</span>
+                    {% if application.app_is_accepted == None %}
+                        <span class="status-tag pending">Application Pending</span>
+                    {% elif application.app_is_accepted %}
+                        <span class="status-tag accepted">Application Accepted</span>
                     {% else %}
-                        <span class="status-tag rejected">Rejected</span>
+                        <span class="status-tag rejected">Application Rejected</span>
+                    {% endif %}
+                {% else %}
+                    <span class="status-tag not-applied">Not Applied</span>
+                {% endif %}
+
+                {% if application %}
+                    {% if application.ref_is_accepted == None %}
+                        <span class="status-tag pending">Reference Pending</span>
+                    {% elif application.ref_is_accepted %}
+                        <span class="status-tag accepted">Reference Accepted</span>
+                    {% else %}
+                        <span class="status-tag rejected">Reference Rejected</span>
                     {% endif %}
                 {% else %}
                     <span class="status-tag not-applied">Not Applied</span>
@@ -73,12 +85,20 @@
                     {% for application in p.applicants %}
                     <a href="{{ url_for('main.view_application', student_id=application.student_id, position_id = application.position_id) }}" class="btn btn-light rounded-4 border border-1 m-1 p-2">
                         {{application.student_applied.firstname + " " + application.student_applied.lastname}}
-                        {% if application.is_accepted == None %}
-                            <span class="status-tag pending p-1 ms-2">Pending</span>
-                        {% elif application.is_accepted %}
-                            <span class="status-tag accepted p-1 ms-2">Accepted</span>
+                        {% if application.app_is_accepted == None %}
+                            <span class="status-tag pending p-1 ms-2">Application Pending</span>
+                        {% elif application.app_is_accepted %}
+                            <span class="status-tag accepted p-1 ms-2">Application Accepted</span>
                         {% else %}
-                            <span class="status-tag rejected p-1 ms-2">Rejected</span>
+                            <span class="status-tag rejected p-1 ms-2">Application Rejected</span>
+                        {% endif %}
+
+                        {% if application.ref_is_accepted == None %}
+                            <span class="status-tag pending p-1 ms-2">Reference Pending</span>
+                        {% elif application.ref_is_accepted %}
+                            <span class="status-tag accepted p-1 ms-2">Reference Accepted</span>
+                        {% else %}
+                            <span class="status-tag rejected p-1 ms-2">Reference Rejected</span>
                         {% endif %}
                     </a>
                     
