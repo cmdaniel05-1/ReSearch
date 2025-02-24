@@ -20,7 +20,10 @@ def index():
     application_form = ApplicationForm()
     faculty = db.session.query(Faculty).all()
     application_form.reference.choices = [(f.id, f.firstname + ' ' + f.lastname + ' - ' + f.email) for f in faculty]
-    positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
+    if current_user.type == "faculty":
+        positions = db.session.query(Position).filter_by(faculty_id = current_user.id).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
+    else:
+        positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form)
 
 @main.route('/position/creation', methods=['GET', 'POST'])

@@ -3,12 +3,20 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2>Research Positions</h2>
-    {% for p in positions %}
-    {% if p.faculty.username == current_user.username or current_user %}
-        {% include '_position.html' %}
+    {% if current_user.type == "faculty" %}
+        <h2>My Research Positions</h2>
+    {% else %}
+        <h2>Research Positions</h2>
     {% endif %}
-    {% endfor %}
+    {% if positions %}
+        {% for p in positions %}
+            {% if p.faculty.username == current_user.username or current_user %}
+                {% include '_position.html' %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>You have not yet posted any positions</p>
+    {% endif %}
 </div>
 
 <script>
