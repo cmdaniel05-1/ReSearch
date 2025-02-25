@@ -25,7 +25,17 @@
                 <p>{{ application.statement }}</p>
             </div>
             <div class="mb-4">
-                <h5 class="card-title">Faculty Reference</h5>
+                <h5 class="card-title">Faculty Reference
+                    <span class = "ms-2">
+                        {% if application.ref_is_accepted == None %}
+                            <span class="status-tag pending">Pending</span>
+                        {% elif application.ref_is_accepted %}
+                            <span class="status-tag accepted">Accepted</span>
+                        {% else %}
+                            <span class="status-tag rejected">Rejected</span>
+                        {% endif %}
+                    </span>
+                </h5>
                 <p><strong>Name:</strong> {{ application.reference.firstname }} {{ application.reference.lastname }}</p>
                 <p><strong>Email:</strong> <a href="mailto:{{ application.reference.email }}">{{ application.reference.email }}</a></p>
             </div>
@@ -36,14 +46,6 @@
                         {% if application.app_is_accepted == None %}
                             <span class="status-tag pending">Pending</span>
                         {% elif application.app_is_accepted %}
-                            <span class="status-tag accepted">Accepted</span>
-                        {% else %}
-                            <span class="status-tag rejected">Rejected</span>
-                        {% endif %}
-
-                        {% if application.ref_is_accepted == None %}
-                            <span class="status-tag pending">Pending</span>
-                        {% elif application.ref_is_accepted %}
                             <span class="status-tag accepted">Accepted</span>
                         {% else %}
                             <span class="status-tag rejected">Rejected</span>

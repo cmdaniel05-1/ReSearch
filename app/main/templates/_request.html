@@ -1,0 +1,25 @@
+{% block content %}
+    
+{% set unique_id = 'info_' ~ range(1000, 99999) | random %} {# Generates a (most likely) unique ID for each card #}
+
+<div class="card mb-3 mt-4">
+    <button
+        class="card-header btn btn-link text-decoration-none w-100 d-flex justify-content-between align-items-center toggle-btn"
+        type="button" data-bs-toggle="collapse" data-bs-target="#{{ unique_id }}" aria-expanded="false"
+        aria-controls="{{ unique_id }}">
+
+        <div class="d-flex align-items-center">
+            <span class="me-3">{{ a.applied_position.title }} - {{ a.student_applied.firstname }} {{ a.student_applied.lastname }}</span>
+        </div>    
+        
+        <span class="bi bi-caret-down-fill icon"></span>
+    </button>
+    <div class="collapse" id="{{ unique_id }}">
+        <div class="card-body">
+            <h3>Form </h3>
+            <p>Form goes here</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

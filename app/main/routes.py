@@ -98,6 +98,10 @@ def language():
 @main.route('/profile', methods=['GET'])
 @login_required
 def profile():
+    if current_user.type == "faculty":
+        request_apps = Application.query.filter(Application.reference_id == current_user.id).all()
+        print(request_apps)
+        return render_template('display_profile.html', title = 'Profile', user = current_user, request_apps = request_apps)
     return render_template('display_profile.html', title = 'Profile', user = current_user)
 
 @main.route('/profile/<username>', methods=['GET'])

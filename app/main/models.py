@@ -107,8 +107,6 @@ class Student(User):
                 return False
         return True
 
-
-
     def apply(self, new_position, reference, statement):
         if not self.is_applied(new_position):
             new_application = Application(position_id = new_position.id,
