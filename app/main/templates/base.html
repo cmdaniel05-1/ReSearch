@@ -37,7 +37,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{ url_for('main.index') }}">Available Positions</a>
+            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{ url_for('main.index') }}">
+              {% if current_user.type == "faculty" %}
+                My Research Positions
+              {% else %}
+                Available Positions
+              {% endif %}
+            </a>
           </li>
           {% if current_user.is_authenticated and current_user.type == 'faculty' %}
           <li class="nav-item">
