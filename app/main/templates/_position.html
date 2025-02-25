@@ -59,11 +59,23 @@
                 {% endfor %}
             </p>
             
-            <p><strong>Faculty Member:</strong>
-                <span class="rounded-pill border border-1 m-1 p-2" style="background-color: #F8F9FA;">
-                    {{p.faculty.firstname}} {{p.faculty.lastname}}
-                </span>
-            </p>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Faculty Member</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ p.faculty.firstname }} {{ p.faculty.lastname }}</td>
+                        <td><a href="mailto:{{ p.faculty.email }}">{{ p.faculty.email }}</a></td>
+                        <td><a href="tel:{{ p.faculty.phone_num }}">{{ p.faculty.phone_num }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            
             {% if current_user.type == 'student' %}
                 {% if current_user.is_applied(p) == False %}
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#applyModal_{{ p.id }}">
