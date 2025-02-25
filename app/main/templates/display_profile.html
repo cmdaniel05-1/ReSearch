@@ -38,8 +38,12 @@
 
     <h2 class = "mt-4">Your Recommendation Requests</h2>
     {% if current_user.type == "faculty" %}
-        {% for a in request_apps %}
-            {% include "_request.html" %}
-        {% endfor %}
+        {% if request_apps %}
+            {% for a in request_apps %}
+                {% include "_request.html" %}
+            {% endfor %}
+        {% else %}
+            <p> You do not have any pending recommendation requests </p>
+        {% endif %}
     {% endif %}
 {% endblock %}
