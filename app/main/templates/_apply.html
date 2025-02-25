@@ -5,7 +5,6 @@
 {% if application_form %}
 <form action="{{url_for('main.apply', position_id = p.id)}}" method="post" class = "mt-4">
     {{ application_form.hidden_tag() }}
-
     <p>Interest</p>
     {{ application_form.statement.label(class="form-text") }}<br>
     {{ application_form.statement(class="forminput form-text", style = "width: 100%") }}<br>
@@ -21,7 +20,7 @@
         <span style="color: red"> [{{error}}]</span><br>
     {% endfor %}
 
-    {{application_form.submit(class = "btn btn-secondary  mb-4 mt-2")}}
+    {{application_form.submit(class = "btn btn-secondary mb-5 mt-3")}}
 </form>
 
 {% endif %}

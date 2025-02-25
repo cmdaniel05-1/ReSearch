@@ -13,7 +13,7 @@
             aria-controls="{{ unique_id }}">
 
             <div class="d-flex align-items-center">
-                <span class="me-3">{{ application.applied_position.title }}</span>  {# Adds margin to separate title and status #}
+                <span class="me-3">{{ application.applied_position.title }}</span> 
                 
                 {% if current_user.is_authenticated and current_user.type == 'student' %}
                     {% if application.app_is_accepted == None %}
