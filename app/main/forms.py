@@ -123,13 +123,20 @@ class ApplicationForm(FlaskForm):
     submit = SubmitField('Submit')
 
         
-class UpdateStatusForm(FlaskForm):
-     app_status = SelectField('Select an option:', 
+class UpdateAppStatusForm(FlaskForm):
+     status = SelectField('Select an option:', 
                           choices=[('Approve', 'Approve'), ('Pending', 'Pending'), ('Reject', 'Reject'), ('', 'Select an option')], 
                           validators=[DataRequired()],
                           default='')
-     ref_status = SelectField('Select an option:', 
-                          choices=[('Approve', 'Approve'), ('Pending', 'Pending'), ('Reject', 'Reject'), ('', 'Select an option')], 
+     submit = SubmitField('Submit')
+    
+     def validate_status(self, field):
+         if field.data == '':
+            raise ValidationError("Please choose a valid option")
+             
+class UpdateRefStatusForm(FlaskForm):
+     status = SelectField('Select an option:', 
+                          choices=[('Approve', 'Approve'), ('Reject', 'Reject'), ('', 'Select an option')], 
                           validators=[DataRequired()],
                           default='')
      submit = SubmitField('Submit')
@@ -137,5 +144,3 @@ class UpdateStatusForm(FlaskForm):
      def validate_status(self, field):
          if field.data == '':
             raise ValidationError("Please choose a valid option")
-             
-        

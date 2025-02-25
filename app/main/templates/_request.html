@@ -10,6 +10,15 @@
 
         <div class="d-flex align-items-center">
             <span class="me-3">{{ a.applied_position.title }} - {{ a.student_applied.firstname }} {{ a.student_applied.lastname }}</span>
+            <span class = "ms-2">
+                {% if a.ref_is_accepted == None %}
+                    <span class="status-tag pending">Pending</span>
+                {% elif a.ref_is_accepted %}
+                    <span class="status-tag accepted">Accepted</span>
+                {% else %}
+                    <span class="status-tag rejected">Rejected</span>
+                {% endif %}
+            </span>
         </div>    
         
         <span class="bi bi-caret-down-fill icon"></span>
@@ -17,7 +26,16 @@
     <div class="collapse" id="{{ unique_id }}">
         <div class="card-body">
             <h3>Form </h3>
-            <p>Form goes here</p>
+            <form action="{{url_for('main.update_ref_status', position_id = a.position_id, student_id = a.student_id)}}" method= "POST">
+                {{ form.hidden_tag() }}
+                
+                {{ form.status(class="forminput form-text", style = "width: 200px") }}<br>
+                {% for error in form.status.errors%}
+                    <span style="color: red"> [{{error}}]</span><br>
+                {% endfor %}
+
+                {{ form.submit(value='Update Ref Status', class='btn btn-danger mt-3') }}
+            </form>
         </div>
     </div>
 </div>

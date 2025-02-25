@@ -53,16 +53,11 @@
                     </span>
                 </h5>
 
-                <form action="{{url_for('main.update_status', position_id = application.position_id, student_id = application.student_id)}}" method= "POST">
+                <form action="{{url_for('main.update_app_status', position_id = application.position_id, student_id = application.student_id)}}" method= "POST">
                     {{ form.hidden_tag() }}
                     
-                    {{ form.app_status(class="forminput form-text", style = "width: 200px") }}<br>
-                    {% for error in form.app_status.errors%}
-                        <span style="color: red"> [{{error}}]</span><br>
-                    {% endfor %}
-
-                    {{ form.ref_status(class="forminput form-text", style = "width: 200px") }}<br>
-                    {% for error in form.ref_status.errors%}
+                    {{ form.status(class="forminput form-text", style = "width: 200px") }}<br>
+                    {% for error in form.status.errors%}
                         <span style="color: red"> [{{error}}]</span><br>
                     {% endfor %}
 

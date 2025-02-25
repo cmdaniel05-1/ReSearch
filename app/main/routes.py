@@ -5,7 +5,7 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
-from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm, UpdateStatusForm
+from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm, UpdateAppStatusForm, UpdateRefStatusForm
 from app.main.models import Application, Position, Field, Language, Student, User, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
@@ -100,8 +100,8 @@ def language():
 def profile():
     if current_user.type == "faculty":
         request_apps = Application.query.filter(Application.reference_id == current_user.id).all()
-        print(request_apps)
-        return render_template('display_profile.html', title = 'Profile', user = current_user, request_apps = request_apps)
+        form = UpdateRefStatusForm()
+        return render_template('display_profile.html', title = 'Profile', user = current_user, request_apps = request_apps, form = form)
     return render_template('display_profile.html', title = 'Profile', user = current_user)
 
 @main.route('/profile/<username>', methods=['GET'])
@@ -222,7 +222,7 @@ def view_applications(student_id):
 def view_application(position_id, student_id):
     if current_user.type == "student":
         return redirect(url_for('main.index'))
-    form = UpdateStatusForm()
+    form = UpdateAppStatusForm()
     application = db.session.query(Application).filter(
             Application.position_id == position_id,
             Application.student_id == student_id
@@ -235,7 +235,7 @@ def view_application(position_id, student_id):
 
 @main.route('/application/<position_id>/<student_id>/update',  methods = ['POST'])
 @login_required
-def update_status(position_id, student_id):
+def update_app_status(position_id, student_id):
     if current_user.type == "student":
         return redirect(url_for('main.index'))
     
@@ -246,23 +246,44 @@ def update_status(position_id, student_id):
     if application == None:
         flash("This application does not exist")
         return redirect(url_for('main.index'))
-    form = UpdateStatusForm(request.form)
+    form = UpdateAppStatusForm(request.form)
     if form.validate_on_submit():
-        if form.app_status.data == "Approve":
+        if form.status.data == "Approve":
             application.app_is_accepted = True
-        elif form.app_status.data == "Pending":
+        elif form.status.data == "Pending":
             application.app_is_accepted = None
         else:
             application.app_is_accepted = False
-        if form.ref_status.data == "Approve":
-            application.ref_is_accepted = True
-        elif form.ref_status.data == "Pending":
-            application.ref_is_accepted = None
-        else:
-            application.ref_is_accepted = False
         db.session.add(application)
         db.session.commit()
         flash("Application status successfully updated")
     else:
         flash("Application status not updated, please check form input")
     return redirect(url_for("main.view_application", position_id = position_id, student_id = student_id))
+
+
+@main.route('/application/<position_id>/<student_id>/updateref',  methods = ['POST'])
+@login_required
+def update_ref_status(position_id, student_id):
+    if current_user.type == "student":
+        return redirect(url_for('main.index'))
+    
+    application = db.session.query(Application).filter(
+            Application.position_id == position_id,
+            Application.student_id == student_id
+        ).first() 
+    if application == None:
+        flash("This application does not exist")
+        return redirect(url_for('main.index'))
+    form = UpdateRefStatusForm(request.form)
+    if form.validate_on_submit():
+        if form.status.data == "Approve":
+            application.ref_is_accepted = True
+        else:
+            application.ref_is_accepted = False
+        db.session.add(application)
+        db.session.commit()
+        flash("Reference status successfully updated")
+    else:
+        flash("Reference status not updated, please check form input")
+    return redirect(url_for("main.profile"))
