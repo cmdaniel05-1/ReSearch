@@ -1,12 +1,10 @@
-from email.mime import application
-from turtle import pos
-from flask import app, jsonify, render_template, redirect, flash, session, url_for, request
+from flask import render_template, redirect, flash, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm, UpdateAppStatusForm, UpdateRefStatusForm
-from app.main.models import Application, Position, Field, Language, Student, User, Faculty
+from app.main.models import Application, Position, Field, Language, Student, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required

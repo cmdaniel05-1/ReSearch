@@ -1,4 +1,4 @@
-from datetime import date, timezone
+from datetime import date
 from typing import Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
