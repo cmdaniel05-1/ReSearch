@@ -1,12 +1,10 @@
-from email.mime import application
-from turtle import pos
-from flask import app, jsonify, render_template, redirect, flash, session, url_for, request
+from flask import render_template, redirect, flash, url_for, request
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
 from app import db
 from app.main.forms import AddFieldForm, AddLanguageForm, DeleteFieldForm, DeleteLanguageForm, PostForm, FacultyEditForm, StudentEditForm, EmptyForm, ApplicationForm, UpdateAppStatusForm, UpdateRefStatusForm
-from app.main.models import Application, Position, Field, Language, Student, User, Faculty
+from app.main.models import Application, Position, Field, Language, Student, Faculty
 from app.main import main_blueprint as main
 from app.main.models import Position
 from flask_login import current_user, login_required
@@ -166,24 +164,24 @@ def apply(position_id):
     if current_user.type == 'faculty':
         return redirect(url_for('main.index'))
     
+    theposition = db.session.get(Position, position_id)
+        
+    if theposition is None:
+        flash('No such position exists')
+        return redirect(url_for('main.index'))
+    
     # Access the form data directly from the request
     form = ApplicationForm(request.form)
     faculty = db.session.query(Faculty).all()
     form.reference.choices = [(f.id, f.firstname + ' ' + f.lastname + ' - ' + f.email) for f in faculty]
 
-    #variables for redirect
-    empty_form = EmptyForm()
-    positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
-    
     if form.validate_on_submit():
         reference = Faculty.query.filter(Faculty.id == form.reference.data).first()
         
-        theposition = db.session.get(Position, position_id)
-        
-        if theposition is None:
-            flash('No such position exists')
-            return redirect(url_for('main.index')) 
-        
+        if reference.id == theposition.faculty_id:
+            flash('Reference cannot be the position author')
+            return redirect(url_for('main.index'))
+
         current_user.apply(theposition, reference, form.statement.data)
         flash('You have applied to {}.'.format(theposition.title))
         return redirect(url_for('main.index'))

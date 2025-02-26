@@ -1,5 +1,4 @@
 
-from flask.debughelpers import _dump_loader_info
 from flask_wtf import FlaskForm
 from wtforms import FloatField, SelectField, StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
 from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email, Optional
@@ -7,7 +6,7 @@ from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 
 from app import db
-from app.main.models import Field, Language, Student, Faculty, User
+from app.main.models import Field, Language, User
 import sqlalchemy as sqla
 from flask_login import current_user
 

@@ -15,7 +15,11 @@
             {% endif %}
         {% endfor %}
     {% else %}
-        <p>You have not yet posted any positions</p>
+        {% if current_user.type == "faculty" %}
+            <p>You have not yet posted any positions</p>
+        {% else %}
+            <p>There are no open positions available</p>
+        {% endif %}
     {% endif %}
 </div>
 
