@@ -6,6 +6,18 @@
     {% if current_user.type == "faculty" %}
         <h2>My Research Positions</h2>
     {% else %}
+        <h2>Reccomended Research Positions</h2>
+        {% for f in current_user.fields %}
+        <h3>{{f.name}}:</h3>
+            {% for p in positions %}
+                {% for g in p.fields %}
+                    {% if g.id == f.id %}
+                        {% include '_position.html' %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+        <hr>
         <h2>Research Positions</h2>
     {% endif %}
     {% if positions %}

@@ -210,6 +210,8 @@ def withdraw(position_id):
 @main.route('/applications/<student_id>/view', methods=['GET'])
 @login_required
 def view_applications(student_id):
+    if current_user.type == 'faculty':
+        return redirect(url_for('main.index'))
     student = db.session.get(Student, student_id)
     form = EmptyForm()
     return render_template('applications.html', title = 'Applications', form = form)
