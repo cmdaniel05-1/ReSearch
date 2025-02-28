@@ -127,6 +127,13 @@ class Student(User):
                 db.session.delete(application)
                 db.session.commit()
 
+    def is_approved(self, position):
+        result = db.session.query(Application).filter(
+            Application.student_id == self.id,
+            Application.position_id == position.id
+        ).first()
+        return result.app_is_accepted
+
     def get_applications(self):
         # Query the Application table and filter by student_id
         return db.session.query(Application).filter(Application.student_id == self.id).all()
