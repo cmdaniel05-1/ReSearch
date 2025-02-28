@@ -81,7 +81,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#applyModal_{{ p.id }}">
                     Apply
                 </button>
-                {% else %}
+                {% elif current_user.is_approved(p) != true %}
                 <form action="{{url_for('main.withdraw', position_id = p.id)}}" method= "POST">
                     {{ empty_form.hidden_tag() }}
                     {{ empty_form.submit(value='Withdraw', class='btn btn-danger') }}
