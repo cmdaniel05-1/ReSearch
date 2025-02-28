@@ -238,7 +238,8 @@ def view_application(position_id, student_id):
 def update_app_status(position_id, student_id):
     if current_user.type == "student":
         return redirect(url_for('main.index'))
-    
+    position = db.session.query(Position).filter(Position.id == position_id).first()
+    approved = db.session.query(Application).filter(Application.position_id == position_id, Application.app_is_accepted).count()
     application = db.session.query(Application).filter(
             Application.position_id == position_id,
             Application.student_id == student_id
@@ -248,15 +249,44 @@ def update_app_status(position_id, student_id):
         return redirect(url_for('main.index'))
     form = UpdateAppStatusForm(request.form)
     if form.validate_on_submit():
-        if form.status.data == "Approve":
-            application.app_is_accepted = True
-        elif form.status.data == "Pending":
-            application.app_is_accepted = None
+        if application.app_is_accepted:
+            if form.status.data == "Approve":
+                if approved >= position.student_count:
+                    flash("You have already approved the maximum amount of students.")
+                else:
+                    application.app_is_accepted = True
+                    db.session.add(application)
+                    db.session.commit()
+                    flash("Application status successfully updated")
+            elif form.status.data == "Pending":
+                application.app_is_accepted = None
+                db.session.add(application)
+                db.session.commit()
+                flash("Application status successfully updated")
+            else:
+                application.app_is_accepted = False
+                db.session.add(application)
+                db.session.commit()
+                flash("Application status successfully updated")
         else:
-            application.app_is_accepted = False
-        db.session.add(application)
-        db.session.commit()
-        flash("Application status successfully updated")
+            if form.status.data == "Approve":
+                if approved >= position.student_count:
+                    flash("You have already approved the maximum amount of students.")
+                else:
+                    application.app_is_accepted = True
+                    db.session.add(application)
+                    db.session.commit()
+                    flash("Application status successfully updated")
+            elif form.status.data == "Pending":
+                application.app_is_accepted = None
+                db.session.add(application)
+                db.session.commit()
+                flash("Application status successfully updated")
+            else:
+                application.app_is_accepted = False
+                db.session.add(application)
+                db.session.commit()
+                flash("Application status successfully updated")
     else:
         flash("Application status not updated, please check form input")
     return redirect(url_for("main.view_application", position_id = position_id, student_id = student_id))
