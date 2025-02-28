@@ -15,7 +15,7 @@ Prepared by:
 ----
 ## 1. Iteration 2 - Summary
 
-Sarah: I implemented faculty viewing and approving/rejecting references and applications. I implemented faculty seeing the list of students who applied and their profile and application. I improved the UI across all pages. 
+Sarah: I implemented faculty viewing and approving/rejecting references and applications. I implemented faculty seeing the list of students who applied and their profile and application. I improved the UI across all pages. <br>
 Connor: I implemented the ability for student users to be able to view the applications they have applied to in a separate page, updating the progress of the application and the recommendation when they occur. I also made small adjustments to the application model to work better for the recommendation labelling functionality. Finally, I deployed the web app on AWS.<br>
 Ian: I set up the application model, and set up the ability for students to apply to positions. I also fixed the things we missed in iteration1, those being the ability to remove research fields and programming languages, and stopping faculty and students from accessing pages they shouldn’t be able to.<br>
 April: I implemented faculty seeing only their list of applications in the index rather than every application.<br>
