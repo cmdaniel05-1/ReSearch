@@ -39,16 +39,10 @@ Iteration 2 went pretty well for us, although we did implement a number of featu
 ----
 ## 3. Product Backlog refinement
 
- * Have you made any changes to your `product backlog` after `Iteration-2`? If so, please explain the changes here. 
-
 We implemented accepting/rejecting references and database tests as part of iteration 2 instead of iteration 3. We also added accepting/rejecting applications and withdrawing pending applications.
 
 ----
 ## 4. Iteration 3 - Sprint Backlog
-
-Include a draft of your `Iteration-3 sprint backlog`. 
- * List the user stories you plan to complete in `Iteration-3`. Make sure to break down the larger user stories into smaller size stories. Mention the team member(s) who will work on each user story. 
- * Make sure to update the "issues" on your GitHub repo accordingly.  
 
 As a faculty member or student, I want to login with either my WPI email or using Single Sign-On - April, Ian
 Our application needs selenium tests for five functionalities not including registration and login - Sarah
