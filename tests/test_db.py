@@ -2,6 +2,8 @@ import unittest
 from app import db, create_app
 from app.main.models import Application, Field, Language, Position, Student, Faculty
 
+#Command to run: python -m unittest tests.test_db
+
 class DatabaseTestCase(unittest.TestCase):
 
     def setUp(self):
