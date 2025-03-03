@@ -137,3 +137,41 @@
 </div>
 
 {% endblock %}
+
+{% block script %}
+<script>
+    async function apply(position_id){
+        const url = "{{ url_for('main.apply', position_id = 'position_id') }}".replace("position_id", position_id);
+        try {
+            const response = await fetch(url);
+            if (!response.ok){
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const json = await response.json();
+            console.log(json);
+            update_application(position_id, json);
+        } catch(error) {
+            console.error(error.message)
+        }
+    }
+
+    async function withdraw(position_id){
+        const url = "{{ url_for('main.withdraw', position_id = 'position_id') }}".replace("position_id", position_id);
+        try {
+            const response = await fetch(url);
+            if (!response.ok){
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const json = await response.json();
+            console.log(json);
+            update_application(position_id, json);
+        } catch(error) {
+            console.error(error.message)
+        }
+    }
+
+    function update_application(position_id, data){
+        let postposition = document.getElementById(`position-${position_id}`)
+    }
+</script>    
+{% endblock %}
