@@ -47,7 +47,7 @@
           </li>
           {% if current_user.is_authenticated and current_user.type == 'faculty' %}
           <li class="nav-item">
-            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{url_for('main.create')}}">Create Position</a>
+            <a class="nav-link btn btn-light custom-btn" aria-current="page" href="{{url_for('main.create')}}" name = "create_position">Create Position</a>
           </li>
           {% endif %}
         </ul>
