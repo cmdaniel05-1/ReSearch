@@ -58,8 +58,37 @@ def flask_app():
     
     yield 
 
-#test that your chrome driver even works
+#test that the website even loads
 def test_browser_title(browser, flask_app):
     browser.get('http://localhost:3000/index')
 
     assert "ReSearch" in browser.title
+
+def test_register_form(browser, student1, flask_app):
+    browser.get('http://localhost:3000/register')
+
+    select = Select(browser.find_element(By.NAME, "type"))
+    select.select_by_visible_text('Student')
+    time.sleep(2)
+    browser.find_element(By.NAME, "wpi_id").send_keys(student1['wpi_id'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "username").send_keys(student1['username'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "firstname").send_keys(student1['firstname'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "lastname").send_keys(student1['lastname'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "email").send_keys(student1['email'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "phone_num").send_keys(student1['phone_num'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "password").send_keys(student1['password'])
+    time.sleep(2)
+    browser.find_element(By.NAME, "password2").send_keys(student1['password'])    
+    time.sleep(2)
+    browser.find_element(By.NAME, "submit").click()
+    time.sleep(2)
+    #verification
+    content = browser.page_source
+    # print(content)
+    assert 'Congratulations, you are now a registered Student!' in content
