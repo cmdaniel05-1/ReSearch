@@ -207,18 +207,86 @@ def test_create_position(browser, faculty1, position1):
     # print(content)
     assert f"\"{position1['title']}\" has been posted." in content
 
-def test_student_apply(browser, student1):
-    pass
-
-def test_faculty_view_student_application(browser, faculty1, student1):
-    pass
-
 def test_faculty_view_student_profile(browser, faculty1, student1):
-    pass
+    """
+    GIVEN a logged-in faculty user
+    WHEN they view a student's profile
+    THEN check that the profile details are displayed correctly
+    """
+    
+    test_login_form_faculty(browser, faculty1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile/{student1["username"]}')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
 
 def test_display_profile(browser, student1):
-    pass
+    """
+    GIVEN a logged-in student user
+    WHEN they view their own profile
+    THEN check that the profile details are displayed correctly
+    """
+
+    test_login_form_student(browser, student1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile/{student1["username"]}')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
+
+def test_display_profile(browser, student1):
+    """
+    GIVEN a logged-in student user
+    WHEN they view their own profile
+    THEN check that the profile details are displayed correctly
+    """
+
+    test_login_form_student(browser, student1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
 
 def test_edit_profile(browser, student1):
-    pass
+    """
+    GIVEN a logged-in student user
+    WHEN they edit their profile
+    THEN check that the profile is updated successfully
+    """
 
+    test_login_form_student(browser, student1)
+
+    # Edit the student's profile
+    browser.get(f'http://localhost:3000/profile/edit')
+    time.sleep(1)
+    browser.find_element(By.NAME, "firstname").clear()
+    browser.find_element(By.NAME, "firstname").send_keys("UpdatedFirstName")
+    time.sleep(0.5)
+    browser.find_element(By.NAME, "lastname").clear()
+    browser.find_element(By.NAME, "lastname").send_keys("UpdatedLastName")
+    time.sleep(0.5)
+    click_submit(browser=browser)
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert 'Profile updated successfully!' in content
+    assert 'UpdatedFirstName' in content
+    assert 'UpdatedLastName' in content

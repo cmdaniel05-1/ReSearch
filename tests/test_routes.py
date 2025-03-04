@@ -1,5 +1,6 @@
 from datetime import date
 import os
+from re import S
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 from flask_login import current_user
@@ -206,7 +207,6 @@ def test_apply_for_position(test_client, init_database):
                                 data=dict(reference=20, statement="I am very interested in this position."),
                                 follow_redirects=True)
     assert response.status_code == 200
-    print(response.data.decode('utf-8'))
     assert b"You have applied to Robotics Engineering Intern." in response.data
 
     do_logout(test_client)
@@ -217,9 +217,10 @@ def test_view_applied_positions(test_client, init_database):
     WHEN they view their applied positions (GET)
     THEN check that the response is valid
     """
-    do_login(test_client, username='student1', password='student1')
 
-    response = test_client.get('/applications/11111/view', follow_redirects=True)
+    do_login(test_client, username='student1', password='student1')
+    student1 = db.session.scalar(sqla.select(Student).where(Student.username == 'student1'))
+    response = test_client.get(f'/applications/{student1.id}/view', follow_redirects=True)
     assert response.status_code == 200
     assert b"Applications" in response.data
 

@@ -1,0 +1,37 @@
+def test_faculty_view_student_application(browser, faculty1, student1, position1):
+    """
+    GIVEN a logged-in faculty user
+    WHEN they view a student's application
+    THEN check that the application details are displayed correctly
+    """
+    test_login_form_faculty(browser, faculty1)
+
+    browser.get(f'http://localhost:3000/applications/{student1[id]}/view')
+    browser.find_element(By.NAME, f"view_{student1['username']}_{position1['title']}").click()
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert f"Application for {position1['title']}" in content
+    assert student1['username'] in content
+
+    def test_student_apply(browser, student1, position1):
+    """
+    GIVEN a logged-in student user
+    WHEN they apply for a position
+    THEN check that the application is submitted successfully
+    """
+    test_login_form_student(browser, student1)
+
+    # Apply for the position
+    browser.get('http://localhost:3000/index')
+    browser.find_element(By.NAME, f"apply_{position1['title']}").click()
+    time.sleep(1)
+    browser.find_element(By.NAME, "statement").send_keys("I am very interested in this position.")
+    time.sleep(0.5)
+    click_submit(browser=browser)
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert 'Your application has been submitted!' in content
