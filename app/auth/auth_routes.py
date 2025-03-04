@@ -81,7 +81,7 @@ def sso_logout():
         )
     )
 
-@auth.route('/login', methods = ['GET', 'POST'])
+@auth.route('/user/login', methods = ['GET', 'POST'])
 def login():
     lform = LoginForm()
     if lform.validate_on_submit():
@@ -97,14 +97,10 @@ def login():
         return redirect(url_for('main.index'))
     return render_template('login.html', form = lform)
 
-@auth.route('/logout', methods=['GET'])
+@auth.route('/user/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
     if session:
         return redirect(url_for('auth.sso_logout'))
     return redirect(url_for('auth.login'))
-
-@auth.route("/home")
-def home():
-    return render_template("home.html", session=session.get('user'), pretty=json.dumps(session.get('user'), indent=4))
