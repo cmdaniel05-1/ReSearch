@@ -207,3 +207,18 @@ def test_create_position(browser, faculty1, position1):
     # print(content)
     assert f"\"{position1['title']}\" has been posted." in content
 
+def test_student_apply(browser, student1):
+    pass
+
+def test_faculty_view_student_application(browser, faculty1, student1):
+    pass
+
+def test_faculty_view_student_profile(browser, faculty1, student1):
+    pass
+
+def test_display_profile(browser, student1):
+    pass
+
+def test_edit_profile(browser, student1):
+    pass
+

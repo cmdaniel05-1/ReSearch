@@ -36,8 +36,8 @@
     </p>
     {% endif %}
 
-    <h2 class = "mt-4">Your Recommendation Requests</h2>
     {% if current_user.type == "faculty" %}
+    <h2 class = "mt-4">Your Recommendation Requests</h2>
         {% if request_apps %}
             {% for a in request_apps %}
                 {% include "_request.html" %}

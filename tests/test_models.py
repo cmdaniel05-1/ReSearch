@@ -2,9 +2,9 @@ import unittest
 from app import db, create_app
 from app.main.models import Application, Field, Language, Position, Student, Faculty
 
-#Command to run: python -m unittest tests.test_db
+#Command to run: python -m unittest tests.test_models.py
 
-class DatabaseTestCase(unittest.TestCase):
+class ModelsTestCase(unittest.TestCase):
 
     def setUp(self):
         """ Set up a test database """
@@ -89,7 +89,7 @@ class DatabaseTestCase(unittest.TestCase):
             self.assertIsNotNone(retrieved)
 
     def test_student_applied(self):
-        """ Test if student has applied to a position """
+        """ Test if student can apply to a position """
         with self.app.app_context():
             student = self.get_student()
             faculty = self.get_faculty()
@@ -143,6 +143,12 @@ class DatabaseTestCase(unittest.TestCase):
             db.session.commit()
 
             self.assertTrue(student.is_available())
+
+    def test_student_withdraw(self):
+        pass
+
+    def test_student_get_applications(self):
+        pass
 
     def test_create_field(self):
         """ Test if a field can be created and retrieved """
