@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 from flask_login import current_user
 import pytest
 from app import create_app, db
-from app.main.models import Faculty, Position, Student, User
+from app.main.models import Faculty, Position, Student, User, Application
 from config import Config
 import sqlalchemy as sqla
 
@@ -47,6 +47,18 @@ def init_database():
         )
     faculty1.set_password('faculty1')
 
+
+    faculty2 = Faculty(
+        id = 20,
+        wpi_id=54321,
+        username="faculty2",
+        firstname="James",
+        lastname="Beard",
+        email="jbeard@wpi.edu",
+        phone_num="098-678-8769"
+    )
+    faculty2.set_password('faculty2')
+
     student1 = Student(
             wpi_id=11111,
             username="student1",
@@ -57,11 +69,15 @@ def init_database():
         )
     student1.set_password('student1')
 
-    db.session.add_all([student1, faculty1])
+    position1 = Position(faculty_id=faculty1.id, title="Robotics Engineering Intern",
+                                description="Build robots & code.", req_time=5, student_count=2)
+
+    db.session.add_all([student1, faculty1, faculty2, position1])
     db.session.commit()
 
     yield 
 
+    db.session.remove()
     db.drop_all()
 
 def test_home_page_logged_out(test_client):
@@ -178,10 +194,117 @@ def test_create_position_missing_fields(test_client, init_database):
 
 
 def test_apply_for_position(test_client, init_database):
-    pass
+    """
+    GIVEN a logged-in student user
+    WHEN they apply for a position (POST)
+    THEN check that the application is added successfully
+    """
+    do_login(test_client, username='student1', password='student1')
+
+    position = db.session.scalar(sqla.select(Position).where(Position.title == 'Robotics Engineering Intern'))
+    response = test_client.post(f'/application/{position.id}/submission',
+                                data=dict(reference=20, statement="I am very interested in this position."),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    print(response.data.decode('utf-8'))
+    assert b"You have applied to Robotics Engineering Intern." in response.data
+
+    do_logout(test_client)
 
 def test_view_applied_positions(test_client, init_database):
-    pass
+    """
+    GIVEN a logged-in student user
+    WHEN they view their applied positions (GET)
+    THEN check that the response is valid
+    """
+    do_login(test_client, username='student1', password='student1')
+
+    response = test_client.get('/applications/11111/view', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Applications" in response.data
+
+    do_logout(test_client)
 
 def test_accept_application(test_client, init_database):
-    pass
+    """
+    GIVEN a logged-in faculty user
+    WHEN they accept a student's application (POST)
+    THEN check that the application status is updated successfully
+    """
+    do_login(test_client, username='faculty1', password='faculty1')
+
+    position = db.session.scalar(sqla.select(Position).where(Position.title == 'Robotics Engineering Intern'))
+    student = db.session.scalar(sqla.select(Student).where(Student.username == 'student1'))
+    faculty = db.session.scalar(sqla.select(Faculty).where(Faculty.username == 'faculty1'))
+
+    # Create and commit the application to the database
+    application = Application(position_id=position.id, student_id=student.id, reference_id=faculty.id, statement="I am very interested in this position.")
+    db.session.add(application)
+    db.session.commit()
+
+
+    response = test_client.post(f'/application/{position.id}/{student.id}/update',
+                                data=dict(status="Approve"),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Application status successfully updated" in response.data
+
+    do_logout(test_client)
+
+def test_withdraw_application(test_client, init_database):
+    """
+    GIVEN a logged-in student user
+    WHEN they withdraw their application (POST)
+    THEN check that the application is removed successfully
+    """
+    do_login(test_client, username='student1', password='student1')
+
+    position = db.session.scalar(sqla.select(Position).where(Position.title == 'Robotics Engineering Intern'))
+    response = test_client.post(f'/application/{position.id}/withdrawal', follow_redirects=True, headers={'Referer': '/index'})
+    assert response.status_code == 200
+    assert b"You have withdrawn from Robotics Engineering Intern" in response.data
+
+    do_logout(test_client)
+
+
+def test_edit_profile(test_client, init_database):
+    """
+    GIVEN a logged-in user
+    WHEN they edit their profile (POST)
+    THEN check that the profile is updated successfully
+    """
+    do_login(test_client, username='student1', password='student1')
+
+    response = test_client.post('/profile/edit',
+                                data=dict(wpi_id=11111,
+                                          username="student1",
+                                          firstname="Bob",
+                                          lastname="Brown",
+                                          email="student1@wpi.edu",
+                                          phone_num="7819293929",
+                                          major="Computer Science",
+                                          gpa=3.5,
+                                          grad_date=date.today(),
+                                          fields=[],
+                                          languages=[]),
+                                follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Profile" in response.data
+
+    do_logout(test_client)
+
+
+def test_view_profile(test_client, init_database):
+    """
+    GIVEN a logged-in user
+    WHEN they view their profile (GET)
+    THEN check that the response is valid
+    """
+    do_login(test_client, username='student1', password='student1')
+
+    response = test_client.get('/profile', follow_redirects=True)
+    assert response.status_code == 200
+    assert b"Profile" in response.data
+
+    do_logout(test_client)
+

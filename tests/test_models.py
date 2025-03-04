@@ -143,7 +143,7 @@ class ModelsTestCase(unittest.TestCase):
             db.session.commit()
 
             self.assertTrue(student.is_available())
-
+ 
     def test_student_withdraw(self):
         pass
 
