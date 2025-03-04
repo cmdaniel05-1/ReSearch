@@ -100,9 +100,9 @@ def login():
 @auth.route('/logout', methods=['GET'])
 @login_required
 def logout():
+    logout_user()
     if session:
         return redirect(url_for('auth.sso_logout'))
-    logout_user()
     return redirect(url_for('auth.login'))
 
 @auth.route("/home")
