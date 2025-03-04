@@ -29,7 +29,7 @@ def test_client():
     ctx = flask_app.app_context()
     ctx.push()
  
-    yield  testing_client 
+    yield testing_client 
     ctx.pop()
 
 @pytest.fixture
@@ -208,6 +208,8 @@ def test_apply_for_position(test_client, init_database):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b"You have applied to Robotics Engineering Intern." in response.data
+    application = db.session.scalar(sqla.select(Application).filter(Application.student_id == 1, Application.position_id == position.id))
+    assert application is not None
 
     do_logout(test_client)
 
@@ -243,12 +245,12 @@ def test_accept_application(test_client, init_database):
     db.session.add(application)
     db.session.commit()
 
-
     response = test_client.post(f'/application/{position.id}/{student.id}/update',
                                 data=dict(status="Approve"),
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b"Application status successfully updated" in response.data
+    assert application.app_is_accepted == True
 
     do_logout(test_client)
 
@@ -264,6 +266,8 @@ def test_withdraw_application(test_client, init_database):
     response = test_client.post(f'/application/{position.id}/withdrawal', follow_redirects=True, headers={'Referer': '/index'})
     assert response.status_code == 200
     assert b"You have withdrawn from Robotics Engineering Intern" in response.data
+    application = db.session.scalar(sqla.select(Application).where(Application.student_id == 11111, Application.position_id == position.id))
+    assert application is None
 
     do_logout(test_client)
 
@@ -291,7 +295,12 @@ def test_edit_profile(test_client, init_database):
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b"Profile" in response.data
-
+    user = db.session.scalar(sqla.select(User).where(User.username == 'student1'))
+    assert user.major == "Computer Science"
+    assert user.gpa == 3.5
+    assert user.grad_date == date.today()
+    assert len(user.fields) == 0
+    assert len(user.languages) == 0
     do_logout(test_client)
 
 
