@@ -62,7 +62,7 @@
                     </span>
                 </p>
 
-                <form action="{{url_for('main.withdraw', position_id = application.applied_position.id)}}" method= "POST">
+                <form action="{{url_for('main.applications_withdraw', position_id = application.applied_position.id)}}" method= "POST">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Withdraw', class='btn btn-danger') }}
                 </form>

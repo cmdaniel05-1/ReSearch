@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for, request
+from flask import render_template, redirect, flash, url_for, request, jsonify
 import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 
@@ -10,8 +10,8 @@ from app.main.models import Position
 from flask_login import current_user, login_required
 
 
-@main.route('/', methods=['GET'])
-@main.route('/index', methods=['GET'])
+@main.route('/', methods=['GET','POST'])
+@main.route('/index', methods=['GET','POST'])
 @login_required
 def index():
     empty_form = EmptyForm()
@@ -193,7 +193,7 @@ def apply(position_id):
     return redirect(url_for('main.index')) 
 
 
-@main.route('/application/<position_id>/withdrawal', methods=['POST'])
+@main.route('/application/<position_id>/withdrawal', methods=['GET','POST'])
 @login_required
 def withdraw(position_id):
     if current_user.type == 'faculty':
@@ -204,8 +204,26 @@ def withdraw(position_id):
         return redirect(request.referrer)
     current_user.withdraw(theposition)
     db.session.commit()
+    theposition = db.session.get(Position, position_id)
+    data = {
+        'position_id': theposition.id
+    }
+    return jsonify(data)
+
+@main.route('/applications/application/<position_id>/withdrawal', methods=['GET','POST'])
+@login_required
+def applications_withdraw(position_id):
+    if current_user.type == 'faculty':
+        return redirect(url_for('main.index'))
+    theposition = db.session.get(Position, position_id)
+    if theposition is None:
+        flash('No such position exists')
+        return redirect(request.referrer)
+    current_user.withdraw(theposition)
+    db.session.commit()
     flash('You have withdrawn from {}'.format(theposition.title))
     return redirect(request.referrer)
+    
 
 @main.route('/applications/<student_id>/view', methods=['GET'])
 @login_required

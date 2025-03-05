@@ -82,10 +82,9 @@
                     Apply
                 </button>
                 {% elif current_user.is_approved(p) != true %}
-                <form action="{{url_for('main.withdraw', position_id = p.id)}}" method= "POST">
-                    {{ empty_form.hidden_tag() }}
-                    {{ empty_form.submit(value='Withdraw', class='btn btn-danger') }}
-                </form>
+                <button class="btn btn-danger" onclick="withdraw({{ p.id }}, '{{ unique_id }}', this)">
+                    Withdraw
+                </button>
                 {% endif %}
             {% elif current_user.type == 'faculty' %}
             <p><strong>Applying Student(s):</strong>
@@ -140,38 +139,72 @@
 
 {% block script %}
 <script>
-    async function apply(position_id){
-        const url = "{{ url_for('main.apply', position_id = 'position_id') }}".replace("position_id", position_id);
+    async function withdraw(position_id, unique_id, button) {
+        const url = `{{ url_for('main.withdraw', position_id=0) }}`.replace("0", position_id);
+        console.log("Attempting to withdraw from:", url); // Debugging
         try {
             const response = await fetch(url);
-            if (!response.ok){
-                throw new Error(`Response status: ${response.status}`);
+            console.log("Response status:", response.status); // Debugging
+            if (!response.ok) {
+                throw new Error(`Response error: ${response.status}`);
             }
             const json = await response.json();
-            console.log(json);
-            update_application(position_id, json);
-        } catch(error) {
-            console.error(error.message)
+            console.log("Response JSON:", json); // Debugging
+            update_application(button, position_id);
+            update_status_labels(unique_id);
+            showFlashMessage("Successfully withdrew from the position!", "success");
+        } catch (error) {
+            console.error("Error withdrawing:", error.message);
+            showFlashMessage("Failed to withdraw. Please try again.", "danger");
         }
     }
 
-    async function withdraw(position_id){
-        const url = "{{ url_for('main.withdraw', position_id = 'position_id') }}".replace("position_id", position_id);
-        try {
-            const response = await fetch(url);
-            if (!response.ok){
-                throw new Error(`Response status: ${response.status}`);
-            }
-            const json = await response.json();
-            console.log(json);
-            update_application(position_id, json);
-        } catch(error) {
-            console.error(error.message)
+    function update_application(button, position_id) {
+        if (button) {
+            console.log("Updating button text..."); // Debugging
+            let applyButton = document.createElement("button")
+            applyButton.type = "button";
+            applyButton.className = "btn btn-secondary";
+            applyButton.setAttribute("data-bs-toggle", "modal");
+            applyButton.setAttribute("data-bs-target", `#applyModal_${position_id}`);
+            applyButton.innerHTML = "Apply";
+            button.replaceWith(applyButton);
+        } else {
+            console.error("Button not found for update!");
         }
     }
 
-    function update_application(position_id, data){
-        let postposition = document.getElementById(`position-${position_id}`)
+    function update_status_labels(unique_id) {
+        console.log("Updating status labels..."); // Debugging
+        const header = document.querySelector(`[data-bs-target="#${unique_id}"] .d-flex`);
+        if (header) {
+            header.querySelectorAll(".status-tag").forEach(tag => tag.remove());
+            let notAppliedTag = document.createElement("span");
+            notAppliedTag.className = "status-tag not-applied ms-2";
+            notAppliedTag.innerText = "Not Applied";
+            header.appendChild(notAppliedTag);
+        } else {
+            console.error("Header not found for updating status labels!");
+        }
+    }
+
+    function showFlashMessage(message, type = "success") {
+        let flashContainer = document.getElementById("flash-messages");
+        if (!flashContainer) {
+            flashContainer = document.createElement("div");
+            flashContainer.id = "flash-messages";
+            flashContainer.className = "position-fixed top-0 end-0 p-3";
+            document.body.appendChild(flashContainer);
+        }
+        let alert = document.createElement("div");
+        alert.className = `alert alert-${type} alert-dismissible fade show`;
+        alert.role = "alert";
+        alert.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        flashContainer.appendChild(alert);
+        setTimeout(() => {
+            alert.classList.remove("show");
+            setTimeout(() => alert.remove(), 500);
+        }, 3000);
     }
 </script>    
 {% endblock %}
