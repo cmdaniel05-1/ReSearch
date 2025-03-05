@@ -2,6 +2,7 @@ import datetime
 import os
 import sys
 import threading
+import click
 import pytest
 
 from selenium import webdriver
@@ -25,10 +26,16 @@ from app import create_app, db
 def student1():
     return  {'wpi_id':'123456', 'username' : 'student1', 'firstname':'John', 'lastname':'Doe', 'email':'test@example.com', 'phone_num':'7816662121', 'password' : 'securepassword'}
 
-# Faculty fixure - 2
+# Faculty fixure - 1
 @pytest.fixture
 def faculty1():
     return  {'wpi_id':'789012', 'username' : 'faculty1', 'firstname':'Alice', 'lastname':'Smith', 'email':'alice@example.com', 'phone_num':'555-1234', 'password' : 'professorpass'}
+
+# Faculty fixure - 2
+@pytest.fixture
+def faculty2():
+    return  {'wpi_id':'788012', 'username' : 'faculty2', 'firstname':'Joe', 'lastname':'Shmoe', 'email':'jshmoe@example.com', 'phone_num':'575-1234', 'password' : 'faculty2'}
+
 
 # Post fixure - 1
 @pytest.fixture
@@ -207,3 +214,148 @@ def test_create_position(browser, faculty1, position1):
     # print(content)
     assert f"\"{position1['title']}\" has been posted." in content
 
+def test_faculty_view_student_profile(browser, faculty1, student1):
+    """
+    GIVEN a logged-in faculty user
+    WHEN they view a student's profile
+    THEN check that the profile details are displayed correctly
+    """
+    
+    test_login_form_faculty(browser, faculty1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile/{student1["username"]}')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
+
+def test_display_profile(browser, student1):
+    """
+    GIVEN a logged-in student user
+    WHEN they view their own profile
+    THEN check that the profile details are displayed correctly
+    """
+
+    test_login_form_student(browser, student1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile/{student1["username"]}')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
+
+def test_display_profile(browser, student1):
+    """
+    GIVEN a logged-in student user
+    WHEN they view their own profile
+    THEN check that the profile details are displayed correctly
+    """
+
+    test_login_form_student(browser, student1)
+
+    # View the student's profile
+    browser.get(f'http://localhost:3000/profile')
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert student1['firstname'] in content
+    assert student1['lastname'] in content
+    assert student1['email'] in content
+
+def test_edit_profile(browser, student1):
+    """
+    GIVEN a logged-in student user
+    WHEN they edit their profile
+    THEN check that the profile is updated successfully
+    """
+
+    test_login_form_student(browser, student1)
+
+    # Edit the student's profile
+    browser.get(f'http://localhost:3000/profile/edit')
+    time.sleep(1)
+    browser.find_element(By.NAME, "firstname").clear()
+    browser.find_element(By.NAME, "firstname").send_keys("UpdatedFirstName")
+    time.sleep(0.5)
+    browser.find_element(By.NAME, "lastname").clear()
+    browser.find_element(By.NAME, "lastname").send_keys("UpdatedLastName")
+    time.sleep(0.5)
+    click_submit(browser=browser)
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert 'Profile updated successfully!' in content
+    assert 'UpdatedFirstName' in content
+    assert 'UpdatedLastName' in content
+
+def test_student_apply(browser, student1, faculty2, position1):
+    """
+    GIVEN a logged-in student user
+    WHEN they apply for a position
+    THEN check that the application is submitted successfully
+    """
+    test_register_form_faculty(browser, faculty2)
+    test_login_form_student(browser, student1)
+
+    # Apply for the position
+    browser.get('http://localhost:3000/index')
+    # Use XPath to find the element by its text content
+    position_element = WebDriverWait(browser, 10).until(
+        EC.element_to_be_clickable((By.XPATH, f"//*[text()='{position1['title']}']"))
+    )
+    position_element.click()
+    time.sleep(1)
+    apply_button = WebDriverWait(browser, 10).until(
+        EC.element_to_be_clickable((By.ID, "apply"))
+    )
+    apply_button.click()
+    time.sleep(1)
+    browser.find_element(By.NAME, "statement").send_keys("I am very interested in this position.")
+    time.sleep(1)
+    select = Select(browser.find_element(By.NAME, "reference"))
+    select.select_by_visible_text(faculty2['firstname'] + ' ' + faculty2['lastname'] + ' - ' + faculty2['email'])
+    time.sleep(1)
+    click_submit(browser=browser)
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert 'You have applied to {}.'.format(position1['title']) in content
+
+def test_view_applications(browser, student1):
+    """
+    GIVEN a logged-in student user
+    WHEN they view their applications
+    THEN check that the applications are displayed correctly
+    """
+    # Register and login the student
+    test_login_form_student(browser, student1)
+
+    # Get the student ID
+    browser.get(f'http://localhost:3000/index')
+    time.sleep(1)
+    navbarDropdown = browser.find_element(By.ID, "navbarDropdown")
+    navbarDropdown.click()
+    time.sleep(1)
+    myApplications = browser.find_element(By.LINK_TEXT, "My Applications")
+    myApplications.click()
+    time.sleep(1)
+
+    # Verification
+    content = browser.page_source
+    assert 'Applications' in content
+    assert 'Robotics Engineering Intern' in content 
+
+    # Logout
+    browser.get('http://localhost:3000/logout')
+    time.sleep(1)

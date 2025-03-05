@@ -4,12 +4,16 @@ from flask_migrate import Migrate
 from config import Config
 from flask_moment import Moment
 from flask_login import LoginManager
+import json
+from os import environ as env
+from authlib.integrations.flask_client import OAuth
 
 db = SQLAlchemy()
 moment = Moment()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
+oauth = OAuth()
 
 #factory method
 def create_app(config_class = Config):
@@ -22,6 +26,17 @@ def create_app(config_class = Config):
     migrate.init_app(app, db)
     login.init_app(app)
     moment.init_app(app)
+    oauth.init_app(app)
+
+    oauth.register(
+    "auth0",
+    client_id=env.get("AUTH0_CLIENT_ID"),
+    client_secret=env.get("AUTH0_CLIENT_SECRET"),
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration'
+    )
     
     #register_blueprints
 

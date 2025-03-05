@@ -5,6 +5,8 @@ import sqlalchemy as sqla
 import sqlalchemy.orm as sqlo
 from app.main.models import Language, Position, Student, Faculty, User
 from config import Config
+import json
+from os import environ as env
 
 app = create_app(Config)
 
@@ -25,4 +27,4 @@ def initDB(*args, **kwargs):
         db.create_all()
 
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(host="0.0.0.0", port=env.get("PORT", 3000))

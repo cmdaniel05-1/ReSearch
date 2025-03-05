@@ -78,7 +78,7 @@
             
             {% if current_user.type == 'student' %}
                 {% if current_user.is_applied(p) == False %}
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#applyModal_{{ p.id }}">
+                <button id = "apply" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#applyModal_{{ p.id }}">
                     Apply
                 </button>
                 {% elif current_user.is_approved(p) != true %}

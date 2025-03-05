@@ -142,6 +142,7 @@ def edit_profile():
             current_user.set_password(form.password2.data)
         db.session.add(current_user)
         db.session.commit()
+        flash('Profile updated successfully!')
         return redirect(url_for('main.profile'))
     else:
         form.wpi_id.data = current_user.wpi_id
