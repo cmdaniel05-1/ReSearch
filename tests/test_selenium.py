@@ -123,7 +123,7 @@ def test_register_form_student(browser, student1):
 
 def test_login_form_student(browser, student1):
     #test_register_form_student(browser, faculty1\)
-    browser.get('http://localhost:3000/login')
+    browser.get('http://localhost:3000/user/login')
 
     browser.find_element(By.NAME, "username").send_keys(student1['username'])
     time.sleep(0.5)
@@ -167,7 +167,7 @@ def test_register_form_faculty(browser, faculty1):
     assert 'Congratulations, you are now a registered Faculty!' in content
 
 def test_login_form_faculty(browser, faculty1):
-    browser.get('http://localhost:3000/login')
+    browser.get('http://localhost:3000/user/login')
 
     browser.find_element(By.NAME, "username").send_keys(faculty1['username'])
     time.sleep(0.5)
@@ -182,7 +182,7 @@ def test_login_form_faculty(browser, faculty1):
 
 def test_create_position(browser, faculty1, position1):
 
-    browser.get('http://localhost:3000/login')
+    browser.get('http://localhost:3000/user/login')
 
     #login
     browser.find_element(By.NAME, "username").send_keys(faculty1['username'])
@@ -356,6 +356,3 @@ def test_view_applications(browser, student1):
     assert 'Applications' in content
     assert 'Robotics Engineering Intern' in content 
 
-    # Logout
-    browser.get('http://localhost:3000/logout')
-    time.sleep(1)

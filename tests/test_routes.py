@@ -1,4 +1,5 @@
 from datetime import date
+import json
 import os
 from re import S
 import sys
@@ -113,10 +114,10 @@ def test_register(test_client, init_database):
 def test_invalid_login(test_client, init_database):
     """
     GIVEN a Flask application configured for testing
-    WHEN the '/login' form is submitted (POST) with incorrect credentials
+    WHEN the '/user/login' form is submitted (POST) with incorrect credentials
     THEN check that login is refused
     """
-    response = test_client.post('/login',
+    response = test_client.post('/user/login',
                                 data=dict(username='faculty1', password='wrongpassword'),
                                 follow_redirects=True)
     assert response.status_code == 200
@@ -124,21 +125,21 @@ def test_invalid_login(test_client, init_database):
 
 
 def do_login(test_client, username, password):
-    response = test_client.post('/login',
+    response = test_client.post('/user/login',
                                 data=dict(username=username, password=password),
                                 follow_redirects=True)
     assert response.status_code == 200
     assert b"Research Positions" in response.data  
 
 def do_logout(test_client):
-    response = test_client.get('/logout', follow_redirects=True)
+    response = test_client.get('/user/logout', follow_redirects=True)
     assert response.status_code == 200
     assert b"Sign In" in response.data
 
 def test_login_logout(test_client, init_database):
     """
     GIVEN a Flask application configured for testing
-    WHEN the '/login' form is submitted (POST) with correct credentials
+    WHEN the '/user/login' form is submitted (POST) with correct credentials
     THEN check that login and logout work properly
     """
     do_login(test_client, username='faculty1', password='faculty1')
@@ -265,7 +266,7 @@ def test_withdraw_application(test_client, init_database):
     position = db.session.scalar(sqla.select(Position).where(Position.title == 'Robotics Engineering Intern'))
     response = test_client.post(f'/application/{position.id}/withdrawal', follow_redirects=True, headers={'Referer': '/index'})
     assert response.status_code == 200
-    assert b"You have withdrawn from Robotics Engineering Intern" in response.data
+    assert json.loads(response.data)["position_id"] == position.id
     application = db.session.scalar(sqla.select(Application).where(Application.student_id == 11111, Application.position_id == position.id))
     assert application is None
 

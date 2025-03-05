@@ -123,7 +123,7 @@ class Student(User):
                 Application.student_id == self.id
             ).first()
         
-            if application:  # Ensure application exists before deletion
+            if application:  # Ensure fapplication exists before deletion
                 db.session.delete(application)
                 db.session.commit()
 
