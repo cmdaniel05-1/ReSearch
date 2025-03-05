@@ -137,6 +137,26 @@ class Student(User):
     def get_applications(self):
         # Query the Application table and filter by student_id
         return db.session.query(Application).filter(Application.student_id == self.id).all()
+    
+    def get_recommended_positions(self):
+            # Query the Position table and filter by fields and languages
+            positions = db.session.query(Position).filter(
+                Position.fields.any(Field.id.in_([field.id for field in self.fields])),
+                Position.languages.any(Language.id.in_([language.id for language in self.languages]))
+            ).all()
+            positions.sort(key=lambda position: self._similarity_score(position), reverse=True)
+            return positions
+    
+    def _similarity_score(self, position):
+        # Calculate the similarity score between the student and the position
+        score = 0
+        for field in position.fields:
+            if field in self.fields:
+                score += 1
+        for language in position.languages:
+            if language in self.languages:
+                score += 1
+        return score
 
 
 class Faculty(User):
@@ -145,6 +165,9 @@ class Faculty(User):
     # Relationships
     positions : sqlo.Mapped['Position'] = sqlo.relationship(back_populates='faculty')
     reference_requests : sqlo.Mapped['Application'] = sqlo.relationship(back_populates='reference')
+
+    def get_recommended_positions(self):
+        return None
 
     __mapper_args__ = {
         'polymorphic_identity': 'faculty',

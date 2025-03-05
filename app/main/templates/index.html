@@ -6,19 +6,19 @@
     {% if current_user.type == "faculty" %}
         <h2>My Research Positions</h2>
     {% else %}
-        <h2>Reccomended Research Positions</h2>
-        {% for f in current_user.fields %}
-        <h3>{{f.name}}:</h3>
-            {% for p in positions %}
-                {% for g in p.fields %}
-                    {% if g.id == f.id %}
-                        {% include '_position.html' %}
-                    {% endif %}
-                {% endfor %}
+        <h2>Recommended Research Positions</h2>
+        {% if recommended_positions %}
+            <p>Based on your profile, we recommend the following positions:</p>
+            {% for p in recommended_positions %}
+                {% include '_position.html' %}
             {% endfor %}
-        {% endfor %}
+        {% else %}
+            <div class="card mb-3 mt-4 p-3">
+                There are no recommended positions for you at this time
+            </div>
+        {% endif %}
         <hr>
-        <h2>Research Positions</h2>
+        <h2>All Research Positions</h2>
     {% endif %}
     {% if positions %}
         {% for p in positions %}

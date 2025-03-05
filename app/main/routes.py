@@ -22,7 +22,7 @@ def index():
         positions = db.session.query(Position).filter_by(faculty_id = current_user.id).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
     else:
         positions = db.session.query(Position).options(db.joinedload(Position.faculty)).all() #patched bug with lazy loading - do not remove
-    return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form)
+    return render_template('index.html', positions=positions, empty_form=empty_form, application_form=application_form, recommended_positions = current_user.get_recommended_positions())
 
 @main.route('/position/creation', methods=['GET', 'POST'])
 @login_required
