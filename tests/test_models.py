@@ -2,7 +2,7 @@ import unittest
 from app import db, create_app
 from app.main.models import Application, Field, Language, Position, Student, Faculty
 
-#Command to run: python -m unittest tests.test_models.py
+#Command to run: python -m unittest tests.test_models
 
 class ModelsTestCase(unittest.TestCase):
 
