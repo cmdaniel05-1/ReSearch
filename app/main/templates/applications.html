@@ -61,11 +61,12 @@
                         {{application.applied_position.faculty.firstname}} {{application.applied_position.faculty.lastname}}
                     </span>
                 </p>
-
+                {% if current_user.is_approved(application.applied_position) != true %}
                 <form action="{{url_for('main.applications_withdraw', position_id = application.applied_position.id)}}" method= "POST">
                     {{ form.hidden_tag() }}
                     {{ form.submit(value='Withdraw', class='btn btn-danger') }}
                 </form>
+                {% endif %}
                 
             </div>
         </div>
