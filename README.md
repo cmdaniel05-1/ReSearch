@@ -1,128 +1,132 @@
-\# 🔬 ReSearch
+# 🔬 ReSearch
 
 
 
-ReSearch is a web application designed to streamline the posting and application process for summer research opportunities at Worcester Polytechnic Institute (WPI).
+ReSearch is a web application built to digitize and streamline the summer research opportunity process at Worcester Polytechnic Institute (WPI). It provides a centralized platform where faculty can post openings and students can discover, apply, and engage with research opportunities tailored to their interests.
 
 
 
-\## 👥 Team Members
+## 👥 Team Members
 
-\- Connor Daniel  
+- Connor Daniel  
 
-\- Sarah Meyer  
+- Sarah Meyer  
 
-\- April Zingher  
+- April Zingher  
 
-\- Ian Wood  
+- Ian Wood  
 
 
 
-\## 📚 Project Overview
+## 📚 Project Overview
 
 
 
-ReSearch serves as a centralized portal for faculty and students to connect over summer research opportunities.
+ReSearch bridges the gap between faculty and students by offering a dynamic portal for summer research engagement. It simplifies the application process, enhances visibility, and encourages meaningful academic connections
 
 
 
-\### Faculty Features
+### Faculty Features
 
-\- Create, edit, and manage research postings  
+- Create, edit, and manage research postings
 
-\- Review student applications  
+- Label postings with relevant fields and programming languages
 
-\- Approve or reject applicants  
+- View the list of students who applied to a position
 
+- Review student profiles, including accepted opportunities
 
+- View, accept, and reject student applications
 
-\### Student Features
 
-\- Browse and filter available research opportunities  
 
-\- Apply with a personal statement and faculty reference  
+### Student Features
 
-\- Withdraw applications at any time  
+- Browse, sort, and filter available research opportunities
 
-\- Receive personalized recommendations based on profile content  
+- Receive personalized recommendations based on profile content
 
+- Apply with a personal statement and faculty reference
 
+- Withdraw applications at any time
 
-This platform encourages thoughtful engagement by requiring students to articulate their interest and provide references, helping faculty make informed decisions.
+- Track the status of submitted applications
 
 
 
-\## ⚙️ Technologies Used
+All users can login using their WPI email or Azura Single Sign-On. By requiring thoughtful application materials, ReSearch fosters intentional engagement and helps faculty identify motivated candidates.
 
 
 
-\*\*Language \& Framework\*\*
+## ⚙️ Technologies Used
 
-\- Python  
 
-\- Flask `3.0.3`  
 
+**Language & Framework**
 
+- Python
 
-\*\*Frontend\*\*
+- Flask
 
-\- Flask-Bootstrap `3.3.7.1`  
 
-\- Jinja2 `3.1.4`  
 
+**Frontend**
 
+- Flask-Bootstrap  
 
-\*\*Authentication\*\*
+- Jinja2
 
-\- Flask-Login `0.6.3`  
 
-\- Authlib `>=1.0`  
 
+**Authentication**
 
+- Flask-Login 
 
-\*\*Forms \& Validation\*\*
+- Authlib
 
-\- Flask-WTF `1.2.1`  
 
-\- WTForms `3.1.2`  
 
-\- WTForms-SQLAlchemy `0.4.1`  
+**Forms & Validation**
 
-\- email-validator `2.1.1`  
+- Flask-WTF
 
+- WTForms
 
+- WTForms-SQLAlchemy
 
-\*\*Database\*\*
+- email-validator
 
-\- Flask-SQLAlchemy `3.1.1`  
 
-\- Flask-Migrate `4.0.7`  
 
-\- psycopg2-binary `2.9.9`  
+**Database**
 
+- Flask-SQLAlchemy
 
+- Flask-Migrate
 
-\*\*Utilities\*\*
+- psycopg2-binary
 
-\- Flask-Moment `1.0.6`  
 
-\- Werkzeug `3.0.3`  
 
-\- python-dotenv `1.0.1`  
+**Utilities**
 
-\- requests `>=2.27.1`  
+- Flask-Moment
 
+- Werkzeug
 
+- python-dotenv
 
-\*\*Testing\*\*
 
-\- pytest `8.2.2`  
 
-\- selenium `4.29.0`  
+**Testing**
 
+- pytest
 
+- selenium
 
-\## 🚀 Getting Started
+
+
+## 🚀 Getting Started
 
 
 
