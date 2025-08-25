@@ -2,7 +2,7 @@
 
 
 
-ReSearch is a web application built to digitize and streamline the summer research opportunity process at Worcester Polytechnic Institute (WPI). It provides a centralized platform where faculty can post openings and students can discover, apply, and engage with research opportunities tailored to their interests.
+ReSearch is a web application built to digitize and streamline the summer research recruitment process at Worcester Polytechnic Institute (WPI). It provides a centralized platform where faculty can post openings and students can discover, apply, and engage with research opportunities tailored to their interests.
 
 
 
@@ -36,7 +36,7 @@ ReSearch bridges the gap between faculty and students by offering a dynamic port
 
 - Review student profiles, including accepted opportunities
 
-- View, accept, and reject student applications
+- View, accept, and reject student applications and reference requests
 
 
 
@@ -50,11 +50,11 @@ ReSearch bridges the gap between faculty and students by offering a dynamic port
 
 - Withdraw applications at any time
 
-- Track the status of submitted applications
+- Track the status of submitted applications and reference requests
 
 
 
-All users can login using their WPI email or Azura Single Sign-On. By requiring thoughtful application materials, ReSearch fosters intentional engagement and helps faculty identify motivated candidates.
+All users can login using their WPI email or Azure Single Sign-On. By requiring thoughtful application submissions, ReSearch encourages intentional engagement and helps faculty identify motivated candidates.
 
 
 
@@ -135,6 +135,10 @@ To run the application locally:
 
 
 ```bash
+
+python -m venv venv
+
+.\venv\Scripts\activate
 
 pip install -r requirements.txt
 
